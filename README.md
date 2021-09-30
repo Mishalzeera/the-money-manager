@@ -91,10 +91,18 @@ setup, financially.
 
 At this moment, from an earlier project it looks like the necessary libraries,
 flask, pymongo, dnspython etc are all in place. Using the pip list command in
-the terminal, it was ascertained that this was indeed the case.
+the terminal, it was ascertained that this was indeed the case. A learning
+moment, as it was assumed that the dependencies were installed somewhere in the
+project repository files.
 
 ### Basic file structures
 
 Since this is a Flask project, the author will create the "templates" and
 "static" folders first. Then, "app.py", ".gitignore", "env.py", "Procfile",
 then a "requirements.txt", since these are all going to be used.
+
+### Initialising Flask
+
+Setting app = Flask(**name**) first, then running a simple script to ascertain
+indeed that Flask is working. Import os and Flask. Env page needed to be set
+up.
