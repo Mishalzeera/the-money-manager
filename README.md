@@ -109,3 +109,10 @@ up. Live server settings updated and the (if name == main) logic initialised.
 Flask working.
 
 ### Creating Database in Mongo
+
+Switching to Mongo DB to create a new cluster for the project. Some challenge
+in mentally organising the data beforehand, but it can always be reorganised.
+Mongo, it seems, has moods and is slow this evening. A new project was created
+with the name "the-money-manager". The database was named "money_db", which is
+classy. Then "users", "current_month" and "previous_months" collections were
+added. Also "wishlist" and "reward".

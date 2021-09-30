@@ -48,3 +48,8 @@ P_R_E_V_I_O_U_S:
 -user
 -first_month
 -last_month
+
+Style ideas:
+
+Light and dark theme
+Cross between tiki and Apple IIc
