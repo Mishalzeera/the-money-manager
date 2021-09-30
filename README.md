@@ -105,4 +105,7 @@ then a "requirements.txt", since these are all going to be used.
 
 Setting app = Flask(**name**) first, then running a simple script to ascertain
 indeed that Flask is working. Import os and Flask. Env page needed to be set
-up.
+up. Live server settings updated and the (if name == main) logic initialised.
+Flask working.
+
+### Creating Database in Mongo
