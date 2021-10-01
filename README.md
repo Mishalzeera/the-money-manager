@@ -113,9 +113,9 @@ Flask working.
 Switching to Mongo DB to create a new cluster for the project. Some challenge
 in mentally organising the data beforehand, but it can always be reorganised.
 Mongo, it seems, has moods and is slow this evening. A new project was created
-with the name "the-money-manager". The database was named "money_db", which is
-classy. Then "users", "current_month" and "previous_months" collections were
-added. Also "wishlist" and "reward".
+with the name "the-money-manager". The database was named "money_db". Then
+"users", "current_month" and "previous_months" collections were added. Also
+"wishlist" and "reward".
 
 ### Connecting and Testing Mongo to App
 
@@ -128,7 +128,7 @@ Stack Overflow and Youtube videos, including modifying URI strings and
 reinstalling packages, no connection could be made to Mongo.
 
 Opening the repository in GitPod from the GitHub page and creating a temporary
-env file did launce the app fine. So then it was deployed to Heroku, where it
+env file did launch the app fine. So then it was deployed to Heroku, where it
 is also working fine. However still a persistent error message ("pymongo.errors.ServerSelectionTimeoutError") and no app launch in VSCode.
 
 Strangely this is also happening with previous projects that were begun
