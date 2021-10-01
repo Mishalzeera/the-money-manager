@@ -133,3 +133,6 @@ is also working fine. However still a persistent error message ("pymongo.errors.
 
 Strangely this is also happening with previous projects that were begun
 successfully but scrapped for this current idea.
+
+To keep the project momentum going, it will be written in GitPod. Added some
+graphics for further down the road since it is easier to do that in VSCode.
