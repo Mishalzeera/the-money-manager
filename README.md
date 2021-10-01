@@ -121,3 +121,15 @@ added. Also "wishlist" and "reward".
 
 Using the same naming convention as the walkthrough exercise, env variables
 were set in "env.py" as well as configurated in "app.py".
+
+Some kind of persistent issue with being unable to access Mongo from the
+local VSCode environment raised its head at this point. After a few hours of
+Stack Overflow and Youtube videos, including modifying URI strings and
+reinstalling packages, no connection could be made to Mongo.
+
+Opening the repository in GitPod from the GitHub page and creating a temporary
+env file did launce the app fine. So then it was deployed to Heroku, where it
+is also working fine. However still a persistent error message ("pymongo.errors.ServerSelectionTimeoutError") and no app launch in VSCode.
+
+Strangely this is also happening with previous projects that were begun
+successfully but scrapped for this current idea.
