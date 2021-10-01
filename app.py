@@ -20,7 +20,7 @@ mongo = PyMongo(app)
 def index():
     user = mongo.db.users.find()
 
-    return render_template("base.html", data=user)
+    return render_template("index.html", user=user)
 
 
 if __name__ == "__main__":
