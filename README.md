@@ -116,3 +116,8 @@ Mongo, it seems, has moods and is slow this evening. A new project was created
 with the name "the-money-manager". The database was named "money_db", which is
 classy. Then "users", "current_month" and "previous_months" collections were
 added. Also "wishlist" and "reward".
+
+### Connecting and Testing Mongo to App
+
+Using the same naming convention as the walkthrough exercise, env variables
+were set in "env.py" as well as configurated in "app.py".
