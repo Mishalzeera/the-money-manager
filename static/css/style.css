@@ -1,6 +1,14 @@
 /* Global Styles */
 
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@500&display=swap");
+@font-face {
+    font-family: 'money_money_moneyregular';
+    src: url('../fonts/money_money_money-webfont.woff2') format('woff2'),
+         url('../fonts/money_money_money-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
 
 * {
     margin: 0;
@@ -27,6 +35,13 @@ a:hover {
 }
 
 /* Header Styles */
+
+.money-dingbat {
+    font-family: "money_money_moneyregular";
+    font-size: 5rem;
+    color:rgb(24, 126, 24);
+    margin-left: 1rem;
+}
 
 .header-flex-parent{
     display: flex;
