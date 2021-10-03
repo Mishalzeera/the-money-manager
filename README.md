@@ -136,3 +136,9 @@ successfully but scrapped for this current idea.
 
 To keep the project momentum going, it will be written in GitPod. Added some
 graphics for further down the road since it is easier to do that in VSCode.
+
+
+### Create A Base Working Template
+
+In GitPod a new "env.py" file was created. It has been helpful to have to restart
+a few times and learn more about the strategic purpose of an env file. 
