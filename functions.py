@@ -1,6 +1,7 @@
 def euros_to_cents(euros_float):
-    # takes in a float of euros, * 100 and returns an int of cents
-    return int(euros_float * 100)
+    # takes in a string of euros, * 100 and returns an int of cents
+    to_float = float(euros_float)
+    return int(to_float * 100)
 
 
 def cents_to_euros(cents_int):

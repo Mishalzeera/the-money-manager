@@ -141,4 +141,29 @@ graphics for further down the road since it is easier to do that in VSCode.
 ### Create A Base Working Template
 
 In GitPod a new "env.py" file was created. It has been helpful to have to restart
-a few times and learn more about the strategic purpose of an env file. 
+a few times and learn more about the strategic purpose of an env file. Then a
+base working template as well as a form structure to register was created.
+
+### Create Registration Functionality
+
+After creating a basic form in HTML and giving it some workeable styling,
+there was some need for data-type conversion, so a utility Python file was created
+to hold functions that would do all of that. After importing the file at the top
+of app.py, functions within the helper page were finetuned to convert the string
+value from the the form first to a float, then an integer multiplied by 100. This
+gives the value in cents, which is the standard way to store and retrieve currency
+data, according to a Youtube film on ecommerce the author had watched. 
+
+In the registration function, the data is split into two streams. One stream is the
+new user and password dataset, the other is a "current month" dataset. Within the 
+body of the function, the helper functions from "functions.py" were invoked and 
+used to provide the cents value for the "insert_one" method.
+
+There were a few issues of syntax which caused the data to arrive in an "array" 
+rather than the straighforward integer. This was resolved and the project 
+committed and pushed to Github.
+
+
+
+
+
