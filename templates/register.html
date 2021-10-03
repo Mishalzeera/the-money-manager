@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content%}
+
+<h3>Register Here</h3>
+
+
+<form action="{{url_for('register') }}" method="POST">
+    <div class="register-card">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name">
+        <label for="password">Create Password</label>
+        <input type="password" name="password" id="password">
+        <label for="starting-credit">Enter Your Starting Credit</label>
+        <input type="text" name="starting-credit" id="starting-credit">
+        <label for="user-overheads">Recurring Monthly Costs (rent + electricity... etc) </label>
+        <input type="text" name="user-overheads" id="user-overheads">
+        <button type="submit" class="submit-btn">Register</button>
+
+    </div>
+</form>
+
+{% endblock %}
+

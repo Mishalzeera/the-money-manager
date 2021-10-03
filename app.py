@@ -2,6 +2,7 @@ import os
 import json
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask import (
     Flask, render_template, request, flash, redirect, session, url_for)
 if os.path.exists("env.py"):
@@ -21,6 +22,13 @@ def index():
     user = mongo.db.users.find()
 
     return render_template("index.html", user=user)
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    return render_template("register.html")
+
+
 
 
 if __name__ == "__main__":
