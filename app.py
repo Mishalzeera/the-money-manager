@@ -64,7 +64,7 @@ def register():
         # put user into session cookie
         session["user"] = request.form.get("name").lower()
         flash("Registration Successful")
-        return redirect("profile.html", user = session["user"])
+        return redirect(url_for("profile"))
 
     return render_template("register.html")
 
@@ -95,12 +95,9 @@ def login():
     return render_template("login.html")
 
 
-@app.route("/profile/<username>")
-def profile(username):
-    # session users name from db
-    username = mongo.db.users.find_one(
-        {"name": session["user"]})["name"]
-    return render_template("profile.html", user=username)
+@app.route("/profile/")
+def profile():
+    return render_template("profile.html", user=session["user"])
 
 
 if __name__ == "__main__":

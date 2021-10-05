@@ -1,4 +1,5 @@
 Do the complex data page first.
+Don't forget debug=true
 
 "CREDIT" - all financial assets, user initialised
 "INCOME THIS MONTH" - from previous "NEW INVOICES" or can be added manually
