@@ -16,6 +16,13 @@ code editor while mismanaging his extensions. He will return to writing his
 READMEs at the end of his processes, more to vent frustration than provide
 any clear guidance to a future collaborator.
 
+## Order of operations
+
+On the advice of the author's mentor, backend/database functionality should
+be implemented first before spending time on styling. In this instance, the
+application will be built first and then styled afterwards. The mockups will
+therefore be attended to further into the development process.
+
 # The Money Manager
 
 An app that will allow a user to keep track of different streams of financial
@@ -162,6 +169,16 @@ used to provide the cents value for the "insert_one" method.
 There were a few issues of syntax which caused the data to arrive in an "array" 
 rather than the straighforward integer. This was resolved and the project 
 committed and pushed to Github.
+
+### Create Login Functionality
+
+Despite having attempted a few Flask projects, the author found it necessary to 
+follow along with the Flask Mini Project 20 and adapt the code moves as necessary. 
+Similarly to the project walkthrough, the registration page was adapted. There 
+was more indepth research of regex patterns to ensure that the "starting credit"
+and "monthly costs" registration fields were correct, so that the database is in
+good shape. So there was some going back and forth beteen the login and registration
+pages and views. 
 
 
 

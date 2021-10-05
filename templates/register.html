@@ -8,17 +8,18 @@
 <form action="{{url_for('register') }}" method="POST">
     <div class="register-card">
         <label for="name">Name</label>
-        <input type="text" name="name" id="name">
+        <input type="text" name="name" id="name" minlength="5" maxlength="15" pattern="^[a-zA-Z0-9]{5-15}$" required>
         <label for="password">Create Password</label>
-        <input type="password" name="password" id="password">
+        <input type="password" name="password" pattern="^[a-zA-Z0-9]{5-15}$" minlength="5" maxlength="15" id="password" required>
         <label for="starting-credit">Enter Your Starting Credit</label>
-        <input type="text" name="starting-credit" id="starting-credit">
+        <input type="text" name="starting-credit" id="starting-credit" pattern="[0-9]+"  title="Please input numbers only." required>
         <label for="user-overheads">Recurring Monthly Costs (rent + electricity... etc) </label>
-        <input type="text" name="user-overheads" id="user-overheads">
+        <input type="text" name="user-overheads" id="user-overheads" pattern="[0-9]+"  title="Please input numbers only." >
         <button type="submit" class="submit-btn">Register</button>
 
     </div>
 </form>
+<a href="{{url_for('login')}}">Already a member? Log In, Inshallah!</a>
 
 {% endblock %}
 
