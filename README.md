@@ -195,6 +195,11 @@ For the time being, the Logout function will simply clear all cookies and redire
 the Login page. Index and related views were adapted with the defensive code "if 'user'
 not in session:", using the else statement for when the user session cookie is in play.
 
+### Access User Data From Database
+
+The next step is displaying the fields from the database in the profile page. Also blank
+buttons that will allow the user to update their finances and view their wishlist/reward.
+
 
 
 

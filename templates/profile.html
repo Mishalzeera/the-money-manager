@@ -2,12 +2,21 @@
 
 {% block content%}
 
-<h3>{{ user.name }}'s Money</h3>
+<h2>{{ user | title}}'s Money</h2>
 
-
-
-
-
+<h1>Credit: {{ money.credit }}</h1>
+<h2>Overheads to be paid this month: {{money.overheads_to_be_paid}} left to pay of {{money.user_overheads}}</h2>
+<h2>Disposable Income: {{money.disposable_income}}</h2>
+<h3>Income this month: {{money.income_this_month}}</h3>
+<h3>Tax to set aside: {{money.tax_to_set_aside}}</h3>
+<h3>Suggested savings amount: {{money.suggested_savings_amount}}</h3>
+<p>Total amount spent this month: {{money.spent_this_month}}</p>
+<p>Amount spent on overheads: {{money.spent_on_overheads}}</p>
+<p>Amount spent on extras: {{money.spent_on_extras}}</p>
+<a href="#" class="btn btn-in">New Invoice</a>
+<a href="#"class="btn btn-out">New Expense</a>
+<a href="#" class="btn btn-wishlist">Wishlist</a>
+<a href="#"class="btn btn-reward">Reward</a>
 
 {% endblock %}
 

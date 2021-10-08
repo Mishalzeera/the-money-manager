@@ -45,10 +45,10 @@ def register():
         user_overheads_to_int = euros_to_cents(request.form.get("user-overheads"))
         start_month = {
             "name": request.form.get("name").lower(),
-            "starting_credit": start_credit_to_int,
+            "credit": start_credit_to_int,
             "user_overheads": user_overheads_to_int,
             "income_this_month": 0,
-            "spent_this month": 0,
+            "spent_this_month": 0,
             "spent_on_overheads": 0,
             "spent_on_extras": 0,
             "overheads_to_be_paid": 0,
@@ -98,7 +98,8 @@ def login():
 
 @app.route("/profile/<username>")
 def profile(username):
-    return render_template("profile.html", user=session["user"])
+    money = mongo.db.current_month.find_one({"name": session["user"]})
+    return render_template("profile.html", user=session["user"], money=money)
 
 
 @app.route("/logout")
