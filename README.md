@@ -200,7 +200,11 @@ not in session:", using the else statement for when the user session cookie is i
 The next step is displaying the fields from the database in the profile page. Also blank
 buttons that will allow the user to update their finances and view their wishlist/reward.
 
+### Adapt Internal Links
 
+For the sake of keeping things coherent, an if statement was added to base.html, showing
+login/register vs logout options depending on the state. The condition of "user" being in
+session cookies was used as the deciding factor. 
 
 
 

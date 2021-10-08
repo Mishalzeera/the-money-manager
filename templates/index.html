@@ -1,9 +1,15 @@
 {% extends "base.html" %} {% block content %}
 
 <h1>The Money Manager</h1>
-<h2>Time to get a grip, Sheikh{{user}}.</h2>
-<p>
-  For too long now, you have been spending based on your impulses. You've made a
-  mess of it. Its time to use THE MONEY MANAGER to your advantage.
-</p>
+<h2>Time to get a grip, Sheikh {{user | title}}.</h2>
+
+{% if user == session["user"] %}
+  <p>
+    For too long now, you have been spending based on your impulses. You've made a
+    mess of it. Its time to use THE MONEY MANAGER to your advantage.
+  </p>
+{% else %}
+<a href="{{url_for('login')}}" class="btn">Login</a>
+<a href="{{url_for('register')}}"class="btn">Register</a>
+{% endif %}
 {% endblock %}
