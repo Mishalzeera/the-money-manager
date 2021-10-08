@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content%}
+
+<h2>Your Wishlist</h2>
+{% if wishlist %}
+    {% for wish in wishlist %}
+        <div class="wish">
+            <h3>{{ wish.wish_name | upper}}</h4>
+            <h4>{{ wish.wish_cost}} EU</h4>
+            <p>"{{wish.wish_description}}"</p>
+            {% if wish.is_affordable %}
+                <h5>Is affordable!</h5>
+                {% else %}
+                <h5>Is not afforable.</h5>
+            {% endif %}
+            <a href="{{ url_for('delete_wish', wish=wishlist.wish)}}" class="btn btn-wish">Delete Wish</a>
+        </div>
+
+    {% endfor %}
+{%endif %}
+
+<h3>Manage Your Wishlist</h3>
+<form action="{{url_for('wishlist') }}" method="POST">
+    <div class="register-card">
+        <h2>Add A New Wish!</h2>
+        <label for="wish_name">Item Name</label>
+        <input type="text" name="wish_name" id="wish_name" pattern="^[a-zA-Z0-9]{1-50}$" required>
+        <label for="wish_cost">Cost of Wished For Item</label>
+        <input type="number" name="wish_cost" id="wish_cost" pattern="[0-9]+" step="0.01" title="Please input numbers only." required>
+        <label for="wish_description">Description Of Wish</label>
+        <textarea name="description"id="description" ></textarea>
+        
+        
+        <button type="submit" class="submit-btn">Add New Item</button>
+
+    </div>
+</form>
+
+{% endblock %}
+

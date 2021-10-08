@@ -111,6 +111,39 @@ def profile(username):
     return render_template("profile.html", user=session["user"], money=money)
 
 
+@app.route("/wishlist", methods=["GET","POST"])
+def wishlist():
+
+    if request.method == 'POST':
+        # convert currency to cents
+        cost_of_item = euros_to_cents(request.form.get("wish_cost"))
+        # create a wishlist dictionary
+        wishlist_item = {
+            "name": session["user"],
+            "wish_name": request.form.get("wish_name").lower(),
+            "wish_cost": cost_of_item,
+            "wish_description": request.form.get("description"),
+            "is_affordable": False
+        }
+        # send dictionary to the database
+        mongo.db.wishlist.insert_one(wishlist_item)
+        flash("Item successfully added")
+        return redirect(url_for('wishlist'))
+
+
+            # get user wishlist from db
+    wishlist = mongo.db.wishlist.find({"name": session["user"]})
+    
+    return render_template("wishlist.html", wishlist=wishlist)
+    
+
+@app.route("/delete_wish/")
+def delete_wish(wish):
+    wish_to_delete = mongo.db.wishlist.find_one({"wish_name": wish.wish_name})
+    mongo.db.wishlist.remove(wish_to_delete)
+    return redirect(url_for('wishlist'))
+
+
 @app.route("/logout")
 def logout():
     session.clear()

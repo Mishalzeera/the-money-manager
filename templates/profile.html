@@ -15,7 +15,7 @@
 <p>Amount spent on extras: {{money.spent_on_extras}}</p>
 <a href="#" class="btn btn-in">New Invoice</a>
 <a href="#"class="btn btn-out">New Expense</a>
-<a href="#" class="btn btn-wishlist">Wishlist</a>
+<a href="{{ url_for('wishlist')}}" class="btn btn-wishlist">Wishlist</a>
 <a href="#"class="btn btn-reward">Reward</a>
 
 {% endblock %}

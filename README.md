@@ -217,3 +217,8 @@ to create a "settings" page where the user can delete the account. Later on its 
 that more functions will be added, but for now, it helps to keep the process all within
 the app itself. 
 
+### Create Wishlist
+
+A Wishlist, accessed via the users profile page, contains a list of items the user would like
+to save up for. This is sent to its own collection in the database after a "add wish" form
+is filled in. The item appears immediately in the wishlist. 
