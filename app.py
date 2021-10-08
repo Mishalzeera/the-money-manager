@@ -127,6 +127,7 @@ def delete_account():
     mongo.db.users.remove({"name": session["user"]})
     mongo.db.current_month.remove({"name": session["user"]})
     flash("May Allah enrich all your days. Your account has been deleted.")
+    session.clear()
     return redirect('login')
 
 

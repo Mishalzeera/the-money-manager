@@ -10,7 +10,7 @@
   </head>
   <body>
     <header class="header-flex-parent">
-      <a href="#" class="money-dingbat">c</a>
+      <a href="{{url_for('index')}}" class="money-dingbat">c</a>
       <nav>
         <ul class="nav-flex-parent">
           <!-- <li class="nav-item"><a href="{{ url_for('index')}}" class="nav-link">Home</a></li> -->
@@ -37,6 +37,8 @@
       {% endif %}
     {% endwith %}
     {% block content %} {% endblock %}
+    {% if session["user"] %}
     <a href="{{url_for('settings')}}" class="btn btn-settings">Settings</a>
+    {% endif %}
   </body>
 </html>
