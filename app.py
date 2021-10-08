@@ -20,9 +20,10 @@ mongo = PyMongo(app)
 
 @app.route("/")
 def index():
-    user = mongo.db.users.find()
-
-    return render_template("index.html", user=user)
+    if "user" not in session:
+        return render_template("index.html", user=" of Great Future Wealth.")
+    else:
+        return render_template("index.html", user=session["user"])
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -64,7 +65,7 @@ def register():
         # put user into session cookie
         session["user"] = request.form.get("name").lower()
         flash("Registration Successful")
-        return redirect(url_for("profile"))
+        return redirect(url_for("profile", username=session["user"]))
 
     return render_template("register.html")
 
@@ -95,9 +96,16 @@ def login():
     return render_template("login.html")
 
 
-@app.route("/profile/")
-def profile():
+@app.route("/profile/<username>")
+def profile(username):
     return render_template("profile.html", user=session["user"])
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    flash("You have been logged out.")
+    return redirect(url_for('login'))
 
 
 if __name__ == "__main__":

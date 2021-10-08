@@ -180,6 +180,21 @@ and "monthly costs" registration fields were correct, so that the database is in
 good shape. So there was some going back and forth beteen the login and registration
 pages and views. 
 
+### Addressing 302 Error Loops
+
+Passing the same variable back to the view as an argument resulted, invariably, in
+endless loops that tied up the server with a 302 error. This was resolved by gaining
+a better understanding of how Flask works with passing variables from one scope
+enclosure to another. Also with a better understanding of how session cookies work.
+After this was handled, it was a lot clearer how to handle the variables sent to the 
+templates as well, and some of the nuance of it became apparent.
+
+### Create Logout Functionality
+
+For the time being, the Logout function will simply clear all cookies and redirect to 
+the Login page. Index and related views were adapted with the defensive code "if 'user'
+not in session:", using the else statement for when the user session cookie is in play.
+
 
 
 
