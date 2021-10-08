@@ -118,6 +118,18 @@ def logout():
     return redirect(url_for('login'))
 
 
+@app.route("/settings")
+def settings():
+    return render_template("settings.html", user=session["user"])
+
+@app.route("/delete_account")
+def delete_account():
+    mongo.db.users.remove({"name": session["user"]})
+    mongo.db.current_month.remove({"name": session["user"]})
+    flash("May Allah enrich all your days. Your account has been deleted.")
+    return redirect('login')
+
+
 if __name__ == "__main__":
     app.run(
         host=os.environ.get("IP", "0.0.0.0"),

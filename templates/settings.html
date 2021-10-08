@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content%}
+
+<h2>{{ user | title}}'s Settings</h2>
+
+<a href="{{url_for('delete_account', user=user)}}" class="btn btn-settings">Delete Account</a>
+
+{% endblock %}
+
