@@ -6,7 +6,7 @@ def euros_to_cents(euros_float):
 
 def cents_to_euros(cents_int):
     # takes in an int of cents, / 100 and returns a float of euros
-    return float(cents_int / 100)
+    return cents_int / 100
 
 
 def new_invoice_income(invoice_amount):

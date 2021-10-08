@@ -98,7 +98,16 @@ def login():
 
 @app.route("/profile/<username>")
 def profile(username):
-    money = mongo.db.current_month.find_one({"name": session["user"]})
+    # get the dictionary from the database in cents
+    money_cents = mongo.db.current_month.find_one({"name": session["user"]})
+    # iterate through the contents checking types for integers
+    money={}
+    # new empty dictionary
+    for key, value in money_cents.items():
+        if type(value) == int:
+            # update the new dictionary using helper function from functions.py
+            money.update({key: cents_to_euros(value)})
+            # send the new dictionary to the profile template
     return render_template("profile.html", user=session["user"], money=money)
 
 

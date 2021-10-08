@@ -199,6 +199,10 @@ not in session:", using the else statement for when the user session cookie is i
 
 The next step is displaying the fields from the database in the profile page. Also blank
 buttons that will allow the user to update their finances and view their wishlist/reward.
+The data is converted from cents to euros using a helper function. The form settings
+for the registration page had to be adjusted with a step="0.01" attribute, which allows
+floats to be sent to the database. Before going to the database they are converted in the
+app.py function to an integer. 
 
 ### Adapt Internal Links
 
@@ -206,5 +210,10 @@ For the sake of keeping things coherent, an if statement was added to base.html,
 login/register vs logout options depending on the state. The condition of "user" being in
 session cookies was used as the deciding factor. 
 
+### Create Settings Page That Allows User To Delete Account
 
+To avoid the tedious deletion of individual items in the database manually, it was decided
+to create a "settings" page where the user can delete the account. Later on its possible 
+that more functions will be added, but for now, it helps to keep the process all within
+the app itself. 
 
