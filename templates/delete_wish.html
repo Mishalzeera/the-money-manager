@@ -14,16 +14,14 @@
                 {% else %}
                 <h5>Is not afforable.</h5>
             {% endif %}
-            <form action="{{ url_for('delete_wish', wish=wish._id) }}" method="POST">
-            <button type="submit" class="btn btn-wish">Delete Wish</button>
-        </form>
+            <a href="{{ url_for('delete_wish', wish=wish._id)}}" class="btn btn-wish">Delete Wish</a>
         </div>
 
     {% endfor %}
 {%endif %}
 
 <h3>Manage Your Wishlist</h3>
-<form action="{{ url_for('wishlist') }}" method="POST">
+<form action="{{url_for('wishlist') }}" method="POST">
     <div class="register-card">
         <h2>Add A New Wish!</h2>
         <label for="wish_name">Item Name</label>

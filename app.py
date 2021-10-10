@@ -137,11 +137,15 @@ def wishlist():
     return render_template("wishlist.html", wishlist=wishlist)
     
 
-@app.route("/delete_wish/")
+@app.route("/delete_wish/<wish>", methods=["GET", "POST"])
 def delete_wish(wish):
-    wish_to_delete = mongo.db.wishlist.find_one({"wish_name": wish.wish_name})
-    mongo.db.wishlist.remove(wish_to_delete)
-    return redirect(url_for('wishlist'))
+    if request.method == "POST":
+        wish_to_delete = mongo.db.wishlist.find_one({"_id": ObjectId(wish)})
+        mongo.db.wishlist.remove(wish_to_delete)
+        flash("Wish deleted!")
+        return redirect(url_for('wishlist'))
+    else: 
+        return redirect(url_for('wishlist'))
 
 
 @app.route("/logout")
