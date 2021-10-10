@@ -15,8 +15,11 @@
                 <h5>Is not afforable.</h5>
             {% endif %}
             <form action="{{ url_for('delete_wish', wish=wish._id) }}" method="POST">
-            <button type="submit" class="btn btn-wish">Delete Wish</button>
-        </form>
+                <button type="submit" class="btn btn-wish">Delete Wish</button>
+            </form>
+            <form action="{{ url_for('edit_wish', wish=wish._id) }}" method="POST">
+                <button type="submit" class="btn btn-wish">Edit Wish</button>
+            </form>
         </div>
 
     {% endfor %}
@@ -31,7 +34,7 @@
         <label for="wish_cost">Cost of Wished For Item</label>
         <input type="number" name="wish_cost" id="wish_cost" pattern="[0-9]+" step="0.01" title="Please input numbers only." required>
         <label for="wish_description">Description Of Wish</label>
-        <textarea name="description"id="description" ></textarea>
+        <textarea name="wish_description"id="wish_description" ></textarea>
         
         
         <button type="submit" class="submit-btn">Add New Item</button>

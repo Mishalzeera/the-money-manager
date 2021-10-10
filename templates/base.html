@@ -10,7 +10,12 @@
   </head>
   <body>
     <header class="header-flex-parent">
-      <a href="{{url_for('index')}}" class="money-dingbat">c</a>
+      {% if session['user'] %}
+      <a href="{{url_for('profile', username=session['user'])}}" class="money-dingbat">c</a>
+      {% else %}
+      <a href="{{url_for('register')}}" class="money-dingbat">c</a>
+      
+      {% endif %}
       <nav>
         <ul class="nav-flex-parent">
           <!-- <li class="nav-item"><a href="{{ url_for('index')}}" class="nav-link">Home</a></li> -->

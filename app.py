@@ -111,6 +111,18 @@ def profile(username):
     return render_template("profile.html", user=session["user"], money=money)
 
 
+@app.route("/invoice", methods=["GET", "POST"])
+def invoice():
+    if request.method == "POST":
+        
+        return redirect(url_for('profile', username=session['user']))
+
+    return render_template("invoice.html")
+
+@app.route("/edit_invoice", methods=["GET", "POST"])
+def edit_invoice(invoice_id):
+    return render_template("edit_invoice.html")
+
 @app.route("/wishlist", methods=["GET","POST"])
 def wishlist():
 
@@ -122,7 +134,7 @@ def wishlist():
             "name": session["user"],
             "wish_name": request.form.get("wish_name").lower(),
             "wish_cost": cost_of_item,
-            "wish_description": request.form.get("description"),
+            "wish_description": request.form.get("wish_description"),
             "is_affordable": False
         }
         # send dictionary to the database
@@ -144,6 +156,15 @@ def delete_wish(wish):
         mongo.db.wishlist.remove(wish_to_delete)
         flash("Wish deleted!")
         return redirect(url_for('wishlist'))
+    else: 
+        return redirect(url_for('wishlist'))
+
+
+@app.route("/edit_wish/<wish>", methods=["GET", "POST"])
+def edit_wish(wish):
+    if request.method == "POST":
+        wish_to_edit = mongo.db.wishlist.find_one({"_id": ObjectId(wish)})
+        return render_template("edit_wish.html", wish=wish_to_edit)
     else: 
         return redirect(url_for('wishlist'))
 
