@@ -111,17 +111,28 @@ def profile(username):
     return render_template("profile.html", user=session["user"], money=money)
 
 
-@app.route("/invoice", methods=["GET", "POST"])
+@app.route("/invoice")
 def invoice():
-    if request.method == "POST":
-        
-        return redirect(url_for('profile', username=session['user']))
-
+    
     return render_template("invoice.html")
 
-@app.route("/edit_invoice", methods=["GET", "POST"])
+
+@app.route("/add_invoice", methods=["GET", "POST"])
+def add_invoice():
+    if request.method == "POST":
+
+        return redirect(url_for('profile', username=session['user']))
+
+    return render_template("add_invoice.html")
+
+@app.route("/edit_invoice/<invoice_id>", methods=["GET", "POST"])
 def edit_invoice(invoice_id):
     return render_template("edit_invoice.html")
+
+
+@app.route("/delete_invoice/<invoice_id>", methods=["GET", "POST"])
+def delete_invoice(invoice_id):
+    return render_template("delete_invoice.html")
 
 @app.route("/wishlist", methods=["GET","POST"])
 def wishlist():

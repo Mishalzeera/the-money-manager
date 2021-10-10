@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Add New Invoice</h2>
+<form action="{{url_for('invoice')}}" method="POST">
+      <div class="register-card">
+        <label for="invoice_number">Invoice Number</label>
+        <input type="text" name="invoice_number" id="invoice_number" placeholder="e.g. INV-4566">
+        <label for="party_invoiced">Invoice Recipient</label>
+        <input type="text" name="party_invoiced" id="party_invoiced" required>
+        <label for="amount_invoiced">Amount (including tax)</label>
+        <input type="number" name="amount_invoiced" id="starting-credit" pattern="[0-9]+"  step="0.01" title="Please input numbers only." required>
+        <label for="comments">Comments</label>
+        <textarea name="comments" id="comments" cols="30" rows="10"></textarea>
+        <button type="submit">Add Invoice</button>
+      </div>
+</form>
+<a href="{{url_for('invoice')}}" class="btn btn-in">Back To Invoices</a>
+
+{% endblock %}
+
+<!-- Dont forget to add a date stamp on the app end, also convert the currency -->
