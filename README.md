@@ -224,5 +224,14 @@ to save up for. This is sent to its own collection in the database after a "add 
 is filled in. The item appears immediately in the wishlist. Adding a dynamically generated
 a-tag with a url_for that links to a route only allows for the routing but not passing any
 variables back. Despite combing the Jinja and Flask docs, the author could only find limited
-mention of any related information. The issue was resolved by changing the a-tag to a buttong,
+mention of any related information. The issue was resolved by changing the a-tag to a button,
 and wrapping in a form tag. 
+
+### Create Invoice Structure
+
+The author has been grappling with the organisation of concerns, and has found that having a
+basic HTML and render_template route for a feature in place helps. This allows the flow of
+operations to be clear to the author, who has to focus on small tasks, one at a time. The
+basic CRUD setup of the invoicing feature may involve separate pages for some functions, but
+remain in the same template for others. The invoice structure was set up as a series of pages
+for the time being.

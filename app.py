@@ -113,21 +113,57 @@ def profile(username):
 
 @app.route("/invoice")
 def invoice():
+    invoices = mongo.db.invoices.find()
+
+
     
-    return render_template("invoice.html")
+    return render_template("invoice.html", invoices=invoices)
 
 
 @app.route("/add_invoice", methods=["GET", "POST"])
 def add_invoice():
     if request.method == "POST":
-
+        # convert the currency from euros to cents
+        invoice_amount_cents = euros_to_cents(request.form.get("amount_invoiced"))
+        new_invoice = {
+            "name": session['user'],
+            "date": request.form.get("invoice_date"),
+            "invoice_number": request.form.get("invoice_number").lower(),
+            "invoice_recipient": request.form.get("invoice_recipient").lower(),
+            "amount": invoice_amount_cents,
+            "comments": request.form.get("comments")
+        }
+        mongo.db.invoices.insert_one(new_invoice)
+        flash("Invoice successfully added!")
         return redirect(url_for('profile', username=session['user']))
 
     return render_template("add_invoice.html")
 
 @app.route("/edit_invoice/<invoice_id>", methods=["GET", "POST"])
 def edit_invoice(invoice_id):
-    return render_template("edit_invoice.html")
+    if request.method == "POST":
+        invoice_amount_cents = euros_to_cents(request.form.get("amount_invoiced"))
+        to_update = {
+            "name": session['user'],
+            "date": request.form.get("invoice_date"),
+            "invoice_number": request.form.get("invoice_number").lower(),
+            "invoice_recipient": request.form.get("invoice_recipient").lower(),
+            "amount": invoice_amount_cents,
+            "comments": request.form.get("comments")
+        }
+        mongo.db.invoices.update({"_id": ObjectId(invoice_id)}, to_update)
+        flash("Invoice successfully updated!")
+        return redirect(url_for('invoice'))
+    invoice_to_edit = mongo.db.invoices.find_one({"_id": ObjectId(invoice_id)})
+    
+    for key, value in invoice_to_edit.items():
+        if key == "amount":
+            # update tusing helper function from functions.py
+            invoice_to_edit.update({key: cents_to_euros(value)})
+            # send the new dict to the template
+                
+    
+    return render_template("edit_invoice.html", invoice=invoice_to_edit)
 
 
 @app.route("/delete_invoice/<invoice_id>", methods=["GET", "POST"])

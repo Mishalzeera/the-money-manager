@@ -1,6 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Edit Invoice</h2>
+<h2>Edit Invoice {{invoice.invoice_number}}</h2>
+<form action="{{url_for('edit_invoice', invoice_id=invoice._id)}}" method="POST">
+  <div class="register-card">
+    <label for="invoice_date" >Date</label>
+      <input type="text" name="invoice_date" id="invoice_date" value="{{ invoice.date }}">
+    <label for="invoice_number">Invoice Number</label>
+    <input type="text" name="invoice_number" id="invoice_number" value="{{ invoice.invoice_number }}">
+    <label for="invoice_recipient">Invoice Recipient</label>
+    <input type="text" name="invoice_recipient" id="invoice_recipient" value="{{ invoice.invoice_recipient }}" required>
+    <label for="amount_invoiced">Amount (including tax)</label>
+    <input type="number" name="amount_invoiced" id="amount_invoiced" pattern="[0-9]+"  step="0.01" title="Please input numbers only."value="{{ invoice.amount }}" required>
+    <label for="comments">Comments</label>
+    <textarea name="comments" id="comments" cols="30" rows="10">{{ invoice.comments }}</textarea>
+    <button type="submit">Save Changes</button>
+  </div>
+</form>
 <a href="{{url_for('invoice')}}" class="btn btn-in">Back To Invoices</a>
 
 {% endblock %}
