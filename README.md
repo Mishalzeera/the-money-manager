@@ -221,4 +221,7 @@ the app itself.
 
 A Wishlist, accessed via the users profile page, contains a list of items the user would like
 to save up for. This is sent to its own collection in the database after a "add wish" form
-is filled in. The item appears immediately in the wishlist. 
+is filled in. The item appears immediately in the wishlist. Adding a dynamically generated
+a-tag with a url_for that links to a route only allows for the routing but not passing any
+variables back. Despite combing the Jinja and Flask docs, the author could only find limited
+mention of any related information. 
