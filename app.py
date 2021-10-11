@@ -113,10 +113,7 @@ def profile(username):
 
 @app.route("/invoice")
 def invoice():
-    invoices = mongo.db.invoices.find()
-
-
-    
+    invoices = mongo.db.invoices.find() 
     return render_template("invoice.html", invoices=invoices)
 
 
@@ -158,7 +155,7 @@ def edit_invoice(invoice_id):
     
     for key, value in invoice_to_edit.items():
         if key == "amount":
-            # update tusing helper function from functions.py
+            # update using helper function from functions.py
             invoice_to_edit.update({key: cents_to_euros(value)})
             # send the new dict to the template
                 
@@ -168,7 +165,13 @@ def edit_invoice(invoice_id):
 
 @app.route("/delete_invoice/<invoice_id>", methods=["GET", "POST"])
 def delete_invoice(invoice_id):
-    return render_template("delete_invoice.html")
+    if request.method == "POST":
+        invoice_to_delete = mongo.db.invoices.find_one({"_id": ObjectId(invoice_id)})
+        mongo.db.invoices.remove(invoice_to_delete)
+        flash("Invoice Deleted!")
+        return redirect(url_for('invoice'))
+
+    return redirect(url_for('invoice'))
 
 @app.route("/wishlist", methods=["GET","POST"])
 def wishlist():
