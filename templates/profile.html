@@ -14,9 +14,9 @@
 <p>Amount spent on overheads: {{money.spent_on_overheads}}</p>
 <p>Amount spent on extras: {{money.spent_on_extras}}</p>
 <a href="{{url_for('invoice')}}" class="btn btn-in">Manage Invoices</a>
-<a href="#"class="btn btn-out">New Expense</a>
+<a href="{{ url_for('expenses')}} "class="btn btn-out">Manage Expenses</a>
 <a href="{{ url_for('wishlist')}}" class="btn btn-wishlist">Wishlist</a>
-<a href="#"class="btn btn-reward">Reward</a>
+<a href="{{ url_for('reward') }}"class="btn btn-reward">Reward</a>
 
 {% endblock %}
 

@@ -136,7 +136,8 @@ reinstalling packages, no connection could be made to Mongo.
 
 Opening the repository in GitPod from the GitHub page and creating a temporary
 env file did launch the app fine. So then it was deployed to Heroku, where it
-is also working fine. However still a persistent error message ("pymongo.errors.ServerSelectionTimeoutError") and no app launch in VSCode.
+is also working fine. However still a persistent error message 
+("pymongo.errors.ServerSelectionTimeoutError") and no app launch in VSCode.
 
 Strangely this is also happening with previous projects that were begun
 successfully but scrapped for this current idea.
@@ -234,4 +235,35 @@ basic HTML and render_template route for a feature in place helps. This allows t
 operations to be clear to the author, who has to focus on small tasks, one at a time. The
 basic CRUD setup of the invoicing feature may involve separate pages for some functions, but
 remain in the same template for others. The invoice structure was set up as a series of pages
-for the time being.
+for the time being. Once everything was set up and working, there was some grappling with the 
+return value of the amount field from the database, which was in cents. Since the invoice page
+variable passed to the template was a dictionary of dictionaries, it wasn't clear at first how
+to apply the cents_to_euros() function to that one particular value. However, Jinja templating
+allows for mathematical operations, and the easiest solution for the time being was to simply
+incorporate that into the formatting. {{ invoice.amount /100 }}
+
+### Create A Rewards Page
+
+The idea of the rewards page is to provide a single, ongoing source of inspiration to the user.
+It is hoped that during times when the user is tempted to spend their remaining income on something
+unnecessary, the reward image and caption will remind them of a greater goal. For the sake of 
+simplicity as well as adding a learning outcome - uploading a file - the author will limit the 
+reward section to an image and a simple caption.
+
+With the help of a Youtube video "Save and Retrieve Files In MongoDB With Flask + Pymongo" the
+author was able to create an image upload/display function. A new method was learned using a 
+route as a way to pass data rather than for managing templates. In the template where the image
+was to be displayed, within an img tag, the src attribute was given the url_for('display function 
+route', filename='variable passed from the page route which uses user session cookies.img'). The
+Filename variable passed from this src went to a special routte function that called the correct
+file from Mongo db, and passed it through to the correct template.
+
+This helped understand the many potentials that working with backend code allows. 
+
+### Adding Expenses Functions
+
+It was realised at this late stage that "Expense" functionality had not been added, despite being
+of primary importance to the concept behind the app. In the process of setting it up and connecting
+it to the database, much was learned about the difference between GET and POST settings in the form
+tag. A recurring error kept the author occupied until the method was changed in the form, since the
+request being made was not, in fact, posting any information to the db. 

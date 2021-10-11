@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Rewards page</h2>
+
+<img src="{{ url_for('image', filename=[user_reward.img])}}" style="max-width: 100px" alt="">
+<h1>{{img }}</h1>
+<p>"{{ user_reward.caption }}"</p>
+
+<a href="{{ url_for('add_reward') }}" class="btn btn-reward">Add An Inspiring Image To Remind You Of Your Goals</a>
+
+{% endblock %}

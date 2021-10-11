@@ -173,6 +173,59 @@ def delete_invoice(invoice_id):
 
     return redirect(url_for('invoice'))
 
+
+@app.route("/expenses")
+def expenses():
+    expenses = mongo.db.expenses.find()
+    return render_template("expenses.html", expenses=expenses)
+
+
+@app.route("/add_expense", methods=["GET", "POST"])
+def add_expense():
+    if request.method == "POST":
+        amount_to_cents = euros_to_cents(request.form.get("amount_spent"))
+        new_expense = {
+            "name": session['user'],
+            "date": request.form.get("invoice_date"),
+            "type": request.form.get("type"),
+            "recipient": request.form.get('recipient'),
+            "amount": amount_to_cents
+        }
+        mongo.db.expenses.insert_one(new_expense)
+        flash("Expense Added!")
+        return redirect(url_for('expenses'))
+    return render_template("add_expense.html")
+
+
+@app.route("/edit_expense/<expense_id>", methods=["GET", "POST"])
+def edit_expense(expense_id):
+    if request.method == "POST":
+        amount_to_cents = euros_to_cents(request.form.get("amount_spent"))
+        edited_expense = {
+            "name": session['user'],
+            "date": request.form.get("invoice_date"),
+            "type": request.form.get("type"),
+            "recipient": request.form.get('recipient'),
+            "amount": amount_to_cents
+        }
+        mongo.db.expenses.update({"_id": ObjectId(expense_id)}, edited_expense)
+        flash("Expense Edited Successfully!")
+        expenses = mongo.db.expenses.find()
+        return render_template("expenses.html", expenses=expenses)
+
+    expense_to_edit = mongo.db.expenses.find_one({"_id": ObjectId(expense_id)})
+    return render_template("edit_expense.html", expense=expense_to_edit)
+
+
+@app.route("/delete_expense/<expense_id>", methods=["GET", "POST"])
+def delete_expense(expense_id):
+    
+        expense_to_delete = mongo.db.expenses.find_one({"_id": ObjectId(expense_id)})
+        mongo.db.expenses.remove(expense_to_delete)
+        flash("Expense Successfully Deleted!")
+        return redirect(url_for('expenses'))
+
+
 @app.route("/wishlist", methods=["GET","POST"])
 def wishlist():
 
@@ -219,6 +272,33 @@ def edit_wish(wish):
         return redirect(url_for('wishlist'))
 
 
+@app.route("/reward", methods=["GET", "POST"])
+def reward():   
+    user_reward = mongo.db.rewards.find_one({"name": session['user']})
+    return render_template("reward.html", user_reward=user_reward)
+
+
+@app.route("/image/<filename>")
+def image(filename):
+    return mongo.send_file(filename)
+
+
+@app.route("/add_reward", methods=["GET", "POST"])
+def add_reward():
+    if request.method == "POST" and "image" in request.files:
+        img = request.files['image']
+        to_post = {
+        "name": session['user'],
+        "img": img.filename,       
+        "caption": request.form.get("caption")
+        }
+        
+        mongo.save_file(img.filename, img)
+        mongo.db.rewards.insert_one(to_post)
+        flash("Reward successfully added!")
+        return redirect(url_for('reward'))
+    return render_template("add_reward.html")
+
 @app.route("/logout")
 def logout():
     session.clear()
@@ -234,6 +314,7 @@ def settings():
 def delete_account():
     mongo.db.users.remove({"name": session["user"]})
     mongo.db.current_month.remove({"name": session["user"]})
+    mongo.db.invoices.remove({"name": session["user"]})
     flash("May Allah enrich all your days. Your account has been deleted.")
     session.clear()
     return redirect('login')
