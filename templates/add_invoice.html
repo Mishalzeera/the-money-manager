@@ -5,7 +5,7 @@
 <form action="{{url_for('add_invoice')}}" method="POST">
       <div class="register-card">
         <label for="invoice_date">Date</label>
-          <input type="text" name="invoice_date" id="invoice_date" placeholder="dd-mm-yyyy">
+          <input type="text" name="invoice_date" id="invoice_date" placeholder="dd-mm-yyyy" default="N/a">
         <label for="invoice_number">Invoice Number</label>
         <input type="text" name="invoice_number" id="invoice_number" placeholder="e.g. INV-4566">
         <label for="invoice_recipient">Invoice Recipient</label>
