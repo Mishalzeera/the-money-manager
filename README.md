@@ -278,3 +278,15 @@ is really the ideal candidate for the role of User. In other words, not the most
 Current challenges include the most succinct and adaptable way to process individual value fields 
 coming as a BSON object from Mongo. The author will begin with writing the core mathematic functions.
 
+### Streamlining Basic Functionality In Motion
+
+As the app developed, it became clear that the main streams of incoming and outgoing finances had to 
+conform to a format. For instance, in the expense form, it was previously a text input that the user
+could choose - "rent" "cigars" "whiskey" etc. However, in order to keep the database calculable the
+decision to use radio buttons was made. This forces  the user to decide whether the expense is an
+"overhead" or an "extra". An additional comment field was added in case greater specificity is
+needed. The invoice form was adapted to also reflect income from other sources (cash, off the books,
+criminal income) by allowing the user to enter an amount and whichever of the fields wished for. A
+series of if statements show only the completed fields in the main "incoming" page. The author can 
+now go back to bringing the calculations into play.
+
