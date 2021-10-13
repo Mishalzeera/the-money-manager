@@ -98,8 +98,6 @@ def login():
 
 @app.route("/profile/<username>")
 def profile(username):
-    # run a function that processes the financial data per usage instance
-    overheads_to_be_paid()
     # get the dictionary from the database in cents
     money_cents = mongo.db.current_month.find_one({"name": session["user"]})
     # iterate through the contents checking types for integers
@@ -191,7 +189,8 @@ def add_expense():
             "date": request.form.get("invoice_date"),
             "type": request.form.get("type"),
             "recipient": request.form.get('recipient'),
-            "amount": amount_to_cents
+            "amount": amount_to_cents,
+            "comments": request.form.get("comments")
         }
         mongo.db.expenses.insert_one(new_expense)
         flash("Expense Added!")
@@ -208,7 +207,8 @@ def edit_expense(expense_id):
             "date": request.form.get("invoice_date"),
             "type": request.form.get("type"),
             "recipient": request.form.get('recipient'),
-            "amount": amount_to_cents
+            "amount": amount_to_cents,
+            "comments": request.form.get("comments")
         }
         mongo.db.expenses.update({"_id": ObjectId(expense_id)}, edited_expense)
         flash("Expense Edited Successfully!")

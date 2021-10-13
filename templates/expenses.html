@@ -7,10 +7,11 @@
     <h2>Expenses this month</h2>
     {% for expense in expenses %}
 
-            <p>{{ expense.date }}</p>
+            <p>Added on: {{ expense.date }}</p>
             <p>{{ expense.type }}</p>
             <h2>{{ expense.recipient }}</h2>
-            <h2>{{ expense.amount / 100}}</h2>
+            <h2>EU {{ expense.amount / 100}}</h2>
+            <p>{{ expense.comments }}</p>
 
 
             <form action="{{ url_for('edit_expense', expense_id=expense._id) }}" method="GET">

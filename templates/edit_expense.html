@@ -6,12 +6,32 @@
     <div class="register-card">
         <label for="invoice_date">Date</label>
         <input type="text" name="invoice_date" id="invoice_date" value="{{ expense.date }}">
-        <label for="type">Type</label>
-        <input type="text" name="type" id="type" value="{{ expense.type }}" required>
+
+
+
+
+        <div class="radio-buttons" style="display: flex;">
+            <label for="overheads" style="margin:1rem;">Overheads</label><br>
+                {% if expense.type %}
+            <input type="radio" id="overheads" name="type" checked="checked" value="Overheads" style="margin:1rem;"required>
+                {% else %}
+            <input type="radio" id="overheads" name="type" style="margin:1rem;"required>
+                {% endif %}
+            <label for="extras" style="margin:1rem;">Extras</label><br>
+                {% if expense.type %}
+            <input type="radio" id="extras" name="type"  checked="checked"  value="Extras" style="margin:1rem;"required>
+                {% else %}
+            <input type="radio" id="extras" name="type"style="margin:1rem;"required>
+                {% endif %}
+            
+        </div>
+
         <label for="recipient">Recipient</label>
         <input type="text" name="recipient" id="recipient" value="{{ expense.recipient }}"required>
         <label for="amount_spent">Amount</label>
         <input type="number" name="amount_spent" id="amount_spent" pattern="[0-9]+" value="{{ expense.amount }}" step="0.01" title="Please input numbers only." required>
+        <label for="comments">Comments</label>
+        <textarea name="comments" id="comments" cols="30" rows="10">{{ expense.comments }}</textarea>
         <button type="submit">Save Changes</button>
     </div>
 </form>

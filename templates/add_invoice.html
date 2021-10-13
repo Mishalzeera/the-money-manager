@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Add New Invoice</h2>
+<h2>Add New Invoice/Income</h2>
+<p>If income is not via an invoice, leave the relevant fields blank. Only "amount" is required.</p>
 <form action="{{url_for('add_invoice')}}" method="POST">
       <div class="register-card">
         <label for="invoice_date">Date</label>
@@ -8,7 +9,7 @@
         <label for="invoice_number">Invoice Number</label>
         <input type="text" name="invoice_number" id="invoice_number" placeholder="e.g. INV-4566">
         <label for="invoice_recipient">Invoice Recipient</label>
-        <input type="text" name="invoice_recipient" id="invoice_recipient" required>
+        <input type="text" name="invoice_recipient" id="invoice_recipient" placeholder="e.g. Lux Imports">
         <label for="amount_invoiced">Amount (including tax)</label>
         <input type="number" name="amount_invoiced" id="amount_invoiced" pattern="[0-9]+"  step="0.01" title="Please input numbers only." required>
         <label for="comments">Comments</label>

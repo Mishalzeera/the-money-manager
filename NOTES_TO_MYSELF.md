@@ -8,7 +8,8 @@ Streamline the function purpose
 - Selector of "type" for expense: overheads, extras
 - Invoice is also income, with default values for non-invoiced income, with tax and pretax totals?
 - Overheads to be paid 
-- Calculate Finances button to initialise the algoRITHM
+- Calculate Finances 
+- Add Light Mode switch
 
 
 ENDMONTH FUNCTION ()=> {
