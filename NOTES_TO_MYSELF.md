@@ -1,24 +1,15 @@
 Do the complex data page first.
 Don't forget debug=true
 
-"CREDIT" - all financial assets, user initialised
-"INCOME THIS MONTH" - from previous "NEW INVOICES" or can be added manually
-"NEW INVOICE" - calculates tax and adds pretax amount to CREDIT, INCOME THIS
-MONTH, adds tax to "AMOUNT TO SET ASIDE"
+Add mathematic functionality
+Streamline the function purpose
 
-"SPENT THIS MONTH" - all outgoing
-"SPENT ON OVERHEADS" - user-managed sum with annotation
-"SPENT ON EXTRAS" - user-managed sum
 
-"OVERHEADS TO BE PAID" - a user-managed sum that is used by the app
-"DISPOSABLE INCOME" - all credit minus "SPENT THIS MONTH" and "OVERHEADS TO BE
-PAID"
-"AMOUNT TO SET ASIDE FOR TAX"
-"SUGGESTED SAVINGS AMOUNT"
+- Selector of "type" for expense: overheads, extras
+- Invoice is also income, with default values for non-invoiced income, with tax and pretax totals?
+- Overheads to be paid 
+- Calculate Finances button to initialise the algoRITHM
 
-"WISHLIST" - contains a list of wanted items, cost and whether or not there is
-enough "DISPOSABLE INCOME"
-"REWARD MEDIA" - when the user presses a button a picture shows
 
 ENDMONTH FUNCTION ()=> {
 
@@ -27,30 +18,27 @@ ENDMONTH FUNCTION ()=> {
 
 2. Old Money-month object gets pushed to an array.
 
-}
-
-Data structure:
-
-U_S_E_R:
-
--id
--name
--password
-
-C_U_R_R_E_N_T:
-
--id
--user
--Monthname
-
-P_R_E_V_I_O_U_S:
-
--id
--user
--first_month
--last_month
-
 Style ideas:
 
 Light and dark theme
 Cross between tiki and Apple IIc
+
+Munificent
+
+Sheikh Salmans Most Beneficial And Excellent Money Manager 
+
+In this degenerating age, the people are suffering from plague, poverty and oppression. 
+
+The Sheikh, moved by his compassion, has indicated to create Munificent, 
+this most excellent, beneficial app that keeps the beloved User in mindful awareness of 
+their financial state. 
+
+
+
+
+
+
+
+
+
+

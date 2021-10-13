@@ -267,3 +267,14 @@ of primary importance to the concept behind the app. In the process of setting i
 it to the database, much was learned about the difference between GET and POST settings in the form
 tag. A recurring error kept the author occupied until the method was changed in the form, since the
 request being made was not, in fact, posting any information to the db. 
+
+### All Basic CRUD Functionality In Place
+
+From here on, the next thing to focus on is building up the "functions.py" module so that "app.py" 
+can process the data in and out of its way to the front-end. During this process it is expected that
+some core functionality of the app may be adapted as the overview becomes clear. At the moment
+the author is still unclear on how it would be to use the app in practise, since the author himself
+is really the ideal candidate for the role of User. In other words, not the most financially astute. 
+Current challenges include the most succinct and adaptable way to process individual value fields 
+coming as a BSON object from Mongo. The author will begin with writing the core mathematic functions.
+

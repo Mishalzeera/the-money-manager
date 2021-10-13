@@ -98,6 +98,8 @@ def login():
 
 @app.route("/profile/<username>")
 def profile(username):
+    # run a function that processes the financial data per usage instance
+    overheads_to_be_paid()
     # get the dictionary from the database in cents
     money_cents = mongo.db.current_month.find_one({"name": session["user"]})
     # iterate through the contents checking types for integers
