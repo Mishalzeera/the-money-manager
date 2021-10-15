@@ -18,7 +18,12 @@
   {% endif %}
   <h3>Amount: EU {{ invoice.amount / 100 }}</h3>
     {% if invoice.tax %}
-    <p>Tax was calculated for this entry.</p>
+        {% if invoice.invoice_tax_amount != null %}
+    <p>Tax set aside: {{ invoice.invoice_tax_amount / 100 }}</p>
+        {% endif %}
+        {% if invoice.post_tax_income != null %}
+    <p>Credit added: {{ invoice.post_tax_income / 100}}</p>
+        {% endif %}
     {% else %}
     <p>No tax was calculated for this entry.</p>
     {%endif%}
