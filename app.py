@@ -51,7 +51,7 @@ def register():
             "spent_this_month": 0,
             "spent_on_overheads": 0,
             "spent_on_extras": 0,
-            "overheads_to_be_paid": 0,
+            "overheads_to_be_paid": user_overheads_to_int,
             "tax_to_set_aside": 0,
             "suggested_savings_amount": 0,
             "disposable_income": 0
@@ -113,7 +113,7 @@ def profile(username):
 
 @app.route("/invoice")
 def invoice():
-    invoices = mongo.db.invoices.find() 
+    invoices = mongo.db.invoices.find({"name": session['user']}) 
     return render_template("invoice.html", invoices=invoices)
 
 
@@ -226,14 +226,18 @@ def delete_invoice(invoice_id):
 
 @app.route("/expenses")
 def expenses():
-    expenses = mongo.db.expenses.find()
+    expenses = mongo.db.expenses.find({"name": session['user']})
     return render_template("expenses.html", expenses=expenses)
 
 
 @app.route("/add_expense", methods=["GET", "POST"])
 def add_expense():
+    # create reusable user_key
+    user_key = {"name": session['user']}
     if request.method == "POST":
-        amount_to_cents = euros_to_cents(request.form.get("amount_spent"))
+        # transform the amount into cents
+        amount_to_cents = euros_to_cents(request.form.get("amount_spent"))   
+        # create an expense object to send to the db
         new_expense = {
             "name": session['user'],
             "date": request.form.get("invoice_date"),
@@ -242,7 +246,41 @@ def add_expense():
             "amount": amount_to_cents,
             "comments": request.form.get("comments")
         }
+        # insert expense object into db
         mongo.db.expenses.insert_one(new_expense)
+        # deprecate credit to reflect expenditure
+        # get credit
+        credit = mongo.db.current_month.find_one(user_key)["credit"]
+        new_credit = credit - amount_to_cents
+        # update db accordingly
+        mongo.db.current_month.update_one(user_key, {"$set": {"credit": new_credit}})
+        # get spent_this_month and add new expense 
+        total_spent = mongo.db.current_month.find_one(user_key)["spent_this_month"]
+        new_total = total_spent + amount_to_cents
+        # update db accordingly
+        mongo.db.current_month.update_one(user_key, {"$set": {"spent_this_month": new_total}})
+
+        if request.form.get("type") == "Overheads":
+            # get overheads_to_be_paid 
+            overheads_to_be_paid = mongo.db.current_month.find_one(user_key)["overheads_to_be_paid"]
+            # and subtract the amount spent
+            new_overheads = overheads_to_be_paid - amount_to_cents
+            # get spent_on_overheads
+            old_spent_on_overheads = mongo.db.current_month.find_one(user_key)["spent_on_overheads"]
+            # add the amount spent
+            new_spent_on_overheads = old_spent_on_overheads + amount_to_cents
+            # and update the database accordingly
+            mongo.db.current_month.update_one(user_key, {"$set": {"overheads_to_be_paid": new_overheads}})
+            mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_overheads": new_spent_on_overheads}})
+        else:
+            # get spent_on_extras
+            old_spent_on_extras = mongo.db.current_month.find_one(user_key)["spent_on_extras"]
+            # add the amount spent
+            new_spent_on_extras = old_spent_on_extras + amount_to_cents
+            # and update the database accordingly
+            mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_extras": new_spent_on_extras}})
+
+
         flash("Expense Added!")
         return redirect(url_for('expenses'))
     return render_template("add_expense.html")

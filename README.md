@@ -310,3 +310,4 @@ correctly regarding tax etc. Then the new amount is processed.
 Similarly, with expenses being checked as of type "overhead" or not, the dynamic recalculation of
 expense amounts is now possible. The author is hoping that his understanding of how session cookies
 work is correct, in that anything can be assigned as a session variable. 
+

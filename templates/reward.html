@@ -4,8 +4,9 @@
 
 <img src="{{ url_for('image', filename=[user_reward.img])}}" style="max-width: 100px" alt="">
 <h1>{{img }}</h1>
-<p>"{{ user_reward.caption }}"</p>
-
+{% if user_reward.caption %}
+    <p>"{{ user_reward.caption }}"</p>
+{% endif %}
 <a href="{{ url_for('add_reward') }}" class="btn btn-reward">Add An Inspiring Image To Remind You Of Your Goals</a>
 
 {% endblock %}

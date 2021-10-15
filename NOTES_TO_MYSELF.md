@@ -40,6 +40,7 @@ Add Invoice/Income = radio button for calculate tax
 
 Add Expense = if type overhead, subtracts from overheads to be paid (make sure overheads to be paid starts at monthly overheads)
               if type extras, adds to "spent_on_extras" 
+              also deprecate Credit!
 
 Edit Invoice/Income = when user clicks on modify button, it stores the total combined in a session cookie, whether taxed or not also
                       when user modifies the amount, session cookie if tax (calculates tax vs income) subtracts the old income from "credit"
@@ -51,19 +52,10 @@ Edit Expense = when user clicks on the "modify" button, it stores the original e
                next the new expense is subtracted from credit
 
 
-To update the correct column
-column_to_update = mongo.db.current_month["credit"]
-query = { "name": session['user']}
-new_value = 
-
-myquery = { "address": "Valley 345" }
-newvalues = { "$set": { "address": "Canyon 123" } }
-
-mycol.update_one(myquery, newvalues)
 
 
-2ADD INCOME
-3ADD EXPENSE
+expense radio required, prechecked for expense
+In out history page
 4MODIFY INCOME
 5MODIFY EXPENSE
 
