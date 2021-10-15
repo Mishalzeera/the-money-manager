@@ -51,7 +51,17 @@ Edit Expense = when user clicks on the "modify" button, it stores the original e
                next the new expense is subtracted from credit
 
 
-1RADIO BUTTON FOR INVOICE
+To update the correct column
+column_to_update = mongo.db.current_month["credit"]
+query = { "name": session['user']}
+new_value = 
+
+myquery = { "address": "Valley 345" }
+newvalues = { "$set": { "address": "Canyon 123" } }
+
+mycol.update_one(myquery, newvalues)
+
+
 2ADD INCOME
 3ADD EXPENSE
 4MODIFY INCOME

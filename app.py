@@ -126,6 +126,7 @@ def add_invoice():
         invoice_tax_amount = round(new_invoice_tax(invoice_amount_cents))
         # calculate the profit amount
         post_tax_income = round(new_invoice_income(invoice_amount_cents))
+        # create a new invoice object
         new_invoice = {
             "name": session['user'],
             "date": request.form.get("invoice_date"),
@@ -137,11 +138,53 @@ def add_invoice():
             "tax": request.form.get("taxeable"),
             "comments": request.form.get("comments")
         }
+        # insert new object
         mongo.db.invoices.insert_one(new_invoice)
+        # create reusable key
+        user_key = {"name": session['user']}
+        # get credit, add new income
+        if request.form.get("taxeable") == "on":
+            # in the case of taxeable income
+            credit = mongo.db.current_month.find_one(user_key)["credit"]
+            new_credit = post_tax_income + credit
+            # get tax_to_set_aside and add new tax amount
+            tax_to_set =  mongo.db.current_month.find_one(user_key)["tax_to_set_aside"]
+            new_tax = tax_to_set + invoice_tax_amount
+            # update credit and tax_to_set_aside fields
+            mongo.db.current_month.update_one(user_key, {"$set": {"credit": new_credit}})
+            mongo.db.current_month.update_one(user_key, {"$set": {"tax_to_set_aside": new_tax}})
+            # get income_this_month
+            old_income = mongo.db.current_month.find_one(user_key)["income_this_month"]
+            new_income = old_income + post_tax_income
+            # add to income_this_month
+            mongo.db.current_month.update_one(user_key, {"$set": {"income_this_month": new_income}})
+            # get suggested_savings_amount
+            savings = mongo.db.current_month.find_one(user_key)["suggested_savings_amount"]
+            suggested_savings = round(savings + (post_tax_income * .2))
+            # add to suggested savings this month
+            mongo.db.current_month.update_one(user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
+        else:
+            # in the case of non-taxeable income
+            # get credit, add new income 
+            credit = mongo.db.current_month.find_one(user_key)["credit"]
+            new_credit = credit + invoice_amount_cents
+            mongo.db.current_month.update_one(user_key, {"$set": {"credit": new_credit}})
+            # get income_this_month
+            old_income = mongo.db.current_month.find_one(user_key)["income_this_month"]
+            new_income = old_income + invoice_amount_cents
+            # add to income_this_month
+            mongo.db.current_month.update_one(user_key, {"$set": {"income_this_month": new_income}})
+            # get suggested savings, add suggested savings
+            savings = mongo.db.current_month.find_one(user_key)["suggested_savings_amount"]
+            suggested_savings = round(savings + (invoice_amount_cents * .2))
+            mongo.db.current_month.update_one(user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
+
+        # provide confirmation to user:
         flash("Invoice successfully added!")
         return redirect(url_for('profile', username=session['user']))
 
     return render_template("add_invoice.html")
+
 
 @app.route("/edit_invoice/<invoice_id>", methods=["GET", "POST"])
 def edit_invoice(invoice_id):
