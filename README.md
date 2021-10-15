@@ -1,28 +1,3 @@
-## Notes on the README approach
-
-Previously there was some difficulty with creating a useful README. In earlier
-projects, wireframes and other development journaling were omitted to some
-degree. In this project the author will attempt to document the process from
-start to finish via the README creation process.
-
-This means that no code will be written or any action on the project undertaken
-without a README entry being written first. This will lead to a long and
-possibly unwieldy document, but it is an approach the author would like to try
-in the spirit of learning good methodology. Also, Flask/Python/backend dev in
-general seems like it could be helpful to have a trail of trials and eroors.
-
-If it doesn't work out that well, he will return back to flailing around in his
-code editor while mismanaging his extensions. He will return to writing his
-READMEs at the end of his processes, more to vent frustration than provide
-any clear guidance to a future collaborator.
-
-## Order of operations
-
-On the advice of the author's mentor, backend/database functionality should
-be implemented first before spending time on styling. In this instance, the
-application will be built first and then styled afterwards. The mockups will
-therefore be attended to further into the development process.
-
 # The Money Manager
 
 An app that will allow a user to keep track of different streams of financial
@@ -87,10 +62,35 @@ their expenses and save up for, for example, a new motorbike.
 
 However, the author had the idea to create a corresponding feature which would
 push the figures to an Google Spreadsheet to make tax season easier. While the
-feature may well be implemented in the future, the author felt it would be
+feature may well be built in the future, the author felt it would be
 beyond the scope of this app. This is due to the possibility of a user who is,
 as mentioned in the previous paragraph, on a contract and has a different
 setup, financially.
+
+## Notes on the README approach
+
+Previously there was some difficulty with creating a useful README. In earlier
+projects, wireframes and other development journaling were omitted to some
+degree. In this project the author will attempt to document the process from
+start to finish via the README creation process.
+
+This means that no code will be written or any action on the project undertaken
+without a README entry being written about it. This will lead to a long and
+possibly unwieldy document, but it is an approach the author would like to try
+in the spirit of learning good methodology. Also, Flask/Python/backend dev in
+general seems like it could be helpful to have a trail of trials and eroors.
+
+If it doesn't work out that well, he will return back to flailing around in his
+code editor while mismanaging his extensions. He will return to writing his
+READMEs at the end of his processes, more to vent frustration than provide
+any clear guidance to a future collaborator.
+
+## Order of operations
+
+On the advice of the author's mentor, backend/database functionality should
+be done first before spending time on styling. In this instance, the
+application will be built first and then styled afterwards. The mockups will
+therefore be attended to further into the development process.
 
 # Creating a working platform
 
@@ -209,7 +209,9 @@ app.py function to an integer.
 
 For the sake of keeping things coherent, an if statement was added to base.html, showing
 login/register vs logout options depending on the state. The condition of "user" being in
-session cookies was used as the deciding factor. 
+session cookies was used as the deciding factor. Also it is worth noting that around here
+the CI walkthrough project was no longer of myuch help and the author stopped using it as
+a reference.
 
 ### Create Settings Page That Allows User To Delete Account
 
@@ -255,7 +257,7 @@ author was able to create an image upload/display function. A new method was lea
 route as a way to pass data rather than for managing templates. In the template where the image
 was to be displayed, within an img tag, the src attribute was given the url_for('display function 
 route', filename='variable passed from the page route which uses user session cookies.img'). The
-Filename variable passed from this src went to a special routte function that called the correct
+Filename variable passed from this src went to a special route function that called the correct
 file from Mongo db, and passed it through to the correct template.
 
 This helped understand the many potentials that working with backend code allows. 
@@ -290,3 +292,21 @@ criminal income) by allowing the user to enter an amount and whichever of the fi
 series of if statements show only the completed fields in the main "incoming" page. The author can 
 now go back to bringing the calculations into play.
 
+### Modifications To Income/Expense Forms
+
+Radio buttons had to be added to both Income/Expense input forms to ensure that the users finances 
+can be dynamically updated correctly upon modification. For instance, if a user enters an invoice for 
+a service that is untaxeable, then the user should have control over whether or not the amount is 
+processed for tax. The app is opinionated in setting aside the tax amount without including it in 
+the total credit, making sure the user doesn't overspend. However, with cash income (being paid back
+a loan for instance), having a checkbox that says "do not calculate tax" keeps it efficient.
+
+This also allows for modifying invoice amounts "after the fact". The plan at the moment is, upon the
+user selecting to modify a specific invoice, the invoices amount gets stored in a session cookie. Also,
+whether or not it was taxeable or not also gets stored in a session cookie. Upon submitting the new 
+modified amount, the app will first recalculate the users finances to remove the old invoice amount
+correctly regarding tax etc. Then the new amount is processed. 
+
+Similarly, with expenses being checked as of type "overhead" or not, the dynamic recalculation of
+expense amounts is now possible. The author is hoping that his understanding of how session cookies
+work is correct, in that anything can be assigned as a session variable. 

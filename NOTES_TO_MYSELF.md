@@ -4,9 +4,6 @@ Don't forget debug=true
 Add mathematic functionality
 Streamline the function purpose
 
-
-
-- Invoice is also income, with default values for non-invoiced income, with tax and pretax totals?
 - Overheads to be paid 
 - Calculate Finances 
 - Add Light Mode switch
@@ -18,6 +15,7 @@ ENDMONTH FUNCTION ()=> {
    MEDIA" stay the same, everything else resets to zero
 
 2. Old Money-month object gets pushed to an array.
+3. Invoices and expenses pushed to arrays
 
 Style ideas:
 
@@ -35,8 +33,22 @@ this most excellent, beneficial app that keeps the beloved User in mindful aware
 their financial state. 
 
 
+Add Invoice/Income = radio button for calculate tax
+                     if "yes"" seperate tax and income, income adds to "credit", tax adds to "tax_to_"
+                     if "no" total adds to "credit"
+                     send a total combined figure to its own field 
 
+Add Expense = if type overhead, subtracts from overheads to be paid (make sure overheads to be paid starts at monthly overheads)
+              if type extras, adds to "spent_on_extras" 
 
+Edit Invoice/Income = when user clicks on modify button, it stores the total combined in a session cookie, whether taxed or not also
+                      when user modifies the amount, session cookie if tax (calculates tax vs income) subtracts the old income from "credit"
+                      subtracts the tax amount for "tax_to.." otherwise subtracts total from "credit"
+                      then adds the new amount, like in Add Invoice, checking if tax etc
+
+Edit Expense = when user clicks on the "modify" button, it stores the original expense in a session cookie, whether overhead or not in session cooke
+               when user submits the edit, session cookie amount adds to "credit" first, adds to "overheads_to_pay"
+               next the new expense is subtracted from credit
 
 
 
