@@ -294,7 +294,7 @@ now go back to bringing the calculations into play.
 
 ### Modifications To Income/Expense Forms
 
-Radio buttons had to be added to both Income/Expense input forms to ensure that the users finances 
+Buttons had to be added to both Income/Expense input forms to ensure that the users finances 
 can be dynamically updated correctly upon modification. For instance, if a user enters an invoice for 
 a service that is untaxeable, then the user should have control over whether or not the amount is 
 processed for tax. The app is opinionated in setting aside the tax amount without including it in 

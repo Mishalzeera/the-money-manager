@@ -122,12 +122,19 @@ def add_invoice():
     if request.method == "POST":
         # convert the currency from euros to cents
         invoice_amount_cents = euros_to_cents(request.form.get("amount_invoiced"))
+        # calculate the amount to set aside for taxes
+        invoice_tax_amount = round(new_invoice_tax(invoice_amount_cents))
+        # calculate the profit amount
+        post_tax_income = round(new_invoice_income(invoice_amount_cents))
         new_invoice = {
             "name": session['user'],
             "date": request.form.get("invoice_date"),
             "invoice_number": request.form.get("invoice_number").lower(),
             "invoice_recipient": request.form.get("invoice_recipient").lower(),
             "amount": invoice_amount_cents,
+            "invoice_tax_amount": invoice_tax_amount,
+            "post_tax_income": post_tax_income,
+            "tax": request.form.get("taxeable"),
             "comments": request.form.get("comments")
         }
         mongo.db.invoices.insert_one(new_invoice)

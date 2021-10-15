@@ -51,7 +51,11 @@ Edit Expense = when user clicks on the "modify" button, it stores the original e
                next the new expense is subtracted from credit
 
 
-
+1RADIO BUTTON FOR INVOICE
+2ADD INCOME
+3ADD EXPENSE
+4MODIFY INCOME
+5MODIFY EXPENSE
 
 
 

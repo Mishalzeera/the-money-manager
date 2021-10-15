@@ -17,7 +17,11 @@
   <h2>Invoice Recepient: {{invoice.invoice_recipient | title}}</h2>
   {% endif %}
   <h3>Amount: EU {{ invoice.amount / 100 }}</h3>
-
+    {% if invoice.tax %}
+    <p>Tax was calculated for this entry.</p>
+    {% else %}
+    <p>No tax was calculated for this entry.</p>
+    {%endif%}
   {% if invoice.comments != "" %}
   <p>Additional Comments: {{ invoice.comments }}</p>
   {% endif %}
