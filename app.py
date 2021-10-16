@@ -668,8 +668,10 @@ def delete_account():
     mongo.db.expenses.remove(user_key)
     mongo.db.rewards.remove(user_key)
     mongo.db.wishlist.remove(user_key)
-    flash("May Allah enrich all your days. Your account has been deleted.")
+    mongo.db.fs.files.remove(user_key)
+    mongo.db.fs.chunks.remove(user_key)
     session.clear()
+    flash("May Allah enrich all your days. Your account has been deleted.")
     return redirect('login')
 
 
