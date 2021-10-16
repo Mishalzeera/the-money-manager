@@ -65,12 +65,10 @@ In_Out_History =
                      -amount spent includes type and recipient if applicable, 
                      -credit afterwards
 
+Wishlist and rewards image files need some kind of relational id to erase when user profile deleted
+fs.files ObjectId = fs.chunks files_id
+fs.files filename = 
 In out history page
-4MODIFY INCOME
-5MODIFY EXPENSE
-7DELETE INCOME
-add total to credit
-8HANDLE FILES FOR WISHLIST REWARDS IN DB ALSO WHEN DELETE PROFILE
 Decorator
 
 Ask Brian:

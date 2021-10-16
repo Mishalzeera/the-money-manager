@@ -636,9 +636,14 @@ def add_reward():
         "img": img.filename,       
         "caption": request.form.get("caption")
         }
-        
+        mongo.db.rewards.remove({"name": session['user']})
+        mongo.db.fs.files.remove({"name": session['user']})
+        mongo.db.fs.chunks.remove({"name": session['user']})
         mongo.save_file(img.filename, img)
         mongo.db.rewards.insert_one(to_post)
+        mongo.db.fs.files.update_one({"filename": img.filename}, {"$set": {"name": session['user']}})
+        image_key = mongo.db.fs.files.find_one({"filename": img.filename})['_id']
+        mongo.db.fs.chunks.update_one({"files_id": image_key}, {"$set": {"name": session['user']} })
         flash("Reward successfully added!")
         return redirect(url_for('reward'))
     return render_template("add_reward.html")

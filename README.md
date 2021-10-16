@@ -324,3 +324,15 @@ time updating it) since important values (specifically the checkbox that determi
 should be calculated) were being replaced with None/Null. The entire invoice object was being erased 
 and recreated, this time without the all important checkbox field. It took some time to realise what
 was going on.
+
+### Adding Session User Key To FsFiles, FsChunks
+
+The author at this point stumbled upon the problem of managing the deletion of data. The data needs
+some common reference that allows for the "remove" method to zero in on. When a file is uploaded, two
+new collections are automatically added to the database. These important collections have no direct
+reference to the session user. Rather a kind of relational file_id connects the chunks to the files.
+The only link to the user from the files is the image name. The solution was to pass along the session
+user key to "files", and then get the chunks via the "file_id", then also add a session user key. 
+
+In order to keep the user limited to one image per account, the previous image is erased using the
+remove method, targeting the newly created name key. This can be seen in the "add reward" function.
