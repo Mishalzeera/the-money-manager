@@ -9,6 +9,9 @@
     font-style: normal;
 
 }
+:root {
+    --money-green: rgb(24, 126, 24);
+}
 
 * {
     margin: 0;
@@ -17,9 +20,10 @@
 }
 
 body {
-  background-color: #111;
+  /* background-color: #111; */
+  background-color: var(--cool-gray-900);
   font-family: "Noto Sans Mono", sans-serif;
-  color: rgb(24, 126, 24);
+  color: var(--emerald-400);
 }
 
 img {

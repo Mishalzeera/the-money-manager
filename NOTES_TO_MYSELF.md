@@ -33,14 +33,18 @@ this most excellent, beneficial app that keeps the beloved User in mindful aware
 their financial state. 
 
 
-Add Invoice/Income = radio button for calculate tax
+Add Invoice/Income = 
+                     <!-- radio button for calculate tax
                      if "yes"" seperate tax and income, income adds to "credit", tax adds to "tax_to_"
                      if "no" total adds to "credit"
-                     send a total combined figure to its own field 
+                     send a total combined figure to its own field  -->
+                     in_out_history
 
-Add Expense = if type overhead, subtracts from overheads to be paid (make sure overheads to be paid starts at monthly overheads)
+Add Expense = 
+              <!-- if type overhead, subtracts from overheads to be paid (make sure overheads to be paid starts at monthly overheads)
               if type extras, adds to "spent_on_extras" 
-              also deprecate Credit!
+              also deprecate Credit! -->
+              in_out_history
 
 Edit Invoice/Income = when user clicks on modify button, it stores the total combined in a session cookie, whether taxed or not also
                       when user modifies the amount, session cookie if tax (calculates tax vs income) subtracts the old income from "credit"
@@ -51,13 +55,18 @@ Edit Expense = when user clicks on the "modify" button, it stores the original e
                when user submits the edit, session cookie amount adds to "credit" first, adds to "overheads_to_pay"
                next the new expense is subtracted from credit
 
+In_Out_History =   
+                  Create a template page that shows a list of transactions in and out, latest at the top. Matching database. 
+                  
+                     -date has to be a realtime date of submission independent of any user input.
+                     -amount added is a total, includes invoice num if applicable
+                     -amount spent includes type and recipient if applicable, 
+                     -credit afterwards
 
-
-
-expense radio required, prechecked for expense
 In out history page
 4MODIFY INCOME
 5MODIFY EXPENSE
+Decorator
 
 
 

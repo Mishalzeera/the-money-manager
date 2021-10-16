@@ -311,3 +311,7 @@ Similarly, with expenses being checked as of type "overhead" or not, the dynamic
 expense amounts is now possible. The author is hoping that his understanding of how session cookies
 work is correct, in that anything can be assigned as a session variable. 
 
+So far this approach seems overly verbose, and the author is sure that some kind of refactoring of
+functions behind the scenes could take place. However, it may be best to do that after all the 
+functionality is in place, however naive it may be. It may be simply a matter of managing imports
+and modules correctly. 
