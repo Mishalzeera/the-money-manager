@@ -315,3 +315,11 @@ So far this approach seems overly verbose, and the author is sure that some kind
 functions behind the scenes could take place. However, it may be best to do that after all the 
 functionality is in place, however naive it may be. It may be simply a matter of managing imports
 and modules correctly. 
+
+Another puzzling bug was forgetting to update the object sent back from the edit-invoice to match
+the original add invoice schema. It was a big learning moment for the author about the practicalities
+of the assingment. There was a persistent key error when trying to reupdate an invoice (past the first
+time updating it) since important values (specifically the checkbox that determines whether or not tax
+should be calculated) were being replaced with None/Null. The entire invoice object was being erased 
+and recreated, this time without the all important checkbox field. It took some time to realise what
+was going on.

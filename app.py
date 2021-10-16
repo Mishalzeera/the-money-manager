@@ -135,7 +135,7 @@ def add_invoice():
             "amount": invoice_amount_cents,
             "invoice_tax_amount": invoice_tax_amount,
             "post_tax_income": post_tax_income,
-            "tax": request.form.get("taxeable"),
+            "tax": request.form.get("tax"),
             "comments": request.form.get("comments")
         }
         # insert new object
@@ -143,7 +143,7 @@ def add_invoice():
         # create reusable key
         user_key = {"name": session['user']}
         # get credit, add new income
-        if request.form.get("taxeable") == "on":
+        if request.form.get("tax") == "on":
             # in the case of taxeable income
             credit = mongo.db.current_month.find_one(user_key)["credit"]
             new_credit = post_tax_income + credit
@@ -242,19 +242,27 @@ def edit_invoice(invoice_id):
             suggested_savings = round(savings - (old_amount * .2))
             mongo.db.current_month.update_one(user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
 
-
+        # updated invoice amount in cents
         invoice_amount_cents = euros_to_cents(request.form.get("amount_invoiced"))
+         # calculate the amount to set aside for taxes
+        invoice_tax_amount = round(new_invoice_tax(invoice_amount_cents))
+        # calculate the profit amount
+        post_tax_income = round(new_invoice_income(invoice_amount_cents))
+        # create a new invoice object
         to_update = {
-            "name": session['user'],
+             "name": session['user'],
             "date": request.form.get("invoice_date"),
             "invoice_number": request.form.get("invoice_number").lower(),
             "invoice_recipient": request.form.get("invoice_recipient").lower(),
             "amount": invoice_amount_cents,
+            "invoice_tax_amount": invoice_tax_amount,
+            "post_tax_income": post_tax_income,
+            "tax": request.form.get("tax"),
             "comments": request.form.get("comments")
         }
         mongo.db.invoices.update({"_id": ObjectId(invoice_id)}, to_update)
         # get credit, add new income
-        if request.form.get("taxeable") == "on":
+        if request.form.get("tax") == "on":
             # in the case of taxeable income
             credit = mongo.db.current_month.find_one(user_key)["credit"]
             new_credit = post_tax_income + credit
