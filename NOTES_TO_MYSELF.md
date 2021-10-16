@@ -51,9 +51,11 @@ Edit Invoice/Income = when user clicks on modify button, it stores the total com
                       subtracts the tax amount for "tax_to.." otherwise subtracts total from "credit"
                       then adds the new amount, like in Add Invoice, checking if tax etc
 
-Edit Expense = when user clicks on the "modify" button, it stores the original expense in a session cookie, whether overhead or not in session cooke
-               when user submits the edit, session cookie amount adds to "credit" first, adds to "overheads_to_pay"
-               next the new expense is subtracted from credit
+Edit Expense = 
+               <!-- when user clicks on the "modify" button, it stores the original expense in a session cookie, whether overhead or not in session cooke
+               when user submits the edit, session cookie amount adds to "credit" first, adds to "overheads_to_pay" -->
+               <!-- next the new expense is subtracted from credit -->
+               in_out_history
 
 In_Out_History =   
                   Create a template page that shows a list of transactions in and out, latest at the top. Matching database. 
@@ -66,6 +68,8 @@ In_Out_History =
 In out history page
 4MODIFY INCOME
 5MODIFY EXPENSE
+6DELETE EXPENSE
+7DELETE INCOME
 Decorator
 
 
