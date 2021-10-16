@@ -72,5 +72,6 @@ In out history page
 8HANDLE FILES FOR WISHLIST REWARDS IN DB ALSO WHEN DELETE PROFILE
 Decorator
 
-
-
+Ask Brian:
+- how would you go about seperating the process functions for edit invoice etc in the project structure?
+- 

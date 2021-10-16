@@ -314,9 +314,10 @@ work is correct, in that anything can be assigned as a session variable.
 So far this approach seems overly verbose, and the author is sure that some kind of refactoring of
 functions behind the scenes could take place. However, it may be best to do that after all the 
 functionality is in place, however naive it may be. It may be simply a matter of managing imports
-and modules correctly. 
+and modules correctly. Also, there was no need for session cookies, simply writing the verbose but
+workable code in the right place did the job. 
 
-Another puzzling bug was forgetting to update the object sent back from the edit-invoice to match
+One puzzling bug was forgetting to update the object sent back from the edit-invoice to match
 the original add invoice schema. It was a big learning moment for the author about the practicalities
 of the assingment. There was a persistent key error when trying to reupdate an invoice (past the first
 time updating it) since important values (specifically the checkbox that determines whether or not tax
