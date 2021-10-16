@@ -146,7 +146,7 @@ def add_invoice():
         if request.form.get("tax") == "on":
             # in the case of taxeable income
             credit = mongo.db.current_month.find_one(user_key)["credit"]
-            new_credit = post_tax_income + credit
+            new_credit = invoice_amount_cents + credit
             # get tax_to_set_aside and add new tax amount
             tax_to_set =  mongo.db.current_month.find_one(user_key)["tax_to_set_aside"]
             new_tax = tax_to_set + invoice_tax_amount
@@ -209,7 +209,7 @@ def edit_invoice(invoice_id):
         if old_invoice['tax'] == "on":
             # in the case of taxeable income
             credit = mongo.db.current_month.find_one(user_key)["credit"]
-            new_credit = credit - post_tax_income
+            new_credit = credit - old_amount
             # get tax_to_set_aside and add new tax amount
             tax_to_set =  mongo.db.current_month.find_one(user_key)["tax_to_set_aside"]
             new_tax = tax_to_set - invoice_tax_amount
@@ -266,7 +266,7 @@ def edit_invoice(invoice_id):
         if request.form.get("tax") == "on":
             # in the case of taxeable income
             credit = mongo.db.current_month.find_one(user_key)["credit"]
-            new_credit = post_tax_income + credit
+            new_credit = invoice_amount_cents  + credit
             # get tax_to_set_aside and add new tax amount
             tax_to_set =  mongo.db.current_month.find_one(user_key)["tax_to_set_aside"]
             new_tax = tax_to_set + invoice_tax_amount
@@ -327,7 +327,7 @@ def delete_invoice(invoice_id):
         if old_invoice['tax'] == "on":
             # in the case of taxeable income
             credit = mongo.db.current_month.find_one(user_key)["credit"]
-            new_credit = credit - post_tax_income
+            new_credit = credit - old_amount
             # get tax_to_set_aside and add new tax amount
             tax_to_set =  mongo.db.current_month.find_one(user_key)["tax_to_set_aside"]
             new_tax = tax_to_set - invoice_tax_amount
