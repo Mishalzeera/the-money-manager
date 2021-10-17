@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>User History</h1>
+{% for story in history %}
+<p>{{ story.date }}</p>
+<p>{{ story.amount }}</p>
+<p>{{ story.recipient }}</p>
+<p>{{ story.credit_after }}</p>
+{% endfor %}
+{% endblock %}

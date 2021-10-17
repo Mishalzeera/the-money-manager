@@ -336,3 +336,12 @@ user key to "files", and then get the chunks via the "file_id", then also add a 
 
 In order to keep the user limited to one image per account, the previous image is erased using the
 remove method, targeting the newly created name key. This can be seen in the "add reward" function.
+
+### Creating User Record
+
+Its handy for the user to have a trail of incoming and outgoing finances in a single overview. This
+is also helpful to include the modifications and deletions. A new database called "in_out_history" 
+was created to contain this data. The author created the functions outside of the view codeblocks
+which made things a lot easier to visualise and debug. The template simply shows the rudimentary 
+return of data. More work will be done at the styling phase.
+

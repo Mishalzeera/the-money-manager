@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import json
 from functions import *
@@ -16,6 +17,168 @@ app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
 app.secret_key = os.environ.get("SECRET_KEY")
 
 mongo = PyMongo(app)
+
+
+def calculate_disposable_income():
+    # to be inserted after any income/expense calculation
+    # takes overheads, tax and suggested savings, adds them and subtracts the sum from credit
+    user_key = {"name": session['user']}
+    current_month = mongo.db.current_month.find_one(user_key)
+    credit = current_month['credit']
+    overheads_to_be_paid = current_month['overheads_to_be_paid']
+    tax_to_set_aside = current_month['tax_to_set_aside']
+    suggested_savings_amount = current_month['suggested_savings_amount']
+    disposable_income = credit - (overheads_to_be_paid + tax_to_set_aside + suggested_savings_amount)
+    mongo.db.current_month.update_one(user_key, {"$set": {"disposable_income": disposable_income}})
+
+
+def create_income_record(db_object):
+    # creates a record of every income
+    user_key = {"name": session['user']}
+    datestamp = datetime.today().strftime('%d-%m-%Y')
+    amount = db_object['amount']
+    recipient = db_object['invoice_recipient']
+    tax = db_object['tax']
+    credit = mongo.db.current_month.find_one(user_key)['credit']
+    
+    record = {
+        "name": session['user'],
+        "date": datestamp,
+        "amount": amount,
+        "recipient": recipient,
+        "tax": tax,
+        "credit_after": credit,
+        "type": "income"
+    }
+
+    mongo.db.in_out_history.insert_one(record)
+
+
+def create_modified_income_record(db_object):
+    # creates a record of every modified income
+    user_key = {"name": session['user']}
+    datestamp = datetime.today().strftime('%d-%m-%Y')
+    amount = db_object['amount']
+    recipient = db_object['invoice_recipient']
+    tax = db_object['tax']
+    credit = mongo.db.current_month.find_one(user_key)['credit']
+    
+    record = {
+        "name": session['user'],
+        "date": datestamp,
+        "amount": amount,
+        "recipient": recipient,
+        "tax": tax,
+        "credit_after": credit,
+        "type": "income-modified"
+    }
+
+    mongo.db.in_out_history.insert_one(record)
+
+
+def create_deleted_income_record_part_one(db_object):
+    # creates a record of every deleted income
+    datestamp = datetime.today().strftime('%d-%m-%Y')
+    now  = datetime.now() 
+    timestamp = now.strftime("%H:%M:%S")
+    amount = db_object['amount']
+    recipient = db_object['invoice_recipient']
+    tax = db_object['tax']
+    
+    record = {
+        "name": session['user'],
+        "timestamp": timestamp,
+        "date": datestamp,
+        "amount": amount,
+        "recipient": recipient,
+        "tax": tax,
+        "type": "income-deleted"
+    }
+
+    mongo.db.in_out_history.insert_one(record)
+
+def create_deleted_income_record_part_two():
+    # allows for updating the object created in part_one with the recalculated credit_after
+    user_key = {"name": session['user']}
+    credit = mongo.db.current_month.find_one(user_key)['credit']
+    now  = datetime.now() 
+    timestamp = now.strftime("%H:%M:%S")
+    mongo.db.in_out_history.update_one({"timestamp": timestamp}, {"$set": {"credit_after": credit}})
+
+
+def create_expense_record(db_object):
+    # creates a record of every expense
+    user_key = {"name": session['user']}
+    datestamp = datetime.today().strftime('%d-%m-%Y')
+    amount = db_object['amount']
+    for_type = db_object["type"]
+    recipient = db_object['recipient']
+    credit = mongo.db.current_month.find_one(user_key)['credit']
+    
+    record = {
+        "name": session['user'],
+        "date": datestamp,
+        "amount": amount,
+        "for": for_type,
+        "recipient": recipient,
+        "credit_after": credit,
+        "type": "expense"
+    }
+
+    mongo.db.in_out_history.insert_one(record)
+
+
+def create_modified_expense_record(db_object):
+    # creates a record of every expense
+    user_key = {"name": session['user']}
+    datestamp = datetime.today().strftime('%d-%m-%Y')
+    amount = db_object['amount']
+    for_type = db_object["type"]
+    recipient = db_object['recipient']
+    credit = mongo.db.current_month.find_one(user_key)['credit']
+    
+    record = {
+        "name": session['user'],
+        "date": datestamp,
+        "amount": amount,
+        "for": for_type,
+        "recipient": recipient,
+        "credit_after": credit,
+        "type": "expense-modified"
+    }
+
+    mongo.db.in_out_history.insert_one(record)
+
+
+def create_deleted_expense_record_part_one(db_object):
+    # creates a record of every expense
+    datestamp = datetime.today().strftime('%d-%m-%Y')
+    now  = datetime.now() 
+    timestamp = now.strftime("%H:%M:%S")
+    for_type = db_object["type"]
+    amount = db_object['amount']
+    recipient = db_object['recipient']
+    
+    record = {
+        "name": session['user'],
+        "date": datestamp,
+        "timestamp": timestamp,
+        "amount": amount,
+        "for": for_type,
+        "recipient": recipient,
+        "type": "expense-deleted"
+    }
+
+    mongo.db.in_out_history.insert_one(record)
+
+
+def create_deleted_expense_record_part_two():
+    # allows for updating the object created in part_one with the recalculated credit_after
+    user_key = {"name": session['user']}
+    credit = mongo.db.current_month.find_one(user_key)['credit']
+    now  = datetime.now() 
+    timestamp = now.strftime("%H:%M:%S")
+    mongo.db.in_out_history.update_one({"timestamp": timestamp}, {"$set": {"credit_after": credit}})
 
 
 @app.route("/")
@@ -178,7 +341,10 @@ def add_invoice():
             savings = mongo.db.current_month.find_one(user_key)["suggested_savings_amount"]
             suggested_savings = round(savings + (invoice_amount_cents * .2))
             mongo.db.current_month.update_one(user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
-
+        # calculate disposable income
+        calculate_disposable_income()
+        # create record using the new object as an argument
+        create_income_record(new_invoice)
         # provide confirmation to user:
         flash("Invoice successfully added!")
         return redirect(url_for('profile', username=session['user']))
@@ -298,6 +464,12 @@ def edit_invoice(invoice_id):
             savings = mongo.db.current_month.find_one(user_key)["suggested_savings_amount"]
             suggested_savings = round(savings + (invoice_amount_cents * .2))
             mongo.db.current_month.update_one(user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
+
+        # calculate the users disposable income..
+        calculate_disposable_income()
+        # and create a record
+        create_modified_income_record(to_update)
+        # provide some feedback
         flash("Invoice successfully updated!")
         return redirect(url_for('invoice'))
     invoice_to_edit = mongo.db.invoices.find_one({"_id": ObjectId(invoice_id)})   
@@ -360,8 +532,16 @@ def delete_invoice(invoice_id):
             suggested_savings = round(savings - (old_amount * .2))
             mongo.db.current_month.update_one(user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
 
+        # get invoice to delete
         invoice_to_delete = mongo.db.invoices.find_one({"_id": ObjectId(invoice_id)})
+        # create a record while its still there, sans credit
+        create_deleted_income_record_part_one(invoice_to_delete)
+        # delete it
         mongo.db.invoices.remove(invoice_to_delete)
+        # get credit after and update the new income record with it
+        create_deleted_income_record_part_two()
+        # calculate disposable income
+        calculate_disposable_income()
         flash("Invoice Deleted!")
         return redirect(url_for('invoice'))
 
@@ -424,7 +604,10 @@ def add_expense():
             # and update the database accordingly
             mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_extras": new_spent_on_extras}})
 
-
+        # calculate the users disposable income...
+        calculate_disposable_income()   
+        # and create a record
+        create_expense_record(new_expense)
         flash("Expense Added!")
         return redirect(url_for('expenses'))
     return render_template("add_expense.html")
@@ -514,6 +697,12 @@ def edit_expense(expense_id):
             new_spent_on_extras = old_spent_on_extras + amount_to_cents
             # and update the database accordingly
             mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_extras": new_spent_on_extras}})
+
+        # calculate users disposable income
+        calculate_disposable_income()
+        # create a record
+        create_expense_record(edited_expense)
+        # give some user feedback
         flash("Expense Edited Successfully!")
         expenses = mongo.db.expenses.find(user_key)
         return render_template("expenses.html", expenses=expenses)
@@ -563,12 +752,23 @@ def delete_expense(expense_id):
             # and update the database accordingly
             mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_extras": new_spent_on_extras}})
 
-    
+        # get expense to delete
         expense_to_delete = mongo.db.expenses.find_one({"_id": ObjectId(expense_id)})
+        # create a record sans credit after
+        create_deleted_expense_record_part_one(expense_to_delete)
+        # delete the expense
         mongo.db.expenses.remove(expense_to_delete)
+        # update the record object with the updated credit
+        create_deleted_expense_record_part_two()
+        # calculate disposable income
+        calculate_disposable_income()
         flash("Expense Successfully Deleted!")
         return redirect(url_for('expenses'))
 
+@app.route("/user_history")
+def user_history():
+    history = mongo.db.in_out_history.find({"name":session['user']})
+    return render_template("user_history.html", history=history)
 
 @app.route("/wishlist", methods=["GET","POST"])
 def wishlist():
@@ -670,6 +870,7 @@ def delete_account():
     mongo.db.wishlist.remove(user_key)
     mongo.db.fs.files.remove(user_key)
     mongo.db.fs.chunks.remove(user_key)
+    mongo.db.in_out_history.remove(user_key)
     session.clear()
     flash("May Allah enrich all your days. Your account has been deleted.")
     return redirect('login')
