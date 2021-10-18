@@ -345,3 +345,17 @@ was created to contain this data. The author created the functions outside of th
 which made things a lot easier to visualise and debug. The template simply shows the rudimentary 
 return of data. More work will be done at the styling phase.
 
+### Create Decorator That Ensures Functionality Only When User Is Logged In
+
+The author has been using the same key, {"name": session['user']} over and over everywhere in the app.
+Other than it being a nuisance to type out multiple times, there is also the additional security layer 
+needed for when a page is directly accessed while no user is in session. This could potentially expose
+data. Mentor recommended the routes all starting with "if user in session:" then handling the functions
+with the "else" pointing to the login page. Mentor called this the "naive" approach which didn't not 
+sit well with the authors feeling of needing to prove himself for some reason. 
+
+This involved some research - the Flask documentation was very handy as well as Stack Overflow. The
+"wraps" method was imported from functools and used to wrap the decorator. Being able to declare a
+variable to be accessed by the route from within the decorator was more of a challenge. The author
+was able to find a way of defining it in the global scope from within the decorator but that seemed
+to defeat the purpose. However, the security purpose was met. 

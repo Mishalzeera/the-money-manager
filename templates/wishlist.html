@@ -7,7 +7,7 @@
     {% for wish in wishlist %}
         <div class="wish">
             <h3>{{ wish.wish_name | upper}}</h4>
-            <h4>{{ wish.wish_cost}} EU</h4>
+            <h4>{{ wish.wish_cost / 100}} EU</h4>
             <p>"{{wish.wish_description}}"</p>
             {% if wish.is_affordable %}
                 <h5>Is affordable!</h5>

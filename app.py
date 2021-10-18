@@ -1,5 +1,7 @@
 from datetime import datetime
 import os
+from functools import wraps
+import inspect
 import json
 from functions import *
 from flask_pymongo import PyMongo
@@ -19,6 +21,17 @@ app.secret_key = os.environ.get("SECRET_KEY")
 mongo = PyMongo(app)
 
 
+def ensure_user(route):
+    # decorator for routes that ensure access only to a logged in user
+    @wraps(route)
+    def wrapper_function(*args, **kwargs):
+        if 'user' not in session:
+            flash("You must be logged in to access that page.")
+            return redirect(url_for('login'))
+        else:
+            return route(*args, **kwargs)
+    return wrapper_function
+            
 def calculate_disposable_income():
     # to be inserted after any income/expense calculation
     # takes overheads, tax and suggested savings, adds them and subtracts the sum from credit
@@ -275,12 +288,15 @@ def profile(username):
 
 
 @app.route("/invoice")
+@ensure_user
 def invoice():
-    invoices = mongo.db.invoices.find({"name": session['user']}) 
+    user_key = {"name": session['user']}
+    invoices = mongo.db.invoices.find(user_key) 
     return render_template("invoice.html", invoices=invoices)
 
 
 @app.route("/add_invoice", methods=["GET", "POST"])
+@ensure_user
 def add_invoice():
     if request.method == "POST":
         # convert the currency from euros to cents
@@ -353,6 +369,7 @@ def add_invoice():
 
 
 @app.route("/edit_invoice/<invoice_id>", methods=["GET", "POST"])
+@ensure_user
 def edit_invoice(invoice_id):
     if request.method == "POST":
         # recalculate credit and relevant fields before updating
@@ -477,6 +494,7 @@ def edit_invoice(invoice_id):
 
 
 @app.route("/delete_invoice/<invoice_id>", methods=["GET", "POST"])
+@ensure_user
 def delete_invoice(invoice_id):
     if request.method == "POST":
         # recalculate credit and relevant fields before updating
@@ -549,12 +567,14 @@ def delete_invoice(invoice_id):
 
 
 @app.route("/expenses")
+@ensure_user
 def expenses():
     expenses = mongo.db.expenses.find({"name": session['user']})
     return render_template("expenses.html", expenses=expenses)
 
 
 @app.route("/add_expense", methods=["GET", "POST"])
+@ensure_user
 def add_expense():
     # create reusable user_key
     user_key = {"name": session['user']}
@@ -614,6 +634,7 @@ def add_expense():
 
 
 @app.route("/edit_expense/<expense_id>", methods=["GET", "POST"])
+@ensure_user
 def edit_expense(expense_id):
     if request.method == "POST":
         # to recalculate finances so that updated amounts modify rather than add to
@@ -712,6 +733,7 @@ def edit_expense(expense_id):
 
 
 @app.route("/delete_expense/<expense_id>", methods=["GET", "POST"])
+@ensure_user
 def delete_expense(expense_id):
         # refactor amount back into credit and update the relevant fields
         # to recalculate finances so that updated amounts modify rather than add to
@@ -766,11 +788,13 @@ def delete_expense(expense_id):
         return redirect(url_for('expenses'))
 
 @app.route("/user_history")
+@ensure_user
 def user_history():
     history = mongo.db.in_out_history.find({"name":session['user']})
     return render_template("user_history.html", history=history, name = session['user'])
 
 @app.route("/wishlist", methods=["GET","POST"])
+@ensure_user
 def wishlist():
 
     if request.method == 'POST':
@@ -797,6 +821,7 @@ def wishlist():
     
 
 @app.route("/delete_wish/<wish>", methods=["GET", "POST"])
+@ensure_user
 def delete_wish(wish):
     if request.method == "POST":
         wish_to_delete = mongo.db.wishlist.find_one({"_id": ObjectId(wish)})
@@ -808,6 +833,7 @@ def delete_wish(wish):
 
 
 @app.route("/edit_wish/<wish>", methods=["GET", "POST"])
+@ensure_user
 def edit_wish(wish):
     if request.method == "POST":
         wish_to_edit = mongo.db.wishlist.find_one({"_id": ObjectId(wish)})
@@ -817,17 +843,20 @@ def edit_wish(wish):
 
 
 @app.route("/reward", methods=["GET", "POST"])
+@ensure_user
 def reward():   
     user_reward = mongo.db.rewards.find_one({"name": session['user']})
     return render_template("reward.html", user_reward=user_reward)
 
 
 @app.route("/image/<filename>")
+@ensure_user
 def image(filename):
     return mongo.send_file(filename)
 
 
 @app.route("/add_reward", methods=["GET", "POST"])
+@ensure_user
 def add_reward():
     if request.method == "POST" and "image" in request.files:
         img = request.files['image']
@@ -849,6 +878,7 @@ def add_reward():
     return render_template("add_reward.html")
 
 @app.route("/logout")
+@ensure_user
 def logout():
     session.clear()
     flash("You have been logged out.")
@@ -856,10 +886,12 @@ def logout():
 
 
 @app.route("/settings")
+@ensure_user
 def settings():
     return render_template("settings.html", user=session["user"])
 
 @app.route("/delete_account")
+@ensure_user
 def delete_account():
     user_key = {"name": session['user']}
     mongo.db.users.remove(user_key)
