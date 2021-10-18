@@ -1,10 +1,26 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>User History</h1>
+<h1>{{ name }}'s History</h1>
 {% for story in history %}
-<p>{{ story.date }}</p>
-<p>{{ story.amount }}</p>
-<p>{{ story.recipient }}</p>
-<p>{{ story.credit_after }}</p>
+        {% if story.type == "income" %}
+        <p>+</p>
+        {% elif story.type == "income-modified" %}
+        <p>+=</p>
+        {% elif  story.type == "income-deleted" %}
+        <p>+-</p>
+        {% elif story.type == "expense" %}
+        <p>-</p>
+        {% elif story.type == "expense-modified" %}
+        <p>-=</p>
+        {% elif story.type == "expense-deleted" %}
+        <p>--</p>       
+        {% endif %}
+    <p>{{ story.date }}</p>
+    <p>{{ story.amount }}</p>
+    {% if story.tax == "on" %}
+    <p>Tax was calculated for this income</p>
+    {% endif %}
+    <p>{{ story.recipient }}</p>
+    <p>{{ story.credit_after }}</p>
 {% endfor %}
 {% endblock %}

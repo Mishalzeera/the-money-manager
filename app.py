@@ -768,7 +768,7 @@ def delete_expense(expense_id):
 @app.route("/user_history")
 def user_history():
     history = mongo.db.in_out_history.find({"name":session['user']})
-    return render_template("user_history.html", history=history)
+    return render_template("user_history.html", history=history, name = session['user'])
 
 @app.route("/wishlist", methods=["GET","POST"])
 def wishlist():

@@ -66,14 +66,13 @@ In_Out_History =
                      -credit afterwards
 
 
-Disposable income is calculated by subtracting (overheads_to_be_paid, tax_to_set_aside, suggested_savings_amount) from Credit
 When figures hit zero, conditional in the template changes the text 
 Round off the figures with the floats tiny nearby
-In out history page
+Refactor modules
 Decorator
 
 Ask Brian:
-- how would you go about seperating the process functions for edit invoice etc in the project structure?
+- how would you go about seperating the process functions for edit invoice etc in the project structure eg refactoring.
 - where would it be wise to have the user_key stored? decorator that checks if user in session?
 
 
