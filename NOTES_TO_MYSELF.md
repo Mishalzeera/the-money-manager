@@ -1,21 +1,26 @@
 Do the complex data page first.
 Don't forget debug=true
-
-Add mathematic functionality
-Streamline the function purpose
-
-- Overheads to be paid 
-- Calculate Finances 
-- Add Light Mode switch
-
+add tax-deductables?
+search feature!
+updateable overheads amount in the settings field
 
 ENDMONTH FUNCTION ()=> {
 
 1. New Money-month object, "CREDIT", "OVERHEADS TO BE PAID", "WISHLIST", "REWARD
    MEDIA" stay the same, everything else resets to zero
-
 2. Old Money-month object gets pushed to an array.
 3. Invoices and expenses pushed to arrays
+
+When figures hit zero, conditional in the template changes the text 
+Round off the figures with the floats tiny nearby
+Refactor modules
+{{number | round | int }}
+
+Ask Brian:
+- how would you go about refactoring.
+- where would it be wise to have the user_key stored? 
+- what do you think about having spreadsheet functionality?
+
 
 Style ideas:
 
@@ -33,46 +38,5 @@ this most excellent, beneficial app that keeps the beloved User in mindful aware
 their financial state. 
 
 
-Add Invoice/Income = 
-                     <!-- radio button for calculate tax
-                     if "yes"" seperate tax and income, income adds to "credit", tax adds to "tax_to_"
-                     if "no" total adds to "credit"
-                     send a total combined figure to its own field  -->
-                     in_out_history
-
-Add Expense = 
-              <!-- if type overhead, subtracts from overheads to be paid (make sure overheads to be paid starts at monthly overheads)
-              if type extras, adds to "spent_on_extras" 
-              also deprecate Credit! -->
-              in_out_history
-
-Edit Invoice/Income = when user clicks on modify button, it stores the total combined in a session cookie, whether taxed or not also
-                      when user modifies the amount, session cookie if tax (calculates tax vs income) subtracts the old income from "credit"
-                      subtracts the tax amount for "tax_to.." otherwise subtracts total from "credit"
-                      then adds the new amount, like in Add Invoice, checking if tax etc
-
-Edit Expense = 
-               <!-- when user clicks on the "modify" button, it stores the original expense in a session cookie, whether overhead or not in session cooke
-               when user submits the edit, session cookie amount adds to "credit" first, adds to "overheads_to_pay" -->
-               <!-- next the new expense is subtracted from credit -->
-               in_out_history
-
-In_Out_History =   
-                  Create a template page that shows a list of transactions in and out, latest at the top. Matching database. 
-                  
-                     -date has to be a realtime date of submission independent of any user input.
-                     -amount added is a total, includes invoice num if applicable
-                     -amount spent includes type and recipient if applicable, 
-                     -credit afterwards
-
-
-When figures hit zero, conditional in the template changes the text 
-Round off the figures with the floats tiny nearby
-Refactor modules
-Decorator
-
-Ask Brian:
-- how would you go about seperating the process functions for edit invoice etc in the project structure eg refactoring.
-- where would it be wise to have the user_key stored? decorator that checks if user in session?
 
 

@@ -202,6 +202,7 @@ def index():
         return render_template("index.html", user=session["user"])
 
 
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -246,6 +247,29 @@ def register():
     return render_template("register.html")
 
 
+@app.route("/change_overheads", methods=["GET", "POST"])
+@ensure_user
+def change_overheads():
+    # allows the user to change their monthly overheads
+    # set the user_key to session user
+    user_key = {"name": session['user']}
+    if request.method == "POST":
+        # access the form data
+        new_overheads = request.form.get("new_overheads")
+        # convert to cents
+        to_send = euros_to_cents(new_overheads)
+        # send it to the db
+        mongo.db.current_month.update_one(user_key, {"$set": {"user_overheads": to_send}})
+        # recalculate the users disposable income
+        calculate_disposable_income()
+        # give some feedback
+        flash("Overheads Successfully Updated!")
+        # stay on the same page
+        return render_template('settings.html')
+    
+    return render_template('settings.html')
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -272,7 +296,8 @@ def login():
     return render_template("login.html")
 
 
-@app.route("/profile/<username>")
+@app.route("/profile/<username>") 
+@ensure_user
 def profile(username):
     # get the dictionary from the database in cents
     money_cents = mongo.db.current_month.find_one({"name": session["user"]})

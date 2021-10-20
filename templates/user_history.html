@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>{{ name }}'s History</h1>
-{% for story in history %}
+{% for story in history | reverse %}
         {% if story.type == "income" %}
         <p>+</p>
         {% elif story.type == "income-modified" %}
@@ -21,6 +21,6 @@
     <p>Tax was calculated for this income</p>
     {% endif %}
     <p>{{ story.recipient }}</p>
-    <p>{{ story.credit_after }}</p>
+    <p>{{ story.credit_after / 100 }}</p>
 {% endfor %}
 {% endblock %}

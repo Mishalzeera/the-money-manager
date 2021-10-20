@@ -339,8 +339,8 @@ remove method, targeting the newly created name key. This can be seen in the "ad
 
 ### Creating User Record
 
-Its handy for the user to have a trail of incoming and outgoing finances in a single overview. This
-is also helpful to include the modifications and deletions. A new database called "in_out_history" 
+Its handy for the user to have a trail of incoming and outgoing finances in a single overview. It
+is also helpful to include modifications and deletions. A new database called "in_out_history" 
 was created to contain this data. The author created the functions outside of the view codeblocks
 which made things a lot easier to visualise and debug. The template simply shows the rudimentary 
 return of data. More work will be done at the styling phase.
@@ -359,3 +359,8 @@ This involved some research - the Flask documentation was very handy as well as 
 variable to be accessed by the route from within the decorator was more of a challenge. The author
 was able to find a way of defining it in the global scope from within the decorator but that seemed
 to defeat the purpose. However, the security purpose was met. 
+
+### Allow User To Change Monthly Overheads
+
+The central role of the "monthly overheads" figure means that it should be allowed to be updated by
+the user as and when necessary. For instance, if the user takes out a new car insurance or 
