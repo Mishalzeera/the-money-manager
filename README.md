@@ -385,3 +385,23 @@ that allows for the app to keep dynamic track of the users preference.
 
 ### Create A Global Variable For Tax Amount
 
+This will require some planning - the user should be able to enter a tax rate that applies to their
+specific region. To avoid creating a variable in the global scope, a session cookie might be the 
+best route. However, the helper functions are in another module, and will need access to that
+rate. The best way may be to rewrite the functions with an additional parameter. For instance, at 
+the moment the function to calculate new invoice income is:
+
+def new_invoice_income(invoice_amount):
+    # takes in an amount and returns what the user can spend
+    tax = invoice_amount - invoice_amount/1.21
+    total = invoice_amount - tax
+    return total
+
+...but can be rewritten as
+
+def new_invoice_income_with_tax_rate(invoice_amount, tax_rate):
+    # takes in an amount and returns what the user can spend
+    tax = invoice_amount - invoice_amount/tax_rate (adapted to match the 1.21 proportion)
+    total = invoice_amount - tax
+    return total
+

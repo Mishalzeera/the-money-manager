@@ -220,6 +220,12 @@ def register():
         #  create dictionary for new starting month
         start_credit_to_int = euros_to_cents(request.form.get("starting-credit"))
         user_overheads_to_int = euros_to_cents(request.form.get("user-overheads"))
+
+        if request.form.get("tax_rate") == '':
+            tax_rate_to_float = 121
+        else:
+            tax_rate_to_string = "1" + str(request.form.get("tax_rate"))
+            tax_rate_to_int = int(tax_rate_to_string)
         start_month = {
             "name": request.form.get("name").lower(),
             "credit": start_credit_to_int,
@@ -229,6 +235,7 @@ def register():
             "spent_on_overheads": 0,
             "spent_on_extras": 0,
             "overheads_to_be_paid": user_overheads_to_int,
+            "tax_rate": tax_rate_to_int,
             "tax_to_set_aside": 0,
             "suggested_savings_amount": 0,
             "disposable_income": 0,
@@ -242,6 +249,8 @@ def register():
 
         # put user into session cookie
         session["user"] = request.form.get("name").lower()
+        # puts user tax rate into session cookie
+        session["tax_rate"] = tax_rate_to_int
         # create cookie for display theme, defaults to dark
         session["theme"] = "dark"
         flash("Registration Successful")
@@ -286,6 +295,7 @@ def login():
                 existing_user["password"], request.form.get("password")):
                     session["user"] = request.form.get("name").lower()
                     session["theme"] = mongo.db.current_month.find_one({"name": session['user']})["preferred_theme"]
+                    session["tax_rate"] = mongo.db.current_month.find_one({"name": session['user']})["tax_rate"]
                     flash("Welcome, {}".format(request.form.get("name")))
                     return redirect(url_for('profile', username=session["user"]))
             else:
@@ -328,12 +338,14 @@ def invoice():
 @ensure_user
 def add_invoice():
     if request.method == "POST":
+        # set the tax rate variable
+        tax_rate = session["tax_rate"]
         # convert the currency from euros to cents
         invoice_amount_cents = euros_to_cents(request.form.get("amount_invoiced"))
         # calculate the amount to set aside for taxes
-        invoice_tax_amount = round(new_invoice_tax(invoice_amount_cents))
+        invoice_tax_amount = round(new_invoice_tax(invoice_amount_cents, tax_rate))
         # calculate the profit amount
-        post_tax_income = round(new_invoice_income(invoice_amount_cents))
+        post_tax_income = round(new_invoice_income(invoice_amount_cents, tax_rate))
         # create a new invoice object
         new_invoice = {
             "name": session['user'],
@@ -402,6 +414,8 @@ def add_invoice():
 def edit_invoice(invoice_id):
     if request.method == "POST":
         # recalculate credit and relevant fields before updating
+        # set tax rate
+        tax_rate = session["tax_rate"]
         # get credit, income_this_month, suggested_savings_amount, tax_to_set_aside
         user_key = {"name": session['user']}
         current_month = mongo.db.current_month.find_one(user_key)
@@ -414,9 +428,9 @@ def edit_invoice(invoice_id):
         old_amount = old_invoice["amount"]
         # set variables for following conditional
         # calculate the amount previously set aside for taxes
-        invoice_tax_amount = round(new_invoice_tax(old_amount))
+        invoice_tax_amount = round(new_invoice_tax(old_amount, tax_rate))
         # calculate the profit amount
-        post_tax_income = round(new_invoice_income(old_amount))
+        post_tax_income = round(new_invoice_income(old_amount, tax_rate))
         # check whether the invoice was taxeable, recalculate all factors
         if old_invoice['tax'] == "on":
             # in the case of taxeable income
@@ -458,9 +472,9 @@ def edit_invoice(invoice_id):
         # updated invoice amount in cents
         invoice_amount_cents = euros_to_cents(request.form.get("amount_invoiced"))
          # calculate the amount to set aside for taxes
-        invoice_tax_amount = round(new_invoice_tax(invoice_amount_cents))
+        invoice_tax_amount = round(new_invoice_tax(invoice_amount_cents, tax_rate))
         # calculate the profit amount
-        post_tax_income = round(new_invoice_income(invoice_amount_cents))
+        post_tax_income = round(new_invoice_income(invoice_amount_cents, tax_rate))
         # create a new invoice object
         to_update = {
              "name": session['user'],
@@ -526,6 +540,8 @@ def edit_invoice(invoice_id):
 @ensure_user
 def delete_invoice(invoice_id):
     if request.method == "POST":
+        # set tax rate 
+        tax_rate = session["tax_rate"]
         # recalculate credit and relevant fields before updating
         # get credit, income_this_month, suggested_savings_amount, tax_to_set_aside
         user_key = {"name": session['user']}
@@ -539,9 +555,9 @@ def delete_invoice(invoice_id):
         old_amount = old_invoice["amount"]
         # set variables for following conditional
         # calculate the amount previously set aside for taxes
-        invoice_tax_amount = round(new_invoice_tax(old_amount))
+        invoice_tax_amount = round(new_invoice_tax(old_amount, tax_rate))
         # calculate the profit amount
-        post_tax_income = round(new_invoice_income(old_amount))
+        post_tax_income = round(new_invoice_income(old_amount, tax_rate))
         # check whether the invoice was taxeable, recalculate all factors
         if old_invoice['tax'] == "on":
             # in the case of taxeable income
@@ -929,6 +945,29 @@ def logout():
 @ensure_user
 def settings():
     return render_template("settings.html", user=session["user"])
+
+@app.route("/change_tax_rate", methods=["GET", "POST"])
+@ensure_user
+def change_tax_rate():
+    if request.method == "POST":
+        # check to see if a tax rate is selected
+        if request.form.get("new_tax_rate") == '':
+            # if not, default to Netherlands standard
+            tax_rate_to_int = 121            
+        else:
+            # if so, change the amount to match the user requested, making sure its in the useable format for our functions
+            tax_rate_to_string = "1" + str(request.form.get("new_tax_rate"))
+            tax_rate_to_int = int(tax_rate_to_string)
+        # update the db with the new amount...
+        mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"tax_rate": tax_rate_to_int}})
+        # and adapt the session cookie to match
+        session['tax_rate'] = tax_rate_to_int
+        # provide some user feedback
+        flash("Tax Rate Updated!")
+        # reload the same "settings" page
+        return render_template("settings.html")
+
+    return render_template("settings.html")
 
 
 @app.route("/change_theme", methods=["GET", "POST"])
