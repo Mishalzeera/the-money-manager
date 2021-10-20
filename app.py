@@ -231,7 +231,8 @@ def register():
             "overheads_to_be_paid": user_overheads_to_int,
             "tax_to_set_aside": 0,
             "suggested_savings_amount": 0,
-            "disposable_income": 0
+            "disposable_income": 0,
+            "preferred_theme": "dark"
         }
         
         # send dictionaries to Mongo
@@ -241,6 +242,8 @@ def register():
 
         # put user into session cookie
         session["user"] = request.form.get("name").lower()
+        # create cookie for display theme, defaults to dark
+        session["theme"] = "dark"
         flash("Registration Successful")
         return redirect(url_for("profile", username=session["user"]))
 
@@ -282,6 +285,7 @@ def login():
             if check_password_hash(
                 existing_user["password"], request.form.get("password")):
                     session["user"] = request.form.get("name").lower()
+                    session["theme"] = mongo.db.current_month.find_one({"name": session['user']})["preferred_theme"]
                     flash("Welcome, {}".format(request.form.get("name")))
                     return redirect(url_for('profile', username=session["user"]))
             else:
@@ -829,7 +833,6 @@ def deductibles():
     return render_template("deductibles.html")
 
 
-
 @app.route("/wishlist", methods=["GET","POST"])
 @ensure_user
 def wishlist():
@@ -926,6 +929,22 @@ def logout():
 @ensure_user
 def settings():
     return render_template("settings.html", user=session["user"])
+
+
+@app.route("/change_theme", methods=["GET", "POST"])
+@ensure_user
+def change_theme():
+    if request.method == "POST":
+        if session['theme'] == "dark":
+            mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"preferred_theme": "light"}})
+            session['theme'] = "light"
+        else:
+            mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"preferred_theme": "dark"}})
+            session['theme'] = "dark"
+        flash("Theme settings updated!")
+        return render_template("settings.html")
+    return render_template("settings.html")
+
 
 @app.route("/delete_account")
 @ensure_user

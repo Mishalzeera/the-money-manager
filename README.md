@@ -363,4 +363,25 @@ to defeat the purpose. However, the security purpose was met.
 ### Allow User To Change Monthly Overheads
 
 The central role of the "monthly overheads" figure means that it should be allowed to be updated by
-the user as and when necessary. For instance, if the user takes out a new car insurance or 
+the user as and when necessary. For instance, if the user takes out a new car insurance or has paid
+the final installation of a student loan, it would then make sense to change the overheads amount.
+
+This was added to the settings page.
+
+### Give User A Deductibles Calculator 
+
+In the authors experience, it is common that one may have a receipt that only lists the total amount
+spent on an item. For instance, the Apple Store will sell you a laptop and not say explicitly on the
+bill "laptop 1000EU, tax 120EU, total 1120EU". The mysterious final figure, for a person without an
+accountant or friend who can help, puts them off requesting the deductible. With a handy calculator
+built into the app, the user can easily get the amount to set aside. 
+
+### Create Toggle Light Theme Button
+
+In the settings page, a button was added that changes the app to a light theme. A new data entry was
+added to the register function that logs whether a user prefers "light" or "dark". Default is set 
+to "dark", the user can then change that in the Settings page. Meanwhile a session cookie is created
+that allows for the app to keep dynamic track of the users preference. 
+
+### Create A Global Variable For Tax Amount
+

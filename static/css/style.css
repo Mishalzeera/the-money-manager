@@ -21,9 +21,9 @@
 
 body {
   /* background-color: #111; */
-  background-color: var(--cool-gray-900);
+  /* background-color: var(--cool-gray-900); */
   font-family: "Noto Sans Mono", sans-serif;
-  color: var(--emerald-400);
+  /* color: var(--emerald-400); */
 }
 
 img {

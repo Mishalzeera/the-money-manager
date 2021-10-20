@@ -1,9 +1,7 @@
 /* Space Invaders, Apple IIc */
 
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@500&display=swap");
-
 body {
-  background-color: #111;
-  font-family: "Noto Sans Mono", sans-serif;
-  color: rgb(24, 126, 24);
+  background-color: var(--cool-gray-900);
+  /* font-family: "Noto Sans Mono", sans-serif; */
+  color: var(--emerald-400);
 }

@@ -1,1 +1,8 @@
 /* Tiki, Nostalgia, Pleasure seeking */
+
+body {
+    /* background-color: #111; */
+    background-color: var(--warm-gray-500);
+    /* font-family: "Noto Sans Mono", sans-serif; */
+    color: var(--emerald-900);
+  }

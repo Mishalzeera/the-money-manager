@@ -1,8 +1,8 @@
 Do the complex data page first.
 Don't forget debug=true
-add tax-deductables?
 search feature!
-updateable overheads amount in the settings field
+global tax rate
+end period function
 
 ENDMONTH FUNCTION ()=> {
 
@@ -20,6 +20,7 @@ Ask Brian:
 - how would you go about refactoring.
 - where would it be wise to have the user_key stored? 
 - what do you think about having spreadsheet functionality?
+- what would be a good way of handling last period's data?
 
 
 Style ideas:
