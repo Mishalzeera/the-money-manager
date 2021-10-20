@@ -32,7 +32,7 @@
         <input type="number" name="amount_spent" id="amount_spent" pattern="[0-9]+" value="{{ expense.amount / 100 }}" step="0.01" title="Please input numbers only." required>
         <label for="comments">Comments</label>
         <textarea name="comments" id="comments" cols="30" rows="10">{{ expense.comments }}</textarea>
-        <button type="submit">Save Changes</button>
+        <button type="submit" class="btn btn-manage">Save Changes</button>
     </div>
 </form>
 

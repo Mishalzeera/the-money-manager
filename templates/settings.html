@@ -8,9 +8,9 @@
 <form action="{{url_for('change_overheads')}}" method="POST">
     <label for="new_overheads">Change Monthly Overheads</label>
     <input type="number" name="new_overheads" id="new_overheads" pattern="[0-9]+"  step="0.01" title="Please input numbers only." >
-    <button type="submit">Change Your Monthly Overheads</button>
+    <button type="submit" class="btn btn-manage">Change Your Monthly Overheads</button>
 </form>
-<a href="{{url_for('delete_account', user=user)}}" class="btn btn-settings">Delete Account</a>
+<a href="{{url_for('delete_account', user=user)}}" class="btn btn-out">Delete Account</a>
 
 {% endblock %}
 

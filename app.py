@@ -818,6 +818,18 @@ def user_history():
     history = mongo.db.in_out_history.find({"name":session['user']})
     return render_template("user_history.html", history=history, name = session['user'])
 
+
+@app.route("/deductibles", methods=["GET", "POST"])
+@ensure_user
+def deductibles():
+    if request.method == "POST":
+        total_with_tax = float(request.form.get("calculator"))
+        tax_to_deduct = total_with_tax - total_with_tax / 1.21
+        return render_template("deductibles.html", tax=tax_to_deduct)
+    return render_template("deductibles.html")
+
+
+
 @app.route("/wishlist", methods=["GET","POST"])
 @ensure_user
 def wishlist():

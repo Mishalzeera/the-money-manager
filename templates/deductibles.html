@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Deductibles page</h1>
+<h2>Deductibles Calculator</h2>
+<h3>Have a receipt without a stated tax amount? Enter the total below and we will calculate it for you.</h3>
+<form action="{{ url_for('deductibles') }}" method="POST">
+    <label for="calculator">Input the total including tax:</label>
+    <input type="number" name="calculator" id="calculator" pattern="[0-9]+" step="0.01">
+    <button type="submit" class="btn btn-manage">Calculate Tax</button>
+</form>
+{% if tax %}
+<h3>Tax you can claim on this amount: {{ tax | round }}</h3>
+{% endif %}
+<h2>Here are some suggestions for tax deductibility</h2>
+<p>All expenses... blah blah</p>
+{% endblock %}
