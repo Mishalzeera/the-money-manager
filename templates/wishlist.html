@@ -12,13 +12,13 @@
             {% if wish.is_affordable %}
                 <h5>Is affordable!</h5>
                 {% else %}
-                <h5>Is not afforable.</h5>
+                <h5>Is not affordable.</h5>
             {% endif %}
+            <form action="{{ url_for('edit_wish', wish=wish._id) }}" method="GET">
+                <button type="submit" class="btn btn-manage">Edit Wish</button>
+            </form>
             <form action="{{ url_for('delete_wish', wish=wish._id) }}" method="POST">
                 <button type="submit" class="btn btn-out">Delete Wish</button>
-            </form>
-            <form action="{{ url_for('edit_wish', wish=wish._id) }}" method="POST">
-                <button type="submit" class="btn btn-manage">Edit Wish</button>
             </form>
         </div>
 
@@ -26,7 +26,7 @@
 {%endif %}
 
 <h3>Manage Your Wishlist</h3>
-<form action="{{ url_for('wishlist') }}" method="POST">
+<form action="{{ url_for('add_wish') }}" method="POST">
     <div class="register-card">
         <h2>Add A New Wish!</h2>
         <label for="wish_name">Item Name</label>

@@ -279,7 +279,7 @@ def index():
         return redirect(url_for('login'))
     else:
     # goes to the users profile page
-        return render_template("profile.html", user=session["user"])
+        return redirect(url_for('settings'))
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -315,6 +315,8 @@ def register():
             tax_rate_to_string = "1" + str(request.form.get("tax_rate"))
             tax_rate_to_int = int(tax_rate_to_string)
         
+        # create a starting disposable income
+        starting_disposable_income = start_credit_to_int - user_overheads_to_int
         # create a starting month object
         start_month = {
             "name": request.form.get("name").lower(),
@@ -328,7 +330,7 @@ def register():
             "tax_rate": tax_rate_to_int,
             "tax_to_set_aside": 0,
             "suggested_savings_amount": 0,
-            "disposable_income": 0,
+            "disposable_income": starting_disposable_income,
             "preferred_theme": "dark"
         }
         
@@ -923,29 +925,73 @@ def deductibles():
 @app.route("/wishlist", methods=["GET","POST"])
 @ensure_user
 def wishlist():
+    # get user wishlist from db
+    wishlist = mongo.db.wishlist.find({"name": session["user"]})
+    return render_template("wishlist.html", wishlist=wishlist)
 
+
+@app.route("/add_wish", methods=["GET","POST"])
+@ensure_user  
+def add_wish():
     if request.method == 'POST':
+        # user_key
+        user_key = {"name": session['user']}
+        # get disposable income
+        disposable_income = mongo.db.current_month.find_one(user_key)['disposable_income']
         # convert currency to cents
         cost_of_item = euros_to_cents(request.form.get("wish_cost"))
+        # check if item on wishlist is affordable
+        if cost_of_item <= disposable_income:
+            affordable = True
+        else:
+            affordable = False
         # create a wishlist dictionary
         wishlist_item = {
             "name": session["user"],
             "wish_name": request.form.get("wish_name").lower(),
             "wish_cost": cost_of_item,
             "wish_description": request.form.get("wish_description"),
-            "is_affordable": False
+            "is_affordable": affordable
         }
         # send dictionary to the database
         mongo.db.wishlist.insert_one(wishlist_item)
         flash("Item successfully added")
+        # wishlist = mongo.db.wishlist.find({"name": session["user"]})
         return redirect(url_for('wishlist'))
 
 
-            # get user wishlist from db
-    wishlist = mongo.db.wishlist.find({"name": session["user"]})
-    
-    return render_template("wishlist.html", wishlist=wishlist)
-    
+@app.route("/edit_wish/<wish>", methods=["GET", "POST"])
+@ensure_user
+def edit_wish(wish):
+    if request.method == "POST":
+        # user_key
+        user_key = {"name": session['user']}
+        # get disposable income
+        disposable_income = mongo.db.current_month.find_one(user_key)['disposable_income']
+        # convert currency to cents
+        cost_of_item = euros_to_cents(request.form.get("wish_cost"))
+        # check if item on wishlist is affordable
+        if cost_of_item <= disposable_income:
+            affordable = True
+        else:
+            affordable = False
+        # create a wishlist dictionary
+        wishlist_item = {
+            "name": session["user"],
+            "wish_name": request.form.get("wish_name").lower(),
+            "wish_cost": cost_of_item,
+            "wish_description": request.form.get("wish_description"),
+            "is_affordable": affordable
+        }
+        # send dictionary to the database
+        mongo.db.wishlist.update({"_id": ObjectId(wish)}, wishlist_item)
+        flash("Item successfully edited!")
+        # wishlist = mongo.db.wishlist.find({"name": session["user"]})
+        return redirect(url_for('wishlist'))       
+        # return render_template('edit_wish.html', wish=wish_to_edit)
+    wish_to_edit = mongo.db.wishlist.find_one({"_id": ObjectId(wish)})  
+    return render_template('edit_wish.html', wish=wish_to_edit)
+
 
 @app.route("/delete_wish/<wish>", methods=["GET", "POST"])
 @ensure_user
@@ -954,19 +1000,9 @@ def delete_wish(wish):
         wish_to_delete = mongo.db.wishlist.find_one({"_id": ObjectId(wish)})
         mongo.db.wishlist.remove(wish_to_delete)
         flash("Wish deleted!")
-        return redirect(url_for('wishlist'))
-    else: 
-        return redirect(url_for('wishlist'))
+        return redirect(url_for('wishlist'))    
+    return redirect(url_for('wishlist'))
 
-
-@app.route("/edit_wish/<wish>", methods=["GET", "POST"])
-@ensure_user
-def edit_wish(wish):
-    if request.method == "POST":
-        wish_to_edit = mongo.db.wishlist.find_one({"_id": ObjectId(wish)})
-        return render_template("edit_wish.html", wish=wish_to_edit)
-    else: 
-        return redirect(url_for('wishlist'))
 
 
 @app.route("/reward", methods=["GET", "POST"])

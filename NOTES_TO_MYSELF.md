@@ -1,5 +1,6 @@
-overheads to be paid just get the new overheads and subtract the expenses
 Don't forget debug=true
+wishlist
+edit wish 
 search feature!
 currency titles, maybe always have credit one colour
 end period function
@@ -22,6 +23,7 @@ Ask Brian:
 - where would it be wise to have the user_key stored? 
 - what do you think about having spreadsheet functionality?
 - what would be a good way of handling last period's data?
+- how would you do the wishlist edit situation?
 
 
 Style ideas:
