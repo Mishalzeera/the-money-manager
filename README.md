@@ -413,3 +413,18 @@ rewrites) that in fact it was perfectly correct in calculating the amount of tax
 after the fact. Which the author had been working with all along. 
 
 The figure can also be updated in the settings panel. 
+
+### Fix Overheads Issue
+
+An issue with changing the monthly overheads raised its head - the "amount left to be paid" part
+of the overheads section was not dynamically updating with the new overhead. After some guessing
+and thinking, a simple solution was reached.
+
+### Start Python Documentation
+
+The author will try and take documentation very seriously for this project. The goal is that a 
+person who does not have any understanding of Python would be able to read the code and follow
+along with what is taking place. While the author has been writing documentation from the start,
+it has been sporadic. The author has also found it a good way to expose bugs and issues with the
+app. 
+

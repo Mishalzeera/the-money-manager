@@ -23,6 +23,7 @@ mongo = PyMongo(app)
 
 def ensure_user(route):
     # decorator for routes that ensure access only to a logged in user
+    # uses "wraps" function from "functools"
     @wraps(route)
     def wrapper_function(*args, **kwargs):
         if 'user' not in session:
@@ -31,28 +32,44 @@ def ensure_user(route):
         else:
             return route(*args, **kwargs)
     return wrapper_function
-            
+
+
 def calculate_disposable_income():
     # to be inserted after any income/expense calculation
     # takes overheads, tax and suggested savings, adds them and subtracts the sum from credit
+    # create a user key 
     user_key = {"name": session['user']}
+    # get the current month object
     current_month = mongo.db.current_month.find_one(user_key)
+    # get the credit from the object
     credit = current_month['credit']
+    # get the overheads to be paid
     overheads_to_be_paid = current_month['overheads_to_be_paid']
+    # get the tax to set aside
     tax_to_set_aside = current_month['tax_to_set_aside']
+    # get the suggested savings amount
     suggested_savings_amount = current_month['suggested_savings_amount']
+    # calculate the disposable income
     disposable_income = credit - (overheads_to_be_paid + tax_to_set_aside + suggested_savings_amount)
+    # ...and update the database with the amount
     mongo.db.current_month.update_one(user_key, {"$set": {"disposable_income": disposable_income}})
 
 
 def create_income_record(db_object):
-    # creates a record of every income
+    # creates a record of every income, for the user_history.html page
+    # create user key
     user_key = {"name": session['user']}
+    # get a real time date stamp for the object
     datestamp = datetime.today().strftime('%d-%m-%Y')
+    # get the amount from the argument-object
     amount = db_object['amount']
+    # get the recipient from the argument-object
     recipient = db_object['invoice_recipient']
+    # get the tax if applicable
     tax = db_object['tax']
+    # get the current credit from the users current month object
     credit = mongo.db.current_month.find_one(user_key)['credit']
+    # create a record object
     
     record = {
         "name": session['user'],
@@ -63,18 +80,25 @@ def create_income_record(db_object):
         "credit_after": credit,
         "type": "income"
     }
-
+    # insert the object into the database
     mongo.db.in_out_history.insert_one(record)
 
 
 def create_modified_income_record(db_object):
     # creates a record of every modified income
+    # create user key
     user_key = {"name": session['user']}
+    # get a real time date stamp for the object
     datestamp = datetime.today().strftime('%d-%m-%Y')
+    # get the amount from the argument-object
     amount = db_object['amount']
+    # get the recipient from the argument-object
     recipient = db_object['invoice_recipient']
+    # get the tax if applicable
     tax = db_object['tax']
+    # get the current credit from the users current month object
     credit = mongo.db.current_month.find_one(user_key)['credit']
+    # create a record object
     
     record = {
         "name": session['user'],
@@ -86,17 +110,28 @@ def create_modified_income_record(db_object):
         "type": "income-modified"
     }
 
+    # insert the object into the database
     mongo.db.in_out_history.insert_one(record)
 
 
 def create_deleted_income_record_part_one(db_object):
     # creates a record of every deleted income
+    # since the credit can only be calculated after the deletion
+    # the function is in two parts, one before the database manipulation
+    # and one after, to insert the "credit after" amount
+    # get datestamp
     datestamp = datetime.today().strftime('%d-%m-%Y')
+    # get a hours minutes seconds stamp to match records correctly
     now  = datetime.now() 
+    # create a timestamp
     timestamp = now.strftime("%H:%M:%S")
+    # get the argument-object amount
     amount = db_object['amount']
+    # get the argument-object recipient
     recipient = db_object['invoice_recipient']
+    # get tax if applicable
     tax = db_object['tax']
+    # create a record
     
     record = {
         "name": session['user'],
@@ -107,26 +142,40 @@ def create_deleted_income_record_part_one(db_object):
         "tax": tax,
         "type": "income-deleted"
     }
-
+    # insert it into the database
     mongo.db.in_out_history.insert_one(record)
 
+
 def create_deleted_income_record_part_two():
-    # allows for updating the object created in part_one with the recalculated credit_after
+    # updates the object created in part_one with the recalculated credit_after
+    # create user key
     user_key = {"name": session['user']}
+    # get current credit
     credit = mongo.db.current_month.find_one(user_key)['credit']
+    # find the current timestamp
     now  = datetime.now() 
+    # create a formatted timestamp to match the database
     timestamp = now.strftime("%H:%M:%S")
+    # using the timestamp, get and update the correct record
     mongo.db.in_out_history.update_one({"timestamp": timestamp}, {"$set": {"credit_after": credit}})
 
 
 def create_expense_record(db_object):
     # creates a record of every expense
+    # create a user key
     user_key = {"name": session['user']}
+    # get a datestamp for the new object
     datestamp = datetime.today().strftime('%d-%m-%Y')
+    # get the amount from the argument-object
     amount = db_object['amount']
+    # get the "overheads" or "extras" type - not to be confused with the new 
+    # "type" key which is a hard coded string for an "if else" in the template
     for_type = db_object["type"]
+    # get the recipient from the argument-object
     recipient = db_object['recipient']
+    # get the current credit from the current month object
     credit = mongo.db.current_month.find_one(user_key)['credit']
+    # create a new record
     
     record = {
         "name": session['user'],
@@ -138,18 +187,28 @@ def create_expense_record(db_object):
         "type": "expense"
     }
 
+    # insert the new object into the database
     mongo.db.in_out_history.insert_one(record)
 
 
 def create_modified_expense_record(db_object):
-    # creates a record of every expense
+    # creates a record of every modified expense
+    # create a user key
     user_key = {"name": session['user']}
+    # create a datestamp for the record
     datestamp = datetime.today().strftime('%d-%m-%Y')
+    # get the amount from the "abject-orgument" (sorry)
     amount = db_object['amount']
+    # get the "overheads" vs "extras" type from the argument-object
+    # not to be confused with the hard coded "type" string for the
+    # template "if else" structure
     for_type = db_object["type"]
+    # get the recipient from the argument-object
     recipient = db_object['recipient']
+    # get the current month object credit
     credit = mongo.db.current_month.find_one(user_key)['credit']
-    
+    # create a record
+
     record = {
         "name": session['user'],
         "date": datestamp,
@@ -160,17 +219,29 @@ def create_modified_expense_record(db_object):
         "type": "expense-modified"
     }
 
+    # insert the record into the database
     mongo.db.in_out_history.insert_one(record)
 
 
 def create_deleted_expense_record_part_one(db_object):
-    # creates a record of every expense
+    # creates a record of every deleted expense
+    # in two parts, so that the updated credit can be inserted 
+    # after the database is manipulated
+    # get a datestamp for the new record
     datestamp = datetime.today().strftime('%d-%m-%Y')
+    # get now for the timestamp
     now  = datetime.now() 
+    # create a timestamp for part two to target the correct object
     timestamp = now.strftime("%H:%M:%S")
+    # get the "overheads" vs "extras" type from the argument-object
+    # not to be confused with the hard coded "type" string for the
+    # template to use in an "if else" statement
     for_type = db_object["type"]
+    # get the amount from the argument-object
     amount = db_object['amount']
+    # get the recipient
     recipient = db_object['recipient']
+    # create a record
     
     record = {
         "name": session['user'],
@@ -182,29 +253,38 @@ def create_deleted_expense_record_part_one(db_object):
         "type": "expense-deleted"
     }
 
+    # insert it into the database
     mongo.db.in_out_history.insert_one(record)
 
 
 def create_deleted_expense_record_part_two():
     # allows for updating the object created in part_one with the recalculated credit_after
+    # create a user key
     user_key = {"name": session['user']}
+    # get the current credit from the current month object
     credit = mongo.db.current_month.find_one(user_key)['credit']
+    # get a timestamp for hours minutes seconds
     now  = datetime.now() 
+    # create a variable from it to match with the correct record
     timestamp = now.strftime("%H:%M:%S")
+    # update the record created in the first part with the credit_after
     mongo.db.in_out_history.update_one({"timestamp": timestamp}, {"$set": {"credit_after": credit}})
 
 
 @app.route("/")
 def index():
+    # handles when the user navigates to the site initially
+    # if user not in session, goes to login
     if "user" not in session:
-        return render_template("index.html", user=" of Great Future Wealth.")
+        return redirect(url_for('login'))
     else:
-        return render_template("index.html", user=session["user"])
-
+    # goes to the users profile page
+        return render_template("profile.html", user=session["user"])
 
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    # allows the user to register a new account
     if request.method == "POST":
         # check if username exists
         existing_user = mongo.db.users.find_one(
@@ -213,19 +293,29 @@ def register():
             flash("Username exists!")
             return redirect(url_for('register'))
         # create dictionary for new user
+        # uses the very handy generate password hash from Werkzeug
         register_user = {
            "name": request.form.get("name").lower(),
            "password": generate_password_hash(request.form.get("password"))
         }
         #  create dictionary for new starting month
+        # sets the starting credit and the users overheads, defined by the user
         start_credit_to_int = euros_to_cents(request.form.get("starting-credit"))
         user_overheads_to_int = euros_to_cents(request.form.get("user-overheads"))
 
+        # handling the tax rate, a key part of the app
+        # if no tax rate is entered, amount is set to the
+        # Netherlands default
         if request.form.get("tax_rate") == '':
             tax_rate_to_int = 121
         else:
+        # makes a concatenated string out of the number entered by the user
+        # allowing a "1" to be inserted before, which puts the tax rate into
+        # the most useable format by the database
             tax_rate_to_string = "1" + str(request.form.get("tax_rate"))
             tax_rate_to_int = int(tax_rate_to_string)
+        
+        # create a starting month object
         start_month = {
             "name": request.form.get("name").lower(),
             "credit": start_credit_to_int,
@@ -247,39 +337,18 @@ def register():
         mongo.db.users.insert_one(register_user)
         mongo.db.current_month.insert_one(start_month)
 
-        # put user into session cookie
+        # put user into a session cookie
         session["user"] = request.form.get("name").lower()
-        # puts user tax rate into session cookie
+        # puts user tax rate into a session cookie
         session["tax_rate"] = tax_rate_to_int
         # create cookie for display theme, defaults to dark
         session["theme"] = "dark"
+        # give some user feedback
         flash("Registration Successful")
+        # go to the new users profile
         return redirect(url_for("profile", username=session["user"]))
 
     return render_template("register.html")
-
-
-@app.route("/change_overheads", methods=["GET", "POST"])
-@ensure_user
-def change_overheads():
-    # allows the user to change their monthly overheads
-    # set the user_key to session user
-    user_key = {"name": session['user']}
-    if request.method == "POST":
-        # access the form data
-        new_overheads = request.form.get("new_overheads")
-        # convert to cents
-        to_send = euros_to_cents(new_overheads)
-        # send it to the db
-        mongo.db.current_month.update_one(user_key, {"$set": {"user_overheads": to_send}})
-        # recalculate the users disposable income
-        calculate_disposable_income()
-        # give some feedback
-        flash("Overheads Successfully Updated!")
-        # stay on the same page
-        return render_template('settings.html')
-    
-    return render_template('settings.html')
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -843,8 +912,10 @@ def user_history():
 @ensure_user
 def deductibles():
     if request.method == "POST":
+        # get session tax rate cookie
+        tax_rate = session['tax_rate']
         total_with_tax = float(request.form.get("calculator"))
-        tax_to_deduct = total_with_tax - total_with_tax / 1.21
+        tax_to_deduct = new_invoice_tax(total_with_tax, tax_rate)
         return render_template("deductibles.html", tax=tax_to_deduct)
     return render_template("deductibles.html")
 
@@ -944,7 +1015,44 @@ def logout():
 @app.route("/settings")
 @ensure_user
 def settings():
-    return render_template("settings.html", user=session["user"])
+    # get the current overheads to display on the template for user reference
+    current_month = mongo.db.current_month.find_one({"name": session['user']})
+    current_overheads = current_month['user_overheads']
+    return render_template("settings.html", user=session["user"], current_overheads=current_overheads)
+
+
+@app.route("/change_overheads", methods=["GET", "POST"])
+@ensure_user
+def change_overheads():
+    # allows the user to change their monthly overheads
+    # accessed from the settings page
+    # set the user_key to session user
+    user_key = {"name": session['user']}
+    if request.method == "POST":
+        # access the form data
+        new_overheads = request.form.get("new_overheads")
+        # convert to cents
+        new_overheads_to_send = euros_to_cents(new_overheads)
+        # access the old overheads for the "to be paid" calculation
+        old_overheads = mongo.db.current_month.find_one(user_key)['user_overheads']
+        # get spent_on_overheads
+        spent_on_overheads = mongo.db.current_month.find_one({"name": session['user']})['spent_on_overheads']
+        # create new_overheads_to_be_paid using the new_overheads
+        new_overheads_to_be_paid = new_overheads_to_send - spent_on_overheads
+        # send it to the db
+        mongo.db.current_month.update_one(user_key, {"$set": {"user_overheads": new_overheads_to_send}})
+        
+        # update overheads_to_be_paid
+        mongo.db.current_month.update_one(user_key, {"$set": {"overheads_to_be_paid": new_overheads_to_be_paid}})
+        # recalculate the users disposable income
+        calculate_disposable_income()
+        # give some feedback
+        flash("Overheads Successfully Updated!")
+        # stay on the same page
+        return render_template('settings.html')
+    
+    return render_template('settings.html')
+
 
 @app.route("/change_tax_rate", methods=["GET", "POST"])
 @ensure_user

@@ -2,7 +2,7 @@
 
 body {
     /* background-color: #111; */
-    background-color: var(--warm-gray-500);
+    background-color: var(--indigo-50);
     /* font-family: "Noto Sans Mono", sans-serif; */
-    color: var(--red-900);
+    color: var(--indigo-900);
   }

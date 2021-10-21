@@ -1,7 +1,7 @@
-Do the complex data page first.
+overheads to be paid just get the new overheads and subtract the expenses
 Don't forget debug=true
 search feature!
-currency titles
+currency titles, maybe always have credit one colour
 end period function
 When figures hit zero, conditional in the template changes the text 
 Round off the figures with the floats tiny nearby
