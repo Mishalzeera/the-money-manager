@@ -405,3 +405,11 @@ def new_invoice_income_with_tax_rate(invoice_amount, tax_rate):
     total = invoice_amount - tax
     return total
 
+In practise it was relatively straightforward except for a two and a half hour period where the
+author was wondering if there was something wrong with the logic of the apparent universe. A test
+amount of "100" was entered with a tax rate of 50%, and the author was convinced something was 
+wrong with the 33 result for the tax. Finally realising (after numerous, now entertaining, code
+rewrites) that in fact it was perfectly correct in calculating the amount of tax from 100,
+after the fact. Which the author had been working with all along. 
+
+The figure can also be updated in the settings panel. 

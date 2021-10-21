@@ -222,7 +222,7 @@ def register():
         user_overheads_to_int = euros_to_cents(request.form.get("user-overheads"))
 
         if request.form.get("tax_rate") == '':
-            tax_rate_to_float = 121
+            tax_rate_to_int = 121
         else:
             tax_rate_to_string = "1" + str(request.form.get("tax_rate"))
             tax_rate_to_int = int(tax_rate_to_string)

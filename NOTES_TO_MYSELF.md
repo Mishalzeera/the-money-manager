@@ -1,8 +1,12 @@
 Do the complex data page first.
 Don't forget debug=true
 search feature!
-global tax rate
+currency titles
 end period function
+When figures hit zero, conditional in the template changes the text 
+Round off the figures with the floats tiny nearby
+Refactor modules
+{{number | round | int }}
 
 ENDMONTH FUNCTION ()=> {
 
@@ -11,10 +15,7 @@ ENDMONTH FUNCTION ()=> {
 2. Old Money-month object gets pushed to an array.
 3. Invoices and expenses pushed to arrays
 
-When figures hit zero, conditional in the template changes the text 
-Round off the figures with the floats tiny nearby
-Refactor modules
-{{number | round | int }}
+
 
 Ask Brian:
 - how would you go about refactoring.
