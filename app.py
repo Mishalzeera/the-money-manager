@@ -1049,10 +1049,9 @@ def change_overheads():
         # give some feedback
         flash("Overheads Successfully Updated!")
         # stay on the same page
-        return render_template('settings.html')
+        return redirect(url_for('settings'))
     
-    return render_template('settings.html')
-
+    return redirect(url_for('settings'))
 
 @app.route("/change_tax_rate", methods=["GET", "POST"])
 @ensure_user
@@ -1073,9 +1072,9 @@ def change_tax_rate():
         # provide some user feedback
         flash("Tax Rate Updated!")
         # reload the same "settings" page
-        return render_template("settings.html")
+        return redirect(url_for('settings'))
 
-    return render_template("settings.html")
+    return redirect(url_for('settings'))
 
 
 @app.route("/change_theme", methods=["GET", "POST"])
@@ -1089,8 +1088,8 @@ def change_theme():
             mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"preferred_theme": "dark"}})
             session['theme'] = "dark"
         flash("Theme settings updated!")
-        return render_template("settings.html")
-    return render_template("settings.html")
+        return redirect(url_for('settings'))
+    return redirect(url_for('settings'))
 
 
 @app.route("/delete_account")
