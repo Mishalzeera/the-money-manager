@@ -5,3 +5,45 @@ body {
   /* font-family: "Noto Sans Mono", sans-serif; */
   color: var(--emerald-400);
 }
+
+.money-dingbat {
+
+  color:var(--green-400)
+  
+}
+
+
+.btn,
+.a-btn {
+  
+  background-color: var(--teal-700);
+  color: var(--amber-50);
+}
+
+/* 
+.a-btn {    
+  
+background-color: var(--green-400);
+color: var(--indigo-900);
+
+
+} */
+
+.btn-in {
+background-color: var(--teal-700);
+color: var(--amber-50);
+}
+
+.btn-manage {
+
+}
+
+.btn-out {
+
+}
+
+
+.register-card {
+  background-color: var(--cool-gray-700);
+  color: var(--amber-50)
+}

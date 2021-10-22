@@ -8,10 +8,10 @@
     <p>"{{ user_reward.caption }}"</p>
 {% endif %}
 {% if user_reward %}
-<a href="{{ url_for('add_reward') }}" class="btn btn-manage">Change Your Reward Image</a>
+<a href="{{ url_for('add_reward') }}" class="a-btn btn-manage">Change Your Reward Image</a>
 <p>Please note that your old one will be deleted.</p>
 {% else %}
-<a href="{{ url_for('add_reward') }}" class="btn btn-in">Add An Inspiring Image To Remind You Of Your Goals</a>
+<a href="{{ url_for('add_reward') }}" class="a-btn btn-in">Add An Inspiring Image To Remind You Of Your Goals</a>
 {% endif %}
 
 {% endblock %}

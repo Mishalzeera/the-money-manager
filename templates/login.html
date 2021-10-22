@@ -11,12 +11,12 @@
         <input type="text" name="name" id="name"pattern="^[a-zA-Z0-9]{5-15}$" required>
         <label for="password">Password</label>
         <input type="password" name="password" id="password"pattern="^[a-zA-Z0-9]{5-15}$" required>
-        <button type="submit" class="submit-btn">Login</button>
+        <button type="submit" class="btn btn-in">Login</button>
 
     </div>
 </form>
 
-<a href="{{url_for('register')}}" class="btn btn-manage">Need an account, Hajji? Register</a>
+<a href="{{url_for('register')}}" class="a-btn btn-in">Need an account, Hajji? Register</a>
 
 {% endblock %}
 

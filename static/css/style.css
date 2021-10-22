@@ -1,6 +1,7 @@
 /* Global Styles */
 
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@500&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
 @font-face {
     font-family: 'money_money_moneyregular';
     src: url('../fonts/money_money_money-webfont.woff2') format('woff2'),
@@ -22,7 +23,7 @@
 body {
   /* background-color: #111; */
   /* background-color: var(--cool-gray-900); */
-  font-family: "Noto Sans Mono", sans-serif;
+  font-family: "Raleway", sans-serif;
   /* color: var(--emerald-400); */
 }
 
@@ -43,7 +44,6 @@ a:hover {
 .money-dingbat {
     font-family: "money_money_moneyregular";
     font-size: 5rem;
-    color:rgb(24, 126, 24);
     margin-left: 1rem;
 }
 
@@ -73,7 +73,7 @@ a:hover {
 /* Registration form */
 
 .register-card {
-    background-color: black;
+    
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -91,30 +91,48 @@ input {
     border: unset;
 }
 
-.submit-btn {
-    width: 100%;
-    font-family: inherit;
-    font-style: inherit;
-    padding: .5rem 2.5rem;
-    background-color: rgb(24, 126, 24);
-    border: unset;
-    transition: all 300ms ease-in-out;
-}
-
-.submit-btn:hover {
-    opacity: .7;
-    cursor: pointer;
-}
 
 .btn {
+    font-family: inherit;
+    border: unset;
     display: block;
     text-decoration: none;
     text-align: center;
     padding: .5rem 2rem;
     margin: 1rem;
-    background-color: white;
-    color: black;
+
 }
+
+
+.a-btn {    display: block;
+    text-decoration: none;
+    text-align: center;
+    padding: .5rem 2rem;
+    margin: 1rem;
+
+}
+
+
+.btn:hover,
+.a-btn:hover {
+    opacity: .7;
+    cursor: pointer;
+}
+
+.btn-in {
+    font-family: inherit;
+    font-style: inherit;
+    padding: .5rem 2.5rem;
+    transition: all 300ms ease-in-out;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 
 .wish {
     margin: 1rem;
