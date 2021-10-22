@@ -5,13 +5,13 @@
 <h2>{{ user | title}}'s Settings</h2>
 
 
-<form action="{{url_for('change_overheads')}}" method="POST">
-    <label for="new_overheads">Change Monthly Overheads</label>
+<form action="{{url_for('change_overheads')}}" method="POST" style="flex-direction: row;">
+    <label for="new_overheads"></label>
     <input type="number" name="new_overheads" id="new_overheads" pattern="[0-9]+"  step="0.01" title="Please input numbers only." placeholder="Currently: {{ current_overheads / 100}}">
     <button type="submit" class="btn btn-manage">Change Your Monthly Overheads</button>
 </form>
 <br><br>
-<form action="{{url_for('change_tax_rate')}}" method="POST">
+<form action="{{url_for('change_tax_rate')}}" method="POST" style="flex-direction: row;">
     <label for="new_tax_rate"></label>
     <input type="number" name="new_tax_rate" id="new_tax_rate" pattern="[0-9]+"  step="0.01" title="Please input two numbers." placeholder="Default is 21%" >
     <span>%</span><button type="submit" class="btn btn-manage">Change Your Tax Rate</button>

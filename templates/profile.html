@@ -5,7 +5,11 @@
 <h2>{{ user | title}}'s Money</h2>
 
 <h1>Credit: {{ money.credit }}</h1>
+{% if money.overheads_to_be_paid > 0 %}
 <h2>Overheads to be paid this month: {{money.overheads_to_be_paid}} left to pay of {{money.user_overheads}}</h2>
+{% else %}
+<h2>Overheads for this month are paid.</h2> <p>For next months overheads: {{money.user_overheads - money.overheads_to_be_paid * -1 }} left to pay of {{money.user_overheads}}</p>
+{% endif %}
 <h2>Disposable Income: {{money.disposable_income}}</h2>
 <h3>Income this month: {{money.income_this_month}}</h3>
 <h3>Tax to set aside: {{money.tax_to_set_aside}}</h3>

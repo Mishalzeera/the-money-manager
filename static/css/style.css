@@ -1,7 +1,8 @@
 /* Global Styles */
 
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@500&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
 @font-face {
     font-family: 'money_money_moneyregular';
     src: url('../fonts/money_money_money-webfont.woff2') format('woff2'),
@@ -10,9 +11,7 @@
     font-style: normal;
 
 }
-:root {
-    --money-green: rgb(24, 126, 24);
-}
+
 
 * {
     margin: 0;
@@ -21,10 +20,8 @@
 }
 
 body {
-  /* background-color: #111; */
-  /* background-color: var(--cool-gray-900); */
-  font-family: "Raleway", sans-serif;
-  /* color: var(--emerald-400); */
+  font-family: "Lato", sans-serif;
+  font-size: 1.3rem;
 }
 
 img {

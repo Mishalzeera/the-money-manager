@@ -2,7 +2,7 @@
 
 body {
     /* background-color: #111; */
-    background-color: var(--red-100);
+    background-color: var(--blue-gray-400);
     /* font-family: "Noto Sans Mono", sans-serif; */
     color: var(--indigo-900);
   }
@@ -30,7 +30,6 @@ body {
 } */
 
 .btn-in {
-  background-color: var(--teal-700);
   color: var(--indigo-50);
 }
 
@@ -44,8 +43,8 @@ body {
 
 
 .register-card {
-  background-color: var(--green-600);
-  color: var(--indigo-900);
+  background-color: var(--cyan-600);
+  color: var(--indigo-50);
 }
 
 input {
