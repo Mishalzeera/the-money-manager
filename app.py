@@ -279,7 +279,7 @@ def index():
         return redirect(url_for('login'))
     else:
     # goes to the users profile page
-        return redirect(url_for('settings'))
+        return render_template("index.html", user=session['user'])
 
 
 @app.route("/register", methods=["GET", "POST"])

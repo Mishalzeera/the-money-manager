@@ -1,6 +1,4 @@
 Don't forget debug=true
-wishlist
-edit wish 
 search feature!
 currency titles, maybe always have credit one colour
 end period function
