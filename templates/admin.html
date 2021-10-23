@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Hello Illustrious Administrator</h2>
+
+
+    
+
+
+<form action="{{ url_for('admin_delete') }}" method="POST">
+    <label for="search_user">Enter User Name To Delete</label>
+    <input type="text" name="search_user" id="search_user">
+    <label for="check_delete">Delete User, Are You Sure?</label>
+    <input type="checkbox" name="check_delete" id="check_delete">
+    <button type="submit" class="btn btn-out">Delete User</button>
+</form>
+
+
+{% endblock %}

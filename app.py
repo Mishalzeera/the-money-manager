@@ -55,6 +55,48 @@ def calculate_disposable_income():
     mongo.db.current_month.update_one(user_key, {"$set": {"disposable_income": disposable_income}})
 
 
+def check_end_month():
+    # session user key
+    user_key = {"name": session['user']}
+    #  gets the users current month for reference
+    current_month = mongo.db.current_month.find_one(user_key)
+    # gets a datestamp
+    now = datetime.now()
+    month = now.strftime("%B %Y")
+    #  gets the datestamp from the users current month
+    month_to_check_against = current_month['datestamp']
+    # conditionally check to see if they are identical
+    if month != month_to_check_against:
+        # send the previous months information to the previous_months db
+        # create an object to send
+        previous_month = {
+            "name": session['user'],
+            "period": month_to_check_against,
+            "spent_this_month": current_month['spent_this_month'],
+            "income_this_month": current_month['income_this_month'],
+            "spent_on_overheads": current_month['spent_on_overheads'],
+            "spent_on_extras": current_month['spent_on_extras'],
+            "tax_to_set_aside": current_month['tax_to_set_aside']
+        }
+        # insert the object into the previous month database
+        mongo.db.previous_months.insert_one(previous_month)
+        # reset the current_month data 
+        mongo.db.current_month.update_one(user_key, {"$set": {"spent_this_month": 0}})
+        mongo.db.current_month.update_one(user_key, {"$set": {"income_this_month": 0}})
+        mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_overheads": 0}})
+        mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_extras": 0}})
+        mongo.db.current_month.update_one(user_key, {"$set": {"suggested_savings_amount": 0}})
+        mongo.db.current_month.update_one(user_key, {"$set": {"overheads_to_be_paid": current_month['user_overheads']}})
+        mongo.db.current_month.update_one(user_key, {"$set": {"datestamp": month}})
+        # calculate the disposable income
+        calculate_disposable_income()
+        # provide user feedback
+        flash("New Month Started!")
+
+    else:
+        pass
+
+
 def create_income_record(db_object):
     # creates a record of every income, for the user_history.html page
     # create user key
@@ -278,8 +320,9 @@ def index():
     if "user" not in session:
         return redirect(url_for('login'))
     else:
-    # goes to the users profile page
-        return render_template("index.html", user=session['user'])
+    # creates a quick view of credit, overheads to be paid and disposable income
+        money = mongo.db.current_month.find_one({"name": session['user']})
+        return render_template("index.html", money=money)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -317,9 +360,14 @@ def register():
         
         # create a starting disposable income
         starting_disposable_income = start_credit_to_int - user_overheads_to_int
+
+        # gets a datestamp
+        now = datetime.now()
+        month = now.strftime("%B %Y")
         # create a starting month object
         start_month = {
             "name": request.form.get("name").lower(),
+            "datestamp": month,
             "credit": start_credit_to_int,
             "user_overheads": user_overheads_to_int,
             "income_this_month": 0,
@@ -364,9 +412,13 @@ def login():
             # check password
             if check_password_hash(
                 existing_user["password"], request.form.get("password")):
+                    # set session cookies
                     session["user"] = request.form.get("name").lower()
                     session["theme"] = mongo.db.current_month.find_one({"name": session['user']})["preferred_theme"]
                     session["tax_rate"] = mongo.db.current_month.find_one({"name": session['user']})["tax_rate"]
+                    # check if its a new month since the last login
+                    check_end_month()
+                    # provide some user feedback
                     flash("Welcome, {}".format(request.form.get("name")))
                     return redirect(url_for('profile', username=session["user"]))
             else:
@@ -385,15 +437,7 @@ def login():
 @ensure_user
 def profile(username):
     # get the dictionary from the database in cents
-    money_cents = mongo.db.current_month.find_one({"name": session["user"]})
-    # iterate through the contents checking types for integers
-    money={}
-    # new empty dictionary
-    for key, value in money_cents.items():
-        if type(value) == int:
-            # update the new dictionary using helper function from functions.py
-            money.update({key: cents_to_euros(value)})
-            # send the new dictionary to the profile template
+    money = mongo.db.current_month.find_one({"name": session["user"]})
     return render_template("profile.html", user=session["user"], money=money)
 
 
@@ -910,16 +954,45 @@ def user_history():
     return render_template("user_history.html", history=history, name = session['user'])
 
 
-@app.route("/deductibles", methods=["GET", "POST"])
+@app.route("/end_tax", methods=["GET", "POST"])
 @ensure_user
-def deductibles():
+def end_tax():
+    if request.method == "POST":
+        if request.form.get("confirm_tax_end") == "on":
+            # create user key
+            user_key = {"name": session['user']}
+            # get current month object
+            current_month = mongo.db.current_month.find_one(user_key)
+            # create a record object
+            tax_record = {
+                "name": session['user'],
+                "period_ending": current_month['datestamp'],
+                "tax_rate": current_month['tax_rate'],
+                "tax_to_set_aside": current_month['tax_to_set_aside'],
+                "credit_after": current_month['credit']
+            }
+            # insert the new object into the database
+            mongo.db.tax_seasons.insert_one(tax_record)
+            # reset the tax_to_set_aside field
+            mongo.db.current_month.update_one(user_key, {"$set": {"tax_to_set_aside": 0}})
+            flash("Tax Record Created, New Period Begun!")
+            return render_template("end_tax.html")
+
+        flash("Please Check The Box To Confirm!")
+        pass
+    return render_template("end_tax.html")
+
+
+@app.route("/calculator", methods=["GET", "POST"])
+@ensure_user
+def calculator():
     if request.method == "POST":
         # get session tax rate cookie
         tax_rate = session['tax_rate']
         total_with_tax = float(request.form.get("calculator"))
         tax_to_deduct = new_invoice_tax(total_with_tax, tax_rate)
-        return render_template("deductibles.html", tax=tax_to_deduct)
-    return render_template("deductibles.html")
+        return render_template("end_tax.html", tax=tax_to_deduct)
+    return render_template("end_tax.html")
 
 
 @app.route("/wishlist", methods=["GET","POST"])
@@ -1128,6 +1201,44 @@ def change_theme():
     return redirect(url_for('settings'))
 
 
+@app.route("/admin")
+@ensure_user
+def admin():
+    return render_template("admin.html")
+
+@app.route("/admin_delete", methods=["GET", "POST"])
+@ensure_user
+def admin_delete():
+    # allows the admin to delete a users account
+    if request.method == "POST":
+        # checks that the admin is sure
+        if request.form.get("check_delete") == "on":
+            # creates a user variable to delete
+            user_to_delete_for_key = request.form.get("search_user").lower()
+            user_to_delete = {"name": user_to_delete_for_key}
+
+            # deletes the user's account
+            mongo.db.users.remove(user_to_delete)
+            mongo.db.current_month.remove(user_to_delete)
+            mongo.db.invoices.remove(user_to_delete)
+            mongo.db.expenses.remove(user_to_delete)
+            mongo.db.rewards.remove(user_to_delete)
+            mongo.db.wishlist.remove(user_to_delete)
+            mongo.db.fs.files.remove(user_to_delete)
+            mongo.db.fs.chunks.remove(user_to_delete)
+            mongo.db.in_out_history.remove(user_to_delete)
+            mongo.db.previous_months.remove(user_to_delete)
+            mongo.db.tax_seasons.remove(user_to_delete)
+
+            # gives admin feedback
+            flash("User deleted!")
+            return render_template("admin.html")
+        flash("Check The Box If You Want To Delete A User")
+        return render_template("admin.html")
+            
+    return render_template("admin.html")
+
+
 @app.route("/delete_account")
 @ensure_user
 def delete_account():
@@ -1141,6 +1252,8 @@ def delete_account():
     mongo.db.fs.files.remove(user_key)
     mongo.db.fs.chunks.remove(user_key)
     mongo.db.in_out_history.remove(user_key)
+    mongo.db.previous_months.remove(user_key)
+    mongo.db.tax_seasons.remove(user_key)
     session.clear()
     flash("May Allah enrich all your days. Your account has been deleted.")
     return redirect('login')

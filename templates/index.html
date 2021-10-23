@@ -1,15 +1,13 @@
 {% extends "base.html" %} {% block content %}
 
-<h1>The Money Manager</h1>
-<h2>Time to get a grip, Sheikh {{user | title}}.</h2>
-
-{% if user == session["user"] %}
-  <p>
-    For too long now, you have been spending based on your impulses. You've made a
-    mess of it. Its time to use THE MONEY MANAGER to your advantage.
-  </p>
+<h2>The Money Manager</h2>
+<h2>Welcome, {{money.name | title }}</h2>
+<h1>Credit: {{ money.credit / 100}} </h1>
+<h4>Disposable Income: {{ money.disposable_income / 100 }}</h4>
+{% if money.overheads_to_be_paid >= 0 %}
+<h4>Overheads To Be Paid : {{ money.overheads_to_be_paid }}</h4>
 {% else %}
-<a href="{{url_for('login')}}" class="a-btn btn-in">Login</a>
-<a href="{{url_for('register')}}"class="a-btn btn-manage">Register</a>
+<h4>Overheads For This Month Are Paid</h4>
 {% endif %}
+
 {% endblock %}

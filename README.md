@@ -428,3 +428,32 @@ along with what is taking place. While the author has been writing documentation
 it has been sporadic. The author has also found it a good way to expose bugs and issues with the
 app. 
 
+### Create Endmonth Function
+
+The End Month function checks to see if the datestamp for the users current month object is the
+same as the month taken from a "now" datetime instance. After comparing, if there is a difference
+the fields pertaining to monthly ins and outs are sent to a "previous months" database, and the
+related fields set to 0 in the current months database. This function runs automatically when a user
+logs in. Previous months will be viewable in a mini-size format in the user history page.
+
+### Create End Tax Season Page
+
+This handy page is for when it is time to end your tax period. By coincidence the author had to
+do his taxes the day before, and realised it is handy to be able to decide for yourself when 
+you want to send in your invoices and receipts, and when you want to hold on a bit longer.
+Now there is a page (with the handy tax calculator) where you can work out your taxes, and then
+initiate the "end tax period" function.
+
+The function simply creates a dictionary object with the tax rate, ending month period and 
+amount of tax. The related field in the current month object is then reset. 
+
+### Create An Admin Profile
+
+This (also very handy) page was made right before the app is to be shared with the mentor
+and friends for feedback. This allows the author access to delete any account with all its
+associated data, as it is difficult to keep track of everyones bits and pieces. An admin.html
+page was made that shows only when "admin" is logged in. From the admin dashboard, the admin 
+can enter the name of a user and then delete. A safeguard checkbox was put in place to avoid
+any accidental erasing. 
+
+

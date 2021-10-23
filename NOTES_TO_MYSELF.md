@@ -1,27 +1,20 @@
 Don't forget debug=true
+history page shows tax seasons and previous months
+"notes" in the dashboard
 search feature!
 currency titles, maybe always have credit one colour
-end period function
-When figures hit zero, conditional in the template changes the text 
 Round off the figures with the floats tiny nearby
 Refactor modules
 {{number | round | int }}
 
-ENDMONTH FUNCTION ()=> {
 
-1. New Money-month object, "CREDIT", "OVERHEADS TO BE PAID", "WISHLIST", "REWARD
-   MEDIA" stay the same, everything else resets to zero
-2. Old Money-month object gets pushed to an array.
-3. Invoices and expenses pushed to arrays
+Creating an endmonth function. When the user registers, a datestamp is created. Whenever the user logs in, the
+app checks the date of the datestamp in the db. If the %y %m is not the same, a new datestamp replaces the old 
+one and overheads to be paid, suggested savings resets, etc. To show on user history page
 
-
-
-Ask Brian:
-- how would you go about refactoring.
-- where would it be wise to have the user_key stored? 
-- what do you think about having spreadsheet functionality?
-- what would be a good way of handling last period's data?
-- how would you do the wishlist edit situation?
+Creating an end tax period, user initiated, has a checkbox to ensure that the user is ready to do it. Then
+creates a new tax_season object, sending to a separate database, and shown on the user history page. The 
+relevant fields reset. 
 
 
 Style ideas:
