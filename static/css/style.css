@@ -42,6 +42,13 @@ a:hover {
     font-family: "money_money_moneyregular";
     font-size: 5rem;
     margin-left: 1rem;
+    text-decoration: none;
+}
+
+.to-dashboard {
+    font-family: "Lato", sans-serif;
+    font-size: .8rem;
+    
 }
 
 .header-flex-parent{

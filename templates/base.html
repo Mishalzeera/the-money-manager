@@ -20,9 +20,14 @@
   <body>
     <header class="header-flex-parent">
       {% if session['user'] %}
-      <a href="{{url_for('profile', username=session['user'])}}" class="money-dingbat">c</a>
+          {% if request.path != "/profile/" + session['user'] %}
+          <a href="{{url_for('profile', username=session['user'])}}" class="money-dingbat">c<span class="to-dashboard">To Dashboard</span></a>
+          {% else %}
+          <a href="{{url_for('index', username=session['user'])}}" class="money-dingbat">c<span class="to-dashboard">To Abridged View</span></a>
+          {% endif %}
+      
       {% else %}
-      <a href="{{url_for('register')}}" class="money-dingbat">c</a>
+      <a href="{{ url_for('login') }}" class="money-dingbat">c<span class="to-dashboard">The Money Manager</span></a>
       
       {% endif %}
       <nav>
@@ -47,7 +52,7 @@
       {% if messages %}
         {% for message in messages %}
           <div class="flashes">
-            <h4>{{ message }}</h4>
+            <h4>{{ message | title}}</h4>
           </div>
         {% endfor %}
       {% endif %}

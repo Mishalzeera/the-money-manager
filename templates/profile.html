@@ -18,7 +18,13 @@
 <p>Amount spent on overheads: {{money.spent_on_overheads / 100}}</p>
 <p>Amount spent on extras: {{money.spent_on_extras / 100}}</p>
 {% if money.user_notes != '' %}
-<p>User notes : {{ money.user_notes }}</p>
+<p>User notes : </p>
+<div>
+    <p class="profile-notes">"{{ money.user_notes }}"</p>
+</div>
+<form action="{{ url_for('edit_note') }}" method="GET">
+    <button type="submit" class="btn btn-manage">Edit Note</button>
+</form>
 {% else %}
 <form action="{{ url_for('create_note') }}" method="POST">
     <label for="create_note">Create A Note: </label>

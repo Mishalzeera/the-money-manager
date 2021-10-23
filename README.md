@@ -456,4 +456,32 @@ page was made that shows only when "admin" is logged in. From the admin dashboar
 can enter the name of a user and then delete. A safeguard checkbox was put in place to avoid
 any accidental erasing. 
 
+### Conditionals In Base Template
 
+In order to prevent the app from overwhelming a user with options, the index page was adapted
+to a simple financial overview. With a glance the user can tell whether or not the new pair 
+of trousers she is about to buy is within her budget this month. A clear button to go to the
+much more comprehensive dashboard is visible above, for when the user needs to focus on managing
+their daily or weekly finances. 
+
+A new Jinja expression {{ if request.path != "/profile/" + session['user']}} was discovered, which
+made the author more aware of possibilities with the Jinja templating engine. 
+
+### Basic Styling
+
+The app, while not as hideous as it was a few steps back (see screenshots for just how horrible), is
+still not aesthetically what the author would like. At the moment, it sometimes has a clean, bank 
+friendly look which makes the author want to vomit a little bit. However, the goal was to get the
+CRUD functionality in place before styling, as per the mentor's advice. So, it will be left at
+"CRUD-ugly" and pushed as such to Heroku. From now on there will be less pushes to Heroku as the 
+styling is gone into.
+
+### The Horror: CRUD-ugly
+
+ ![Ugly picture of prestyled app](./wireframes/crud-ugly1 "Very ugly!")
+ 
+ ![Ugly picture of prestyled app](./wireframes/crud-ugly2 "Very ugly!")
+
+ ![Ugly picture of prestyled app](./wireframes/crud-ugly3 "Very ugly!")
+
+ ![Ugly picture of prestyled app](./wireframes/crud-ugly4 "Very ugly!")

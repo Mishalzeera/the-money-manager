@@ -1,6 +1,5 @@
 Don't forget debug=true
 history page shows tax seasons and previous months
-"notes" in the dashboard
 search feature!
 currency titles, maybe always have credit one colour
 Round off the figures with the floats tiny nearby

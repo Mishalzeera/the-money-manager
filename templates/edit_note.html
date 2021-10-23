@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Edit Your Note</h2>
+<div class="register-card">
+    <form action="{{ url_for('edit_note')}}" method="POST">
+        <textarea name="edited_note" id="edited_note" cols="30" rows="10">{{ user.user_notes }}</textarea>
+        <button type="submit" class="btn btn-manage">Modify Note</button>
+    </form>
+</div>
+{% endblock %}

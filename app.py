@@ -423,7 +423,8 @@ def login():
                     check_end_month()
                     # provide some user feedback
                     flash("Welcome, {}".format(request.form.get("name")))
-                    return redirect(url_for('profile', username=session["user"]))
+                    money = mongo.db.current_month.find_one({"name": session['user']})
+                    return render_template("index.html", money=money)
             else:
                 flash("Incorrect Username or Password")
                 return redirect(url_for('login'))
@@ -455,6 +456,18 @@ def create_note():
     money = mongo.db.current_month.find_one({"name": session["user"]})
     return redirect('profile', username=session['user'], money=money)
 
+
+@app.route("/edit_note", methods=["GET", "POST"])
+@ensure_user
+def edit_note():
+    if request.method == "POST":
+        new_note = request.form.get("edited_note")
+        mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"user_notes": new_note}})
+        flash("Note Successfully Updated!")
+        money = mongo.db.current_month.find_one({"name": session["user"]})
+        return render_template("profile.html", username=session['user'], money=money)
+    user = mongo.db.current_month.find_one({"name": session['user']})
+    return render_template("edit_note.html", user=user)
 
 
 @app.route("/invoice")
