@@ -1168,26 +1168,31 @@ def change_overheads():
     user_key = {"name": session['user']}
     if request.method == "POST":
         # access the form data
-        new_overheads = request.form.get("new_overheads")
-        # convert to cents
-        new_overheads_to_send = euros_to_cents(new_overheads)
-        # access the old overheads for the "to be paid" calculation
-        old_overheads = mongo.db.current_month.find_one(user_key)['user_overheads']
-        # get spent_on_overheads
-        spent_on_overheads = mongo.db.current_month.find_one({"name": session['user']})['spent_on_overheads']
-        # create new_overheads_to_be_paid using the new_overheads
-        new_overheads_to_be_paid = new_overheads_to_send - spent_on_overheads
-        # send it to the db
-        mongo.db.current_month.update_one(user_key, {"$set": {"user_overheads": new_overheads_to_send}})
+        if request.form.get("new_overheads") != '':
+            new_overheads = request.form.get("new_overheads")
+            # convert to cents
+            new_overheads_to_send = euros_to_cents(new_overheads)
+            # access the old overheads for the "to be paid" calculation
+            old_overheads = mongo.db.current_month.find_one(user_key)['user_overheads']
+            # get spent_on_overheads
+            spent_on_overheads = mongo.db.current_month.find_one({"name": session['user']})['spent_on_overheads']
+            # create new_overheads_to_be_paid using the new_overheads
+            new_overheads_to_be_paid = new_overheads_to_send - spent_on_overheads
+            # send it to the db
+            mongo.db.current_month.update_one(user_key, {"$set": {"user_overheads": new_overheads_to_send}})
         
-        # update overheads_to_be_paid
-        mongo.db.current_month.update_one(user_key, {"$set": {"overheads_to_be_paid": new_overheads_to_be_paid}})
-        # recalculate the users disposable income
-        calculate_disposable_income()
-        # give some feedback
-        flash("Overheads Successfully Updated!")
-        # stay on the same page
-        return redirect(url_for('settings'))
+            # update overheads_to_be_paid
+            mongo.db.current_month.update_one(user_key, {"$set": {"overheads_to_be_paid": new_overheads_to_be_paid}})
+            # recalculate the users disposable income
+            calculate_disposable_income()
+            # give some feedback
+            flash("Overheads Successfully Updated!")
+            # stay on the same page
+            return redirect(url_for('settings'))
+
+        else:
+            flash("Overheads remain the same - please enter a new figure if you want to update them.")
+            return redirect(url_for('settings'))
     
     return redirect(url_for('settings'))
 

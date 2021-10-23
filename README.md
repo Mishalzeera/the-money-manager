@@ -478,7 +478,7 @@ styling is gone into.
 
 ### The Horror: CRUD-ugly
 
- ![Ugly picture of prestyled app](./wireframes/crud-ugly1 "Very ugly!")
+ ![Ugly picture of prestyled app](wireframes/crud-ugly1 "Very ugly!")
  
  ![Ugly picture of prestyled app](./wireframes/crud-ugly2 "Very ugly!")
 
