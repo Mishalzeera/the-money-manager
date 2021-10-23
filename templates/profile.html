@@ -17,6 +17,15 @@
 <p>Total amount spent this month: {{money.spent_this_month / 100}}</p>
 <p>Amount spent on overheads: {{money.spent_on_overheads / 100}}</p>
 <p>Amount spent on extras: {{money.spent_on_extras / 100}}</p>
+{% if money.user_notes != '' %}
+<p>User notes : {{ money.user_notes }}</p>
+{% else %}
+<form action="{{ url_for('create_note') }}" method="POST">
+    <label for="create_note">Create A Note: </label>
+    <textarea name="create_note" id="create_note" cols="30" rows="10"></textarea>
+    <button type="submit" class="btn btn-in">Create Note</button>
+</form>
+{% endif %}
 <a href="{{url_for('invoice')}}" class="a-btn btn-in">Manage Invoices/Income</a>
 <a href="{{ url_for('expenses')}} "class="a-btn btn-out">Manage Expenses</a>
 <a href="{{ url_for('user_history')}} "class="a-btn btn-manage">User History</a>

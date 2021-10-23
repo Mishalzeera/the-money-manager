@@ -379,6 +379,7 @@ def register():
             "tax_to_set_aside": 0,
             "suggested_savings_amount": 0,
             "disposable_income": starting_disposable_income,
+            "user_notes": '',
             "preferred_theme": "dark"
         }
         
@@ -399,6 +400,8 @@ def register():
         return redirect(url_for("profile", username=session["user"]))
 
     return render_template("register.html")
+
+
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -439,6 +442,19 @@ def profile(username):
     # get the dictionary from the database in cents
     money = mongo.db.current_month.find_one({"name": session["user"]})
     return render_template("profile.html", user=session["user"], money=money)
+
+@app.route("/create_note", methods=["GET", "POST"])
+@ensure_user
+def create_note():
+    if request.method == "POST":
+        new_note = request.form.get("create_note")
+        mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"user_notes": new_note}})
+        flash("Note Added!")
+        money = mongo.db.current_month.find_one({"name": session["user"]})
+        return render_template("profile.html", username=session['user'], money=money)
+    money = mongo.db.current_month.find_one({"name": session["user"]})
+    return redirect('profile', username=session['user'], money=money)
+
 
 
 @app.route("/invoice")
