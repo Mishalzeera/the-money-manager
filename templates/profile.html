@@ -2,7 +2,7 @@
 
 {% block content%}
 
-<h2>{{ user | title}}'s Money</h2>
+<h2>{{ money.name | title}}'s Money</h2>
 
 <h1>Credit: {{ money.credit / 100}}</h1>
 {% if money.overheads_to_be_paid > 0 %}

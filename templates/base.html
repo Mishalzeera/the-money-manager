@@ -20,7 +20,7 @@
   <body>
     <header class="header-flex-parent">
       {% if session['user'] %}
-          {% if request.path != "/profile/" + session['user'] %}
+          {% if request.path != "/profile/" %}
           <a href="{{url_for('profile', username=session['user'])}}" class="money-dingbat">c<span class="to-dashboard">To Dashboard</span></a>
           {% else %}
           <a href="{{url_for('index', username=session['user'])}}" class="money-dingbat">c<span class="to-dashboard">To Abridged View</span></a>

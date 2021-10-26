@@ -27,7 +27,7 @@ def ensure_user(route):
     @wraps(route)
     def wrapper_function(*args, **kwargs):
         if 'user' not in session:
-            flash("You must be logged in to access that page.")
+            flash("Please Log In Or Register.")
             return redirect(url_for('login'))
         else:
             return route(*args, **kwargs)
@@ -81,13 +81,19 @@ def check_end_month():
         # insert the object into the previous month database
         mongo.db.previous_months.insert_one(previous_month)
         # reset the current_month data 
-        mongo.db.current_month.update_one(user_key, {"$set": {"spent_this_month": 0}})
-        mongo.db.current_month.update_one(user_key, {"$set": {"income_this_month": 0}})
-        mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_overheads": 0}})
-        mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_extras": 0}})
-        mongo.db.current_month.update_one(user_key, {"$set": {"suggested_savings_amount": 0}})
-        mongo.db.current_month.update_one(user_key, {"$set": {"overheads_to_be_paid": current_month['user_overheads']}})
-        mongo.db.current_month.update_one(user_key, {"$set": {"datestamp": month}})
+        mongo.db.current_month.update(user_key, 
+        {"$set": 
+        {
+            "spent_this_month": 0, 
+            "income_this_month": 0, 
+            "spent_on_overheads": 0, 
+            "spent_on_extras": 0, 
+            "suggested_savings_amount": 0, 
+            "overheads_to_be_paid": current_month['user_overheads'],
+            "datestamp": month
+        }
+        })
+        
         # calculate the disposable income
         calculate_disposable_income()
         # provide user feedback
@@ -314,15 +320,12 @@ def create_deleted_expense_record_part_two():
 
 
 @app.route("/")
+@ensure_user
 def index():
     # handles when the user navigates to the site initially
-    # if user not in session, goes to login
-    if "user" not in session:
-        return redirect(url_for('login'))
-    else:
     # creates a quick view of credit, overheads to be paid and disposable income
-        money = mongo.db.current_month.find_one({"name": session['user']})
-        return render_template("index.html", money=money)
+    money = mongo.db.current_month.find_one({"name": session['user']})
+    return render_template("index.html", money=money)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -397,7 +400,7 @@ def register():
         # give some user feedback
         flash("Registration Successful")
         # go to the new users profile
-        return redirect(url_for("profile", username=session["user"]))
+        return redirect(url_for('profile'))
 
     return render_template("register.html")
 
@@ -416,14 +419,16 @@ def login():
             if check_password_hash(
                 existing_user["password"], request.form.get("password")):
                     # set session cookies
+                    # get current month object with cookie settings
                     session["user"] = request.form.get("name").lower()
-                    session["theme"] = mongo.db.current_month.find_one({"name": session['user']})["preferred_theme"]
-                    session["tax_rate"] = mongo.db.current_month.find_one({"name": session['user']})["tax_rate"]
+                    current_month = mongo.db.current_month.find_one({"name": session['user']})
+                    session["theme"] = current_month["preferred_theme"]
+                    session["tax_rate"] = current_month["tax_rate"]
                     # check if its a new month since the last login
                     check_end_month()
                     # provide some user feedback
                     flash("Welcome, {}".format(request.form.get("name")))
-                    money = mongo.db.current_month.find_one({"name": session['user']})
+                    money = current_month
                     return render_template("index.html", money=money)
             else:
                 flash("Incorrect Username or Password")
@@ -437,12 +442,12 @@ def login():
     return render_template("login.html")
 
 
-@app.route("/profile/<username>") 
+@app.route("/profile/") 
 @ensure_user
-def profile(username):
+def profile():
     # get the dictionary from the database in cents
     money = mongo.db.current_month.find_one({"name": session["user"]})
-    return render_template("profile.html", user=session["user"], money=money)
+    return render_template("profile.html", money=money)
 
 @app.route("/create_note", methods=["GET", "POST"])
 @ensure_user
@@ -451,10 +456,9 @@ def create_note():
         new_note = request.form.get("create_note")
         mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"user_notes": new_note}})
         flash("Note Added!")
-        money = mongo.db.current_month.find_one({"name": session["user"]})
-        return render_template("profile.html", username=session['user'], money=money)
+        
     money = mongo.db.current_month.find_one({"name": session["user"]})
-    return redirect('profile', username=session['user'], money=money)
+    return redirect(url_for('profile'))
 
 
 @app.route("/edit_note", methods=["GET", "POST"])
@@ -465,7 +469,7 @@ def edit_note():
         mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"user_notes": new_note}})
         flash("Note Successfully Updated!")
         money = mongo.db.current_month.find_one({"name": session["user"]})
-        return render_template("profile.html", username=session['user'], money=money)
+        return redirect(url_for('profile'))
     user = mongo.db.current_month.find_one({"name": session['user']})
     return render_template("edit_note.html", user=user)
 
@@ -548,7 +552,7 @@ def add_invoice():
         create_income_record(new_invoice)
         # provide confirmation to user:
         flash("Invoice successfully added!")
-        return redirect(url_for('profile', username=session['user']))
+        return redirect(url_for('profile'))
 
     return render_template("add_invoice.html")
 
@@ -751,8 +755,8 @@ def delete_invoice(invoice_id):
         calculate_disposable_income()
         flash("Invoice Deleted!")
         return redirect(url_for('invoice'))
-
-    return redirect(url_for('invoice'))
+    invoice=mongo.db.invoices.find_one({"_id": ObjectId(invoice_id)})
+    return render_template("delete_invoice.html", invoice=invoice)
 
 
 @app.route("/expenses")

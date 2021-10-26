@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Confirm Delete Invoice</h1>
+<h4>Please be sure, you cannot undo this action.</h4>
+
+<form action="{{url_for('delete_invoice', invoice_id=invoice._id)}}" method="POST">
+    <button type="submit" class="btn btn-out">Delete</button>
+  </form>
+  
+{% endblock %}

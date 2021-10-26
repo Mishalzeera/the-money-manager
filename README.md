@@ -485,3 +485,30 @@ styling is gone into.
  ![Ugly picture of prestyled app](./wireframes/crud-ugly3 "Very ugly!")
 
  ![Ugly picture of prestyled app](./wireframes/crud-ugly4 "Very ugly!")
+
+### Meeting With Mentor
+
+At this point the author met with his mentor, who gave some good feedback, and
+some ideas how to streamline the application. This includes writing back-end
+form validation, using better .update() methodology, as well as lots of other
+smaller tips. Too many to mention, but all will be done before the styling.
+
+### The Update Method
+
+The author took many naive routes to accomplish some basic actions. One of
+which was using update_one repetitively to change the same database colletion.
+This was also a good exercise in going through the code from a birdseye view.
+Code at this length does seem to be a lot harder to read and get through than
+when its under 500 lines.
+
+### Redirect vs Render Template
+
+The author could at no point clearly comprehend the difference and application
+of the two methods. This had in part to do with a misunderstanding of the 
+correct syntax involved. For the whole project the author had been using
+redirect(url_for('')) which has a different application. Life would have been 
+a lot easier if this was clearer from the start. 
+
+
+
+
