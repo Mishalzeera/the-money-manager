@@ -928,57 +928,61 @@ def edit_expense(expense_id):
 @app.route("/delete_expense/<expense_id>", methods=["GET", "POST"])
 @ensure_user
 def delete_expense(expense_id):
-        # refactor amount back into credit and update the relevant fields
-        # to recalculate finances so that updated amounts modify rather than add to
-        # get original expense amount, credit and add back in
+        if request.method == "POST":
+            # refactor amount back into credit and update the relevant fields
+            # to recalculate finances so that updated amounts modify rather than add to
+            # get original expense amount, credit and add back in
 
-        user_key = {"name": session['user']}
-        old_expense = mongo.db.expenses.find_one({"_id": ObjectId(expense_id)})
-        old_expense_amount = mongo.db.expenses.find_one({"_id": ObjectId(expense_id)})["amount"]
-        credit_before = mongo.db.current_month.find_one(user_key)["credit"]
-        credit_to_refactor = old_expense_amount + credit_before
-        # update the database temporarily
-        mongo.db.current_month.update_one(user_key, {"$set": {"credit": credit_to_refactor}})
+            user_key = {"name": session['user']}
+            old_expense = mongo.db.expenses.find_one({"_id": ObjectId(expense_id)})
+            old_expense_amount = mongo.db.expenses.find_one({"_id": ObjectId(expense_id)})["amount"]
+            credit_before = mongo.db.current_month.find_one(user_key)["credit"]
+            credit_to_refactor = old_expense_amount + credit_before
+            # update the database temporarily
+            mongo.db.current_month.update_one(user_key, {"$set": {"credit": credit_to_refactor}})
 
-        # get spent_this_month and subtract old expense
+            # get spent_this_month and subtract old expense
 
-        total_spent = mongo.db.current_month.find_one(user_key)["spent_this_month"]
-        new_total = total_spent - old_expense_amount
-        # update db accordingly
-        mongo.db.current_month.update_one(user_key, {"$set": {"spent_this_month": new_total}})
+            total_spent = mongo.db.current_month.find_one(user_key)["spent_this_month"]
+            new_total = total_spent - old_expense_amount
+            # update db accordingly
+            mongo.db.current_month.update_one(user_key, {"$set": {"spent_this_month": new_total}})
 
-        if old_expense["type"] == "Overheads":
-            # get overheads_to_be_paid 
-            overheads_to_be_paid = mongo.db.current_month.find_one(user_key)["overheads_to_be_paid"]
-            # and add the amount back in
-            new_overheads = overheads_to_be_paid + old_expense_amount
-            # get spent_on_overheads
-            old_spent_on_overheads = mongo.db.current_month.find_one(user_key)["spent_on_overheads"]
-            # subtract the amount spent
-            new_spent_on_overheads = old_spent_on_overheads - old_expense_amount
-            # and update the database accordingly
-            mongo.db.current_month.update_one(user_key, {"$set": {"overheads_to_be_paid": new_overheads}})
-            mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_overheads": new_spent_on_overheads}})
-        else:
-            # get spent_on_extras
-            old_spent_on_extras = mongo.db.current_month.find_one(user_key)["spent_on_extras"]
-            # subtract the amount spent
-            new_spent_on_extras = old_spent_on_extras - old_expense_amount
-            # and update the database accordingly
-            mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_extras": new_spent_on_extras}})
+            if old_expense["type"] == "Overheads":
+                # get overheads_to_be_paid 
+                overheads_to_be_paid = mongo.db.current_month.find_one(user_key)["overheads_to_be_paid"]
+                # and add the amount back in
+                new_overheads = overheads_to_be_paid + old_expense_amount
+                # get spent_on_overheads
+                old_spent_on_overheads = mongo.db.current_month.find_one(user_key)["spent_on_overheads"]
+                # subtract the amount spent
+                new_spent_on_overheads = old_spent_on_overheads - old_expense_amount
+                # and update the database accordingly
+                mongo.db.current_month.update_one(user_key, {"$set": {"overheads_to_be_paid": new_overheads}})
+                mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_overheads": new_spent_on_overheads}})
+            else:
+                # get spent_on_extras
+                old_spent_on_extras = mongo.db.current_month.find_one(user_key)["spent_on_extras"]
+                # subtract the amount spent
+                new_spent_on_extras = old_spent_on_extras - old_expense_amount
+                # and update the database accordingly
+                mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_extras": new_spent_on_extras}})
 
-        # get expense to delete
-        expense_to_delete = mongo.db.expenses.find_one({"_id": ObjectId(expense_id)})
-        # create a record sans credit after
-        create_deleted_expense_record_part_one(expense_to_delete)
-        # delete the expense
-        mongo.db.expenses.remove(expense_to_delete)
-        # update the record object with the updated credit
-        create_deleted_expense_record_part_two()
-        # calculate disposable income
-        calculate_disposable_income()
-        flash("Expense Successfully Deleted!")
-        return redirect(url_for('expenses'))
+            # get expense to delete
+            expense_to_delete = mongo.db.expenses.find_one({"_id": ObjectId(expense_id)})
+            # create a record sans credit after
+            create_deleted_expense_record_part_one(expense_to_delete)
+            # delete the expense
+            mongo.db.expenses.remove(expense_to_delete)
+            # update the record object with the updated credit
+            create_deleted_expense_record_part_two()
+            # calculate disposable income
+            calculate_disposable_income()
+            flash("Expense Successfully Deleted!")
+            return redirect(url_for('expenses'))
+    
+        expense = mongo.db.expenses.find_one({"_id": ObjectId(expense_id)})
+        return render_template("delete_expense.html", expense=expense)
 
 @app.route("/user_history")
 @ensure_user
