@@ -509,6 +509,15 @@ correct syntax involved. For the whole project the author had been using
 redirect(url_for('')) which has a different application. Life would have been 
 a lot easier if this was clearer from the start. 
 
+### Add Delete Confirmation Pages
+
+Previously the author was of the mentality that the User should live 
+dangerously. This means that the User had no safety net previously using the
+app. In other words, the app deleted important things like your invoices,
+expenses and your profile without any warning. Mentor warned against this.
+Now the app sends the user to a confirmation page where the POST request
+can be initiated. 
+
 
 
 

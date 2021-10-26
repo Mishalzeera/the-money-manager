@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Delete Your Account?</h1>
+<p>This will erase all your invoices, expenses and user history. Are you sure??</p>
+<h4>If you're sure, click the button.</h4>
+
+<form action="{{url_for('delete_account')}}" method="POST">
+    <button type="submit" class="btn btn-out">Delete Account</button>
+</form>
+
+{% endblock %}

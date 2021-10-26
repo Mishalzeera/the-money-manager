@@ -1020,16 +1020,15 @@ def end_tax():
     return render_template("end_tax.html")
 
 
-@app.route("/calculator", methods=["GET", "POST"])
+@app.route("/calculator", methods=["POST"])
 @ensure_user
-def calculator():
-    if request.method == "POST":
-        # get session tax rate cookie
-        tax_rate = session['tax_rate']
-        total_with_tax = float(request.form.get("calculator"))
-        tax_to_deduct = new_invoice_tax(total_with_tax, tax_rate)
-        return render_template("end_tax.html", tax=tax_to_deduct)
-    return render_template("end_tax.html")
+def calculator():  
+    # get session tax rate cookie
+    tax_rate = session['tax_rate']
+    total_with_tax = float(request.form.get("calculator"))
+    tax_to_deduct = new_invoice_tax(total_with_tax, tax_rate)
+    return render_template("end_tax.html", tax=tax_to_deduct)
+    
 
 
 @app.route("/wishlist", methods=["GET","POST"])
@@ -1040,34 +1039,33 @@ def wishlist():
     return render_template("wishlist.html", wishlist=wishlist)
 
 
-@app.route("/add_wish", methods=["GET","POST"])
+@app.route("/add_wish", methods=["POST"])
 @ensure_user  
 def add_wish():
-    if request.method == 'POST':
-        # user_key
-        user_key = {"name": session['user']}
-        # get disposable income
-        disposable_income = mongo.db.current_month.find_one(user_key)['disposable_income']
-        # convert currency to cents
-        cost_of_item = euros_to_cents(request.form.get("wish_cost"))
-        # check if item on wishlist is affordable
-        if cost_of_item <= disposable_income:
-            affordable = True
-        else:
-            affordable = False
-        # create a wishlist dictionary
-        wishlist_item = {
-            "name": session["user"],
-            "wish_name": request.form.get("wish_name").lower(),
-            "wish_cost": cost_of_item,
-            "wish_description": request.form.get("wish_description"),
-            "is_affordable": affordable
-        }
-        # send dictionary to the database
-        mongo.db.wishlist.insert_one(wishlist_item)
-        flash("Item successfully added")
-        # wishlist = mongo.db.wishlist.find({"name": session["user"]})
-        return redirect(url_for('wishlist'))
+    # user_key
+    user_key = {"name": session['user']}
+    # get disposable income
+    disposable_income = mongo.db.current_month.find_one(user_key)['disposable_income']
+    # convert currency to cents
+    cost_of_item = euros_to_cents(request.form.get("wish_cost"))
+    # check if item on wishlist is affordable
+    if cost_of_item <= disposable_income:
+        affordable = True
+    else:
+        affordable = False
+    # create a wishlist dictionary
+    wishlist_item = {
+        "name": session["user"],
+        "wish_name": request.form.get("wish_name").lower(),
+        "wish_cost": cost_of_item,
+        "wish_description": request.form.get("wish_description"),
+        "is_affordable": affordable
+    }
+    # send dictionary to the database
+    mongo.db.wishlist.insert_one(wishlist_item)
+    flash("Item successfully added")
+    # wishlist = mongo.db.wishlist.find({"name": session["user"]})
+    return redirect(url_for('wishlist'))
 
 
 @app.route("/edit_wish/<wish>", methods=["GET", "POST"])
@@ -1096,26 +1094,23 @@ def edit_wish(wish):
         # send dictionary to the database
         mongo.db.wishlist.update({"_id": ObjectId(wish)}, wishlist_item)
         flash("Item successfully edited!")
-        # wishlist = mongo.db.wishlist.find({"name": session["user"]})
-        return redirect(url_for('wishlist'))       
-        # return render_template('edit_wish.html', wish=wish_to_edit)
+        return redirect(url_for('wishlist'))  
+
     wish_to_edit = mongo.db.wishlist.find_one({"_id": ObjectId(wish)})  
     return render_template('edit_wish.html', wish=wish_to_edit)
 
 
-@app.route("/delete_wish/<wish>", methods=["GET", "POST"])
+@app.route("/delete_wish/<wish>", methods=["POST"])
 @ensure_user
 def delete_wish(wish):
-    if request.method == "POST":
-        wish_to_delete = mongo.db.wishlist.find_one({"_id": ObjectId(wish)})
-        mongo.db.wishlist.remove(wish_to_delete)
-        flash("Wish deleted!")
-        return redirect(url_for('wishlist'))    
-    return redirect(url_for('wishlist'))
+    wish_to_delete = mongo.db.wishlist.find_one({"_id": ObjectId(wish)})
+    mongo.db.wishlist.remove(wish_to_delete)
+    flash("Wish deleted!")
+    return redirect(url_for('wishlist'))    
 
 
 
-@app.route("/reward", methods=["GET", "POST"])
+@app.route("/reward")
 @ensure_user
 def reward():   
     user_reward = mongo.db.rewards.find_one({"name": session['user']})
@@ -1163,84 +1158,81 @@ def logout():
 def settings():
     # get the current overheads to display on the template for user reference
     current_month = mongo.db.current_month.find_one({"name": session['user']})
-    current_overheads = current_month['user_overheads']
-    return render_template("settings.html", user=session["user"], current_overheads=current_overheads)
+    return render_template("settings.html", user=session["user"], current_month=current_month)
 
 
-@app.route("/change_overheads", methods=["GET", "POST"])
+@app.route("/change_overheads", methods=["POST"])
 @ensure_user
 def change_overheads():
     # allows the user to change their monthly overheads
     # accessed from the settings page
     # set the user_key to session user
     user_key = {"name": session['user']}
-    if request.method == "POST":
-        # access the form data
-        if request.form.get("new_overheads") != '':
-            new_overheads = request.form.get("new_overheads")
-            # convert to cents
-            new_overheads_to_send = euros_to_cents(new_overheads)
-            # access the old overheads for the "to be paid" calculation
-            old_overheads = mongo.db.current_month.find_one(user_key)['user_overheads']
-            # get spent_on_overheads
-            spent_on_overheads = mongo.db.current_month.find_one({"name": session['user']})['spent_on_overheads']
-            # create new_overheads_to_be_paid using the new_overheads
-            new_overheads_to_be_paid = new_overheads_to_send - spent_on_overheads
-            # send it to the db
-            mongo.db.current_month.update_one(user_key, {"$set": {"user_overheads": new_overheads_to_send}})
-        
-            # update overheads_to_be_paid
-            mongo.db.current_month.update_one(user_key, {"$set": {"overheads_to_be_paid": new_overheads_to_be_paid}})
-            # recalculate the users disposable income
-            calculate_disposable_income()
-            # give some feedback
-            flash("Overheads Successfully Updated!")
-            # stay on the same page
-            return redirect(url_for('settings'))
-
-        else:
-            flash("Overheads remain the same - please enter a new figure if you want to update them.")
-            return redirect(url_for('settings'))
     
-    return redirect(url_for('settings'))
+    # access the form data
+    if request.form.get("new_overheads") != '':
+        new_overheads = request.form.get("new_overheads")
+        # convert to cents
+        new_overheads_to_send = euros_to_cents(new_overheads)
+        # access the old overheads for the "to be paid" calculation
+        old_overheads = mongo.db.current_month.find_one(user_key)['user_overheads']
+        # get spent_on_overheads
+        spent_on_overheads = mongo.db.current_month.find_one({"name": session['user']})['spent_on_overheads']
+        # create new_overheads_to_be_paid using the new_overheads
+        new_overheads_to_be_paid = new_overheads_to_send - spent_on_overheads
+        # send it to the db
+        mongo.db.current_month.update_one(user_key, {"$set": {"user_overheads": new_overheads_to_send}})
+    
+        # update overheads_to_be_paid
+        mongo.db.current_month.update_one(user_key, {"$set": {"overheads_to_be_paid": new_overheads_to_be_paid}})
+        # recalculate the users disposable income
+        calculate_disposable_income()
+        # give some feedback
+        flash("Overheads Successfully Updated!")
+        # stay on the same page
+        return redirect(url_for('settings'))
 
-@app.route("/change_tax_rate", methods=["GET", "POST"])
+    else:
+        flash("Overheads remain the same - please enter a new figure if you want to update them.")
+        return redirect(url_for('settings'))
+    
+
+
+@app.route("/change_tax_rate", methods=["POST"])
 @ensure_user
 def change_tax_rate():
-    if request.method == "POST":
-        # check to see if a tax rate is selected
-        if request.form.get("new_tax_rate") == '':
-            # if not, default to Netherlands standard
-            tax_rate_to_int = 121            
-        else:
-            # if so, change the amount to match the user requested, making sure its in the useable format for our functions
-            tax_rate_to_string = "1" + str(request.form.get("new_tax_rate"))
-            tax_rate_to_int = int(tax_rate_to_string)
-        # update the db with the new amount...
-        mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"tax_rate": tax_rate_to_int}})
-        # and adapt the session cookie to match
-        session['tax_rate'] = tax_rate_to_int
-        # provide some user feedback
-        flash("Tax Rate Updated!")
-        # reload the same "settings" page
-        return redirect(url_for('settings'))
-
+    # check to see if a tax rate is selected
+    if request.form.get("new_tax_rate") == '':
+        # if not, stay as it is
+        tax_rate_to_int = session['tax_rate']          
+    else:
+        # if so, change the amount to match the user requested, making sure its in the useable format for our functions
+        tax_rate_to_string = "1" + str(request.form.get("new_tax_rate"))
+        tax_rate_to_int = int(tax_rate_to_string)
+    # update the db with the new amount...
+    mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"tax_rate": tax_rate_to_int}})
+    # and adapt the session cookie to match
+    session['tax_rate'] = tax_rate_to_int
+    # provide some user feedback
+    flash("Tax Rate Updated!")
+    # reload the same "settings" page
     return redirect(url_for('settings'))
 
+   
 
-@app.route("/change_theme", methods=["GET", "POST"])
+
+@app.route("/change_theme", methods=["POST"])
 @ensure_user
-def change_theme():
-    if request.method == "POST":
-        if session['theme'] == "dark":
-            mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"preferred_theme": "light"}})
-            session['theme'] = "light"
-        else:
-            mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"preferred_theme": "dark"}})
-            session['theme'] = "dark"
-        flash("Theme settings updated!")
-        return redirect(url_for('settings'))
+def change_theme():    
+    if session['theme'] == "dark":
+        mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"preferred_theme": "light"}})
+        session['theme'] = "light"
+    else:
+        mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"preferred_theme": "dark"}})
+        session['theme'] = "dark"
+    flash("Theme settings updated!")
     return redirect(url_for('settings'))
+    
 
 
 @app.route("/admin")
@@ -1281,24 +1273,27 @@ def admin_delete():
     return render_template("admin.html")
 
 
-@app.route("/delete_account")
+@app.route("/delete_account", methods=["GET", "POST"])
 @ensure_user
 def delete_account():
-    user_key = {"name": session['user']}
-    mongo.db.users.remove(user_key)
-    mongo.db.current_month.remove(user_key)
-    mongo.db.invoices.remove(user_key)
-    mongo.db.expenses.remove(user_key)
-    mongo.db.rewards.remove(user_key)
-    mongo.db.wishlist.remove(user_key)
-    mongo.db.fs.files.remove(user_key)
-    mongo.db.fs.chunks.remove(user_key)
-    mongo.db.in_out_history.remove(user_key)
-    mongo.db.previous_months.remove(user_key)
-    mongo.db.tax_seasons.remove(user_key)
-    session.clear()
-    flash("May Allah enrich all your days. Your account has been deleted.")
-    return redirect('login')
+    if request.method == "POST":
+        user_key = {"name": session['user']}
+        mongo.db.users.remove(user_key)
+        mongo.db.current_month.remove(user_key)
+        mongo.db.invoices.remove(user_key)
+        mongo.db.expenses.remove(user_key)
+        mongo.db.rewards.remove(user_key)
+        mongo.db.wishlist.remove(user_key)
+        mongo.db.fs.files.remove(user_key)
+        mongo.db.fs.chunks.remove(user_key)
+        mongo.db.in_out_history.remove(user_key)
+        mongo.db.previous_months.remove(user_key)
+        mongo.db.tax_seasons.remove(user_key)
+        session.clear()
+        flash("May Allah enrich all your days. Your account has been deleted.")
+        return redirect('login')
+
+    return render_template("delete_account.html")
 
 
 if __name__ == "__main__":
