@@ -3,7 +3,7 @@ import os
 from functools import wraps
 import inspect
 import json
-from functions import *
+from utils import *
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
