@@ -526,13 +526,13 @@ less pushes to Heroku as the styling is gone into.
 
 ### The Horror: CRUD-ugly
 
- ![Ugly picture of prestyled app](wireframes/crud-ugly1 "Very ugly!")
+ ![Ugly picture of prestyled app](wireframes/crud-ugly1.png "Very ugly!")
  
- ![Ugly picture of prestyled app](./wireframes/crud-ugly2 "Very ugly!")
+ ![Ugly picture of prestyled app](./wireframes/crud-ugly2.png "Very ugly!")
 
- ![Ugly picture of prestyled app](./wireframes/crud-ugly3 "Very ugly!")
+ ![Ugly picture of prestyled app](./wireframes/crud-ugly3.png "Very ugly!")
 
- ![Ugly picture of prestyled app](./wireframes/crud-ugly4 "Very ugly!")
+ ![Ugly picture of prestyled app](./wireframes/crud-ugly4.png "Very ugly!")
 
 ### Meeting With Mentor
 
