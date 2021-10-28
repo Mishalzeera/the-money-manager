@@ -26,8 +26,8 @@ be good at keeping track of what their financial standing is.
 
 - Freelancers typically experience a "feast or famine" situation and it is
   always advised to keep some capital extra on the side for the "famine" months.
-  One of the features of the app is to help the user protect themselves from being
-  too comfortable during a "feast" stage and overspending.
+  One of the features of the app is to help the user protect themselves from 
+  being too comfortable during a "feast" stage and overspending.
 
 - At the moment when an expansion/investment decision is to be made, the user
   has the opportunity to be certain of their situation financially.
@@ -46,11 +46,11 @@ be good at keeping track of what their financial standing is.
 - A more detailed page where the user can see more endpoints, such as "amount
   spent this month on bills", "income from invoices", "pending invoices"
 
-- A reward system that makes using the app a pleasure, such as
-  images that remind the user of a financial goal. For example, the user
-  may have the wish to earn enough as a freelancer to live in Bali and work from
-  a laptop. She can then upload an image of a person on a Balinese beach typing
-  on a nice MacBook air.
+- A reward system that makes using the app a pleasure, such as images that 
+  remind the user of a financial goal. For example, the user may have the wish 
+  to earn enough as a freelancer to live in Bali and work from a laptop. She 
+  can then upload an image of a person on a Balinese beach typing on a nice 
+  MacBook air.
 
 - An archive of past months finances.
 
@@ -148,24 +148,26 @@ graphics for further down the road since it is easier to do that in VSCode.
 
 ### Create A Base Working Template
 
-In GitPod a new "env.py" file was created. It has been helpful to have to restart
-a few times and learn more about the strategic purpose of an env file. Then a
-base working template as well as a form structure to register was created.
+In GitPod a new "env.py" file was created. It has been helpful to have to 
+restart a few times and learn more about the strategic purpose of an env file. 
+Then a base working template as well as a form structure to register was 
+created.
 
 ### Create Registration Functionality
 
 After creating a basic form in HTML and giving it some workeable styling,
-there was some need for data-type conversion, so a utility Python file was created
-to hold functions that would do all of that. After importing the file at the top
-of app.py, functions within the helper page were finetuned to convert the string
-value from the the form first to a float, then an integer multiplied by 100. This
-gives the value in cents, which is the standard way to store and retrieve currency
-data, according to a Youtube film on ecommerce the author had watched. 
+there was some need for data-type conversion, so a utility Python file was 
+created to hold functions that would do all of that. After importing the file 
+at the top of app.py, functions within the helper page were finetuned to 
+convert the string value from the the form first to a float, then an integer 
+multiplied by 100. This gives the value in cents, which is the standard way 
+to store and retrieve currency data, according to a Youtube film on ecommerce 
+the author had watched. 
 
-In the registration function, the data is split into two streams. One stream is the
-new user and password dataset, the other is a "current month" dataset. Within the 
-body of the function, the helper functions from "functions.py" were invoked and 
-used to provide the cents value for the "insert_one" method.
+In the registration function, the data is split into two streams. One stream is 
+the new user and password dataset, the other is a "current month" dataset. 
+Within the body of the function, the helper functions from "functions.py" were 
+invoked and used to provide the cents value for the "insert_one" method.
 
 There were a few issues of syntax which caused the data to arrive in an "array" 
 rather than the straighforward integer. This was resolved and the project 
@@ -174,222 +176,256 @@ committed and pushed to Github.
 ### Create Login Functionality
 
 Despite having attempted a few Flask projects, the author found it necessary to 
-follow along with the Flask Mini Project 20 and adapt the code moves as necessary. 
-Similarly to the project walkthrough, the registration page was adapted. There 
-was more indepth research of regex patterns to ensure that the "starting credit"
-and "monthly costs" registration fields were correct, so that the database is in
-good shape. So there was some going back and forth beteen the login and registration
-pages and views. 
+follow along with the Flask Mini Project 20 and adapt the code moves as 
+necessary. Similarly to the project walkthrough, the registration page was 
+adapted. There was more indepth research of regex patterns to ensure that the 
+"starting credit" and "monthly costs" registration fields were correct, so that 
+the database is in good shape. So there was some going back and forth beteen the 
+login and registration pages and views. 
 
 ### Addressing 302 Error Loops
 
-Passing the same variable back to the view as an argument resulted, invariably, in
-endless loops that tied up the server with a 302 error. This was resolved by gaining
-a better understanding of how Flask works with passing variables from one scope
-enclosure to another. Also with a better understanding of how session cookies work.
-After this was handled, it was a lot clearer how to handle the variables sent to the 
-templates as well, and some of the nuance of it became apparent.
+Passing the same variable back to the view as an argument resulted, invariably, 
+in endless loops that tied up the server with a 302 error. This was resolved by 
+gaining a better understanding of how Flask works with passing variables from 
+one scope enclosure to another. Also with a better understanding of how session 
+cookies work. After this was handled, it was a lot clearer how to handle the 
+variables sent to the templates as well, and some of the nuance of it became 
+apparent.
 
 ### Create Logout Functionality
 
-For the time being, the Logout function will simply clear all cookies and redirect to 
-the Login page. Index and related views were adapted with the defensive code "if 'user'
-not in session:", using the else statement for when the user session cookie is in play.
+For the time being, the Logout function will simply clear all cookies and 
+redirect to the Login page. Index and related views were adapted with the 
+defensive code "if 'user'not in session:", using the else statement for when 
+the user session cookie is in play.
 
 ### Access User Data From Database
 
-The next step is displaying the fields from the database in the profile page. Also blank
-buttons that will allow the user to update their finances and view their wishlist/reward.
-The data is converted from cents to euros using a helper function. The form settings
-for the registration page had to be adjusted with a step="0.01" attribute, which allows
-floats to be sent to the database. Before going to the database they are converted in the
-app.py function to an integer. 
+The next step is displaying the fields from the database in the profile page. 
+Also blank buttons that will allow the user to update their finances and view 
+their wishlist/reward. The data is converted from cents to euros using a helper 
+function. The form settings for the registration page had to be adjusted with 
+a step="0.01" attribute, which allows floats to be sent to the database. Before
+going to the database they are converted in the app.py function to an integer. 
 
 ### Adapt Internal Links
 
-For the sake of keeping things coherent, an if statement was added to base.html, showing
-login/register vs logout options depending on the state. The condition of "user" being in
-session cookies was used as the deciding factor. Also it is worth noting that around here
-the CI walkthrough project was no longer of myuch help and the author stopped using it as
-a reference.
+For the sake of keeping things coherent, an if statement was added to base.html, 
+showing login/register vs logout options depending on the state. The condition 
+of "user" being in session cookies was used as the deciding factor. Also it is 
+worth noting that around here the CI walkthrough project was no longer of much 
+help and the author stopped using it as a reference.
 
 ### Create Settings Page That Allows User To Delete Account
 
-To avoid the tedious deletion of individual items in the database manually, it was decided
-to create a "settings" page where the user can delete the account. Later on its possible 
-that more functions will be added, but for now, it helps to keep the process all within
-the app itself. 
+To avoid the tedious deletion of individual items in the database manually, 
+it was decided to create a "settings" page where the user can delete the 
+account. Later on its possible that more functions will be added, but for now, 
+it helps to keep the process all within the app itself. 
 
 ### Create Wishlist
 
-A Wishlist, accessed via the users profile page, contains a list of items the user would like
-to save up for. This is sent to its own collection in the database after a "add wish" form
-is filled in. The item appears immediately in the wishlist. Adding a dynamically generated
-a-tag with a url_for that links to a route only allows for the routing but not passing any
-variables back. Despite combing the Jinja and Flask docs, the author could only find limited
-mention of any related information. The issue was resolved by changing the a-tag to a button,
-and wrapping in a form tag. 
+A Wishlist, accessed via the users profile page, contains a list of items the 
+user would like to save up for. This is sent to its own collection in the 
+database after a "add wish" form is filled in. The item appears immediately 
+in the wishlist. Adding a dynamically generated a-tag with a url_for that 
+links to a route only allows for the routing but not passing any variables 
+back. Despite combing the Jinja and Flask docs, the author could only find 
+limited mention of any related information. The issue was resolved by changing
+the a-tag to a button, and wrapping in a form tag. 
 
 ### Create Invoice Structure
 
-The author has been grappling with the organisation of concerns, and has found that having a
-basic HTML and render_template route for a feature in place helps. This allows the flow of
-operations to be clear to the author, who has to focus on small tasks, one at a time. The
-basic CRUD setup of the invoicing feature may involve separate pages for some functions, but
-remain in the same template for others. The invoice structure was set up as a series of pages
-for the time being. Once everything was set up and working, there was some grappling with the 
-return value of the amount field from the database, which was in cents. Since the invoice page
-variable passed to the template was a dictionary of dictionaries, it wasn't clear at first how
-to apply the cents_to_euros() function to that one particular value. However, Jinja templating
-allows for mathematical operations, and the easiest solution for the time being was to simply
-incorporate that into the formatting. {{ invoice.amount /100 }}
+The author has been grappling with the organisation of concerns, and has found 
+that having a basic HTML and render_template route for a feature in place helps. 
+This allows the flow of operations to be clear to the author, who has to focus 
+on small tasks, one at a time. The basic CRUD setup of the invoicing feature may 
+involve separate pages for some functions, butremain in the same template for 
+others. The invoice structure was set up as a series of pages for the time 
+being. Once everything was set up and working, there was some grappling with 
+the return value of the amount field from the database, which was in cents. 
+Since the invoice page variable passed to the template was a dictionary of 
+dictionaries, it wasn't clear at first how to apply the cents_to_euros() 
+function to that one particular value. However, Jinja templating allows for 
+mathematical operations, and the easiest solution for the time being was to 
+simply incorporate that into the formatting. {{ invoice.amount /100 }}
 
 ### Create A Rewards Page
 
-The idea of the rewards page is to provide a single, ongoing source of inspiration to the user.
-It is hoped that during times when the user is tempted to spend their remaining income on something
-unnecessary, the reward image and caption will remind them of a greater goal. For the sake of 
-simplicity as well as adding a learning outcome - uploading a file - the author will limit the 
+The idea of the rewards page is to provide a single, ongoing source of 
+inspiration to the user. It is hoped that during times when the user is tempted 
+to spend their remaining income on something unnecessary, the reward image and 
+caption will remind them of a greater goal. For the sake of simplicity as well 
+as adding a learning outcome - uploading a file - the author will limit the 
 reward section to an image and a simple caption.
 
-With the help of a Youtube video "Save and Retrieve Files In MongoDB With Flask + Pymongo" the
-author was able to create an image upload/display function. A new method was learned using a 
-route as a way to pass data rather than for managing templates. In the template where the image
-was to be displayed, within an img tag, the src attribute was given the url_for('display function 
-route', filename='variable passed from the page route which uses user session cookies.img'). The
-Filename variable passed from this src went to a special route function that called the correct
-file from Mongo db, and passed it through to the correct template.
+With the help of a Youtube video "Save and Retrieve Files In MongoDB With 
+Flask + Pymongo" the author was able to create an image upload/display 
+function. A new method was learned using a route as a way to pass data rather 
+than for managing templates. In the template where the image was to be 
+displayed, within an img tag, the src attribute was given the url_for(
+'display function route', filename='variable passed from the page route which
+uses user session cookies.img'). The Filename variable passed from this 
+src went to a special route function that called the correct file from 
+Mongo db, and passed it through to the correct template.
 
-This helped understand the many potentials that working with backend code allows. 
+This helped understand the many potentials that working with backend code 
+allows. 
 
 ### Adding Expenses Functions
 
-It was realised at this late stage that "Expense" functionality had not been added, despite being
-of primary importance to the concept behind the app. In the process of setting it up and connecting
-it to the database, much was learned about the difference between GET and POST settings in the form
-tag. A recurring error kept the author occupied until the method was changed in the form, since the
-request being made was not, in fact, posting any information to the db. 
+It was realised at this late stage that "Expense" functionality had not been 
+added, despite being of primary importance to the concept behind the app. In 
+the process of setting it up and connecting it to the database, much was 
+learned about the difference between GET and POST settings in the form tag. 
+A recurring error kept the author occupied until the method was changed in the 
+form, since the request being made was not, in fact, posting any information 
+to the db. 
 
 ### All Basic CRUD Functionality In Place
 
-From here on, the next thing to focus on is building up the "functions.py" module so that "app.py" 
-can process the data in and out of its way to the front-end. During this process it is expected that
-some core functionality of the app may be adapted as the overview becomes clear. At the moment
-the author is still unclear on how it would be to use the app in practise, since the author himself
-is really the ideal candidate for the role of User. In other words, not the most financially astute. 
-Current challenges include the most succinct and adaptable way to process individual value fields 
-coming as a BSON object from Mongo. The author will begin with writing the core mathematic functions.
+From here on, the next thing to focus on is building up the "functions.py" 
+module so that "app.py" can process the data in and out of its way to the 
+front-end. During this process it is expected that some core functionality of 
+the app may be adapted as the overview becomes clear. At the moment the author is 
+still unclear on how it would be to use the app in practise, since the author 
+himself is really the ideal candidate for the role of User. In other words, not 
+the most financially astute. Current challenges include the most succinct and 
+adaptable way to process individual value fields coming as a BSON object from 
+Mongo. The author will begin with writing the core mathematic functions.
 
 ### Streamlining Basic Functionality In Motion
 
-As the app developed, it became clear that the main streams of incoming and outgoing finances had to 
-conform to a format. For instance, in the expense form, it was previously a text input that the user
-could choose - "rent" "cigars" "whiskey" etc. However, in order to keep the database calculable the
-decision to use radio buttons was made. This forces  the user to decide whether the expense is an
-"overhead" or an "extra". An additional comment field was added in case greater specificity is
-needed. The invoice form was adapted to also reflect income from other sources (cash, off the books,
-criminal income) by allowing the user to enter an amount and whichever of the fields wished for. A
-series of if statements show only the completed fields in the main "incoming" page. The author can 
-now go back to bringing the calculations into play.
+As the app developed, it became clear that the main streams of incoming and 
+outgoing finances had to conform to a format. For instance, in the expense 
+form, it was previously a text input that the user could choose - "rent" 
+"cigars" "whiskey" etc. However, in order to keep the database calculable the
+decision to use radio buttons was made. This forces  the user to decide whether 
+the expense is an "overhead" or an "extra". An additional comment field was 
+added in case greater specificity is needed. The invoice form was adapted to 
+also reflect income from other sources (cash, off the books, criminal income) 
+by allowing the user to enter an amount and whichever of the fields wished for. 
+A series of if statements show only the completed fields in the main "incoming" 
+page. The author can now go back to bringing the calculations into play.
 
 ### Modifications To Income/Expense Forms
 
-Buttons had to be added to both Income/Expense input forms to ensure that the users finances 
-can be dynamically updated correctly upon modification. For instance, if a user enters an invoice for 
-a service that is untaxeable, then the user should have control over whether or not the amount is 
-processed for tax. The app is opinionated in setting aside the tax amount without including it in 
-the total credit, making sure the user doesn't overspend. However, with cash income (being paid back
-a loan for instance), having a checkbox that says "do not calculate tax" keeps it efficient.
+Buttons had to be added to both Income/Expense input forms to ensure that the 
+users finances can be dynamically updated correctly upon modification. For 
+instance, if a user enters an invoice for a service that is untaxeable, then 
+the user should have control over whether or not the amount is processed for 
+tax. The app is opinionated in setting aside the tax amount without including 
+it in the total credit, making sure the user doesn't overspend. However, with 
+cash income (being paid back a loan for instance), having a checkbox that says 
+"do not calculate tax" keeps it efficient.
 
-This also allows for modifying invoice amounts "after the fact". The plan at the moment is, upon the
-user selecting to modify a specific invoice, the invoices amount gets stored in a session cookie. Also,
-whether or not it was taxeable or not also gets stored in a session cookie. Upon submitting the new 
-modified amount, the app will first recalculate the users finances to remove the old invoice amount
-correctly regarding tax etc. Then the new amount is processed. 
+This also allows for modifying invoice amounts "after the fact". The plan at 
+the moment is, upon the user selecting to modify a specific invoice, the 
+invoices amount gets stored in a session cookie. Also, whether or not it was 
+taxeable or not also gets stored in a session cookie. Upon submitting the new 
+modified amount, the app will first recalculate the users finances to remove 
+the old invoice amount correctly regarding tax etc. Then the new amount is 
+processed. 
 
-Similarly, with expenses being checked as of type "overhead" or not, the dynamic recalculation of
-expense amounts is now possible. The author is hoping that his understanding of how session cookies
-work is correct, in that anything can be assigned as a session variable. 
+Similarly, with expenses being checked as of type "overhead" or not, the 
+dynamic recalculation of expense amounts is now possible. The author is hoping 
+that his understanding of how session cookies work is correct, in that anything 
+can be assigned as a session variable. 
 
-So far this approach seems overly verbose, and the author is sure that some kind of refactoring of
-functions behind the scenes could take place. However, it may be best to do that after all the 
-functionality is in place, however naive it may be. It may be simply a matter of managing imports
-and modules correctly. Also, there was no need for session cookies, simply writing the verbose but
-workable code in the right place did the job. 
+So far this approach seems overly verbose, and the author is sure that some 
+kind of refactoring of functions behind the scenes could take place. However, 
+it may be best to do that after all the functionality is in place, however 
+naive it may be. It may be simply a matter of managing imports and modules 
+correctly. Also, there was no need for session cookies, simply writing the 
+verbose but workable code in the right place did the job. 
 
-One puzzling bug was forgetting to update the object sent back from the edit-invoice to match
-the original add invoice schema. It was a big learning moment for the author about the practicalities
-of the assingment. There was a persistent key error when trying to reupdate an invoice (past the first
-time updating it) since important values (specifically the checkbox that determines whether or not tax
-should be calculated) were being replaced with None/Null. The entire invoice object was being erased 
-and recreated, this time without the all important checkbox field. It took some time to realise what
+One puzzling bug was forgetting to update the object sent back from the 
+edit-invoice to match the original add invoice schema. It was a big learning 
+moment for the author about the practicalities of the assingment. There was a 
+persistent key error when trying to reupdate an invoice (past the first
+time updating it) since important values (specifically the checkbox that 
+determines whether or not tax should be calculated) were being replaced with 
+None/Null. The entire invoice object was being erased and recreated, this time 
+without the all important checkbox field. It took some time to realise what
 was going on.
 
 ### Adding Session User Key To FsFiles, FsChunks
 
-The author at this point stumbled upon the problem of managing the deletion of data. The data needs
-some common reference that allows for the "remove" method to zero in on. When a file is uploaded, two
-new collections are automatically added to the database. These important collections have no direct
-reference to the session user. Rather a kind of relational file_id connects the chunks to the files.
-The only link to the user from the files is the image name. The solution was to pass along the session
-user key to "files", and then get the chunks via the "file_id", then also add a session user key. 
+The author at this point stumbled upon the problem of managing the deletion of 
+data. The data needs some common reference that allows for the "remove" method 
+to zero in on. When a file is uploaded, two new collections are automatically 
+added to the database. These important collections have no direct reference to 
+the session user. Rather a kind of relational file_id connects the chunks to 
+the files. The only link to the user from the files is the image name. The 
+solution was to pass along the session user key to "files", and then get 
+the chunks via the "file_id", then also add a session user key. 
 
-In order to keep the user limited to one image per account, the previous image is erased using the
-remove method, targeting the newly created name key. This can be seen in the "add reward" function.
+In order to keep the user limited to one image per account, the previous 
+image is erased using the remove method, targeting the newly created name key. 
+This can be seen in the "add reward" function.
 
 ### Creating User Record
 
-Its handy for the user to have a trail of incoming and outgoing finances in a single overview. It
-is also helpful to include modifications and deletions. A new database called "in_out_history" 
-was created to contain this data. The author created the functions outside of the view codeblocks
-which made things a lot easier to visualise and debug. The template simply shows the rudimentary 
+Its handy for the user to have a trail of incoming and outgoing finances in a 
+single overview. It is also helpful to include modifications and deletions. 
+A new database called "in_out_history" was created to contain this data. The 
+author created the functions outside of the view codeblocks which made things 
+a lot easier to visualise and debug. The template simply shows the rudimentary 
 return of data. More work will be done at the styling phase.
 
 ### Create Decorator That Ensures Functionality Only When User Is Logged In
 
-The author has been using the same key, {"name": session['user']} over and over everywhere in the app.
-Other than it being a nuisance to type out multiple times, there is also the additional security layer 
-needed for when a page is directly accessed while no user is in session. This could potentially expose
-data. Mentor recommended the routes all starting with "if user in session:" then handling the functions
-with the "else" pointing to the login page. Mentor called this the "naive" approach which didn't not 
-sit well with the authors feeling of needing to prove himself for some reason. 
+The author has been using the same key, {"name": session['user']} over and over 
+everywhere in the app. Other than it being a nuisance to type out multiple 
+times, there is also the additional security layer needed for when a page is 
+directly accessed while no user is in session. This could potentially expose
+data. Mentor recommended the routes all starting with "if user in session:" 
+then handling the functions with the "else" pointing to the login page. Mentor 
+called this the "naive" approach which didn't not sit well with the authors 
+feeling of needing to prove himself for some reason. 
 
-This involved some research - the Flask documentation was very handy as well as Stack Overflow. The
-"wraps" method was imported from functools and used to wrap the decorator. Being able to declare a
-variable to be accessed by the route from within the decorator was more of a challenge. The author
-was able to find a way of defining it in the global scope from within the decorator but that seemed
-to defeat the purpose. However, the security purpose was met. 
+This involved some research - the Flask documentation was very handy as well 
+as Stack Overflow. The "wraps" method was imported from functools and used to 
+wrap the decorator. Being able to declare a variable to be accessed by the 
+route from within the decorator was more of a challenge. The author was able 
+to find a way of defining it in the global scope from within the decorator but 
+that seemed to defeat the purpose. However, the security purpose was met. 
 
 ### Allow User To Change Monthly Overheads
 
-The central role of the "monthly overheads" figure means that it should be allowed to be updated by
-the user as and when necessary. For instance, if the user takes out a new car insurance or has paid
-the final installation of a student loan, it would then make sense to change the overheads amount.
+The central role of the "monthly overheads" figure means that it should be 
+allowed to be updated by the user as and when necessary. For instance, if 
+the user takes out a new car insurance or has paid the final installation of a 
+student loan, it would then make sense to change the overheads amount.
 
 This was added to the settings page.
 
 ### Give User A Deductibles Calculator 
 
-In the authors experience, it is common that one may have a receipt that only lists the total amount
-spent on an item. For instance, the Apple Store will sell you a laptop and not say explicitly on the
-bill "laptop 1000EU, tax 120EU, total 1120EU". The mysterious final figure, for a person without an
-accountant or friend who can help, puts them off requesting the deductible. With a handy calculator
-built into the app, the user can easily get the amount to set aside. 
+In the authors experience, it is common that one may have a receipt that only 
+lists the total amount spent on an item. For instance, the Apple Store will 
+sell you a laptop and not say explicitly on the bill "laptop 1000EU, tax 120EU, 
+total 1120EU". The mysterious final figure, for a person without an accountant 
+or friend who can help, puts them off requesting the deductible. With a handy 
+calculator built into the app, the user can easily get the amount to set aside. 
 
 ### Create Toggle Light Theme Button
 
-In the settings page, a button was added that changes the app to a light theme. A new data entry was
-added to the register function that logs whether a user prefers "light" or "dark". Default is set 
-to "dark", the user can then change that in the Settings page. Meanwhile a session cookie is created
-that allows for the app to keep dynamic track of the users preference. 
+In the settings page, a button was added that changes the app to a light theme. 
+A new data entry was added to the register function that logs whether a user 
+prefers "light" or "dark". Default is set to "dark", the user can then change 
+that in the Settings page. Meanwhile a session cookie is created that allows 
+for the app to keep dynamic track of the users preference. 
 
 ### Create A Global Variable For Tax Amount
 
-This will require some planning - the user should be able to enter a tax rate that applies to their
-specific region. To avoid creating a variable in the global scope, a session cookie might be the 
-best route. However, the helper functions are in another module, and will need access to that
-rate. The best way may be to rewrite the functions with an additional parameter. For instance, at 
-the moment the function to calculate new invoice income is:
+This will require some planning - the user should be able to enter a tax rate 
+that applies to their specific region. To avoid creating a variable in the 
+global scope, a session cookie might be the best route. However, the helper 
+functions are in another module, and will need access to that rate. The best 
+way may be to rewrite the functions with an additional parameter. For instance, 
+at the moment the function to calculate new invoice income is:
 
 def new_invoice_income(invoice_amount):
     # takes in an amount and returns what the user can spend
@@ -401,80 +437,92 @@ def new_invoice_income(invoice_amount):
 
 def new_invoice_income_with_tax_rate(invoice_amount, tax_rate):
     # takes in an amount and returns what the user can spend
-    tax = invoice_amount - invoice_amount/tax_rate (adapted to match the 1.21 proportion)
+    tax = invoice_amount - invoice_amount/tax_rate (adapted to match the 1.21 
+    proportion)
     total = invoice_amount - tax
     return total
 
-In practise it was relatively straightforward except for a two and a half hour period where the
-author was wondering if there was something wrong with the logic of the apparent universe. A test
-amount of "100" was entered with a tax rate of 50%, and the author was convinced something was 
-wrong with the 33 result for the tax. Finally realising (after numerous, now entertaining, code
-rewrites) that in fact it was perfectly correct in calculating the amount of tax from 100,
-after the fact. Which the author had been working with all along. 
+In practise it was relatively straightforward except for a two and a half hour 
+period where the author was wondering if there was something wrong with the 
+logic of the apparent universe. A test amount of "100" was entered with a tax 
+rate of 50%, and the author was convinced something was wrong with the 33 
+result for the tax. Finally realising (after numerous, now entertaining, 
+coderewrites) that in fact it was perfectly correct in calculating the amount 
+of tax from 100, after the fact. Which the author had been working with all 
+along. 
 
 The figure can also be updated in the settings panel. 
 
 ### Fix Overheads Issue
 
-An issue with changing the monthly overheads raised its head - the "amount left to be paid" part
-of the overheads section was not dynamically updating with the new overhead. After some guessing
-and thinking, a simple solution was reached.
+An issue with changing the monthly overheads raised its head - the "amount left 
+to be paid" part of the overheads section was not dynamically updating with the 
+new overhead. After some guessing and thinking, a simple solution was reached.
 
 ### Start Python Documentation
 
-The author will try and take documentation very seriously for this project. The goal is that a 
-person who does not have any understanding of Python would be able to read the code and follow
-along with what is taking place. While the author has been writing documentation from the start,
-it has been sporadic. The author has also found it a good way to expose bugs and issues with the
+The author will try and take documentation very seriously for this project. The 
+goal is that a person who does not have any understanding of Python would be 
+able to read the code and follow along with what is taking place. While the 
+author has been writing documentation from the start, it has been sporadic. 
+The author has also found it a good way to expose bugs and issues with the
 app. 
 
 ### Create Endmonth Function
 
-The End Month function checks to see if the datestamp for the users current month object is the
-same as the month taken from a "now" datetime instance. After comparing, if there is a difference
-the fields pertaining to monthly ins and outs are sent to a "previous months" database, and the
-related fields set to 0 in the current months database. This function runs automatically when a user
-logs in. Previous months will be viewable in a mini-size format in the user history page.
+The End Month function checks to see if the datestamp for the users current 
+month object is the same as the month taken from a "now" datetime instance. 
+After comparing, if there is a difference the fields pertaining to monthly 
+ins and outs are sent to a "previous months" database, and the related fields 
+set to 0 in the current months database. This function runs automatically when 
+a user logs in. Previous months will be viewable in a mini-size format in the 
+user history page.
 
 ### Create End Tax Season Page
 
-This handy page is for when it is time to end your tax period. By coincidence the author had to
-do his taxes the day before, and realised it is handy to be able to decide for yourself when 
-you want to send in your invoices and receipts, and when you want to hold on a bit longer.
-Now there is a page (with the handy tax calculator) where you can work out your taxes, and then
-initiate the "end tax period" function.
+This handy page is for when it is time to end your tax period. By coincidence 
+the author had to do his taxes the day before, and realised it is handy to be 
+able to decide for yourself when you want to send in your invoices and receipts, 
+and when you want to hold on a bit longer. Now there is a page (with the handy 
+tax calculator) where you can work out your taxes, and then initiate the "end 
+tax period" function.
 
-The function simply creates a dictionary object with the tax rate, ending month period and 
-amount of tax. The related field in the current month object is then reset. 
+The function simply creates a dictionary object with the tax rate, ending month 
+period and amount of tax. The related field in the current month object is then 
+reset. 
 
 ### Create An Admin Profile
 
-This (also very handy) page was made right before the app is to be shared with the mentor
-and friends for feedback. This allows the author access to delete any account with all its
-associated data, as it is difficult to keep track of everyones bits and pieces. An admin.html
-page was made that shows only when "admin" is logged in. From the admin dashboard, the admin 
-can enter the name of a user and then delete. A safeguard checkbox was put in place to avoid
+This (also very handy) page was made right before the app is to be shared with 
+the mentor and friends for feedback. This allows the author access to delete 
+any account with all its associated data, as it is difficult to keep track of 
+everyones bits and pieces. An admin.html page was made that shows only when 
+"admin" is logged in. From the admin dashboard, the admin can enter the name 
+of a user and then delete. A safeguard checkbox was put in place to avoid
 any accidental erasing. 
 
 ### Conditionals In Base Template
 
-In order to prevent the app from overwhelming a user with options, the index page was adapted
-to a simple financial overview. With a glance the user can tell whether or not the new pair 
-of trousers she is about to buy is within her budget this month. A clear button to go to the
-much more comprehensive dashboard is visible above, for when the user needs to focus on managing
+In order to prevent the app from overwhelming a user with options, the index 
+page was adapted to a simple financial overview. With a glance the user can 
+tell whether or not the new pair of trousers she is about to buy is within her 
+budget this month. A clear button to go to the much more comprehensive 
+dashboard is visible above, for when the user needs to focus on managing
 their daily or weekly finances. 
 
-A new Jinja expression {{ if request.path != "/profile/" + session['user']}} was discovered, which
-made the author more aware of possibilities with the Jinja templating engine. 
+A new Jinja expression {{ if request.path != "/profile/" + session['user']}} 
+was discovered, which made the author more aware of possibilities with the 
+Jinja templating engine. 
 
 ### Basic Styling
 
-The app, while not as hideous as it was a few steps back (see screenshots for just how horrible), is
-still not aesthetically what the author would like. At the moment, it sometimes has a clean, bank 
-friendly look which makes the author want to vomit a little bit. However, the goal was to get the
-CRUD functionality in place before styling, as per the mentor's advice. So, it will be left at
-"CRUD-ugly" and pushed as such to Heroku. From now on there will be less pushes to Heroku as the 
-styling is gone into.
+The app, while not as hideous as it was a few steps back (see screenshots 
+for just how horrible), is still not aesthetically what the author would like. 
+At the moment, it sometimes has a clean, bank friendly look which makes the 
+author want to vomit a little bit. However, the goal was to get the CRUD 
+functionality in place before styling, as per the mentor's advice. So, it will 
+be left at "CRUD-ugly" and pushed as such to Heroku. From now on there will be 
+less pushes to Heroku as the styling is gone into.
 
 ### The Horror: CRUD-ugly
 
