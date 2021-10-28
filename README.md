@@ -518,6 +518,17 @@ expenses and your profile without any warning. Mentor warned against this.
 Now the app sends the user to a confirmation page where the POST request
 can be initiated. 
 
+### Form Validation
 
+Some kind of form validation is necessary to ensure that a user won't break 
+the code with an irregular entry. While the html forms have some kind of
+enforced formatting, the settings can be easily overridden. For this to work
+some kind of conditional logic needs to check that the entries match certain 
+limits. When they don't, a specific error message is returned that allows the
+user to see exactly what it is that they need to fix in order for their input
+to succeed. 
+
+After looking at a sample function that the mentor had passed along, the author
+went ahead and started writing the code. 
 
 

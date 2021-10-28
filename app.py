@@ -332,76 +332,85 @@ def index():
 def register():
     # allows the user to register a new account
     if request.method == "POST":
-        # check if username exists
-        existing_user = mongo.db.users.find_one(
-            {"name": request.form.get("name").lower()})
-        if existing_user:
-            flash("Username exists!")
-            return redirect(url_for('register'))
-        # create dictionary for new user
-        # uses the very handy generate password hash from Werkzeug
-        register_user = {
-           "name": request.form.get("name").lower(),
-           "password": generate_password_hash(request.form.get("password"))
-        }
-        #  create dictionary for new starting month
-        # sets the starting credit and the users overheads, defined by the user
-        start_credit_to_int = euros_to_cents(request.form.get("starting-credit"))
-        user_overheads_to_int = euros_to_cents(request.form.get("user-overheads"))
-
-        # handling the tax rate, a key part of the app
-        # if no tax rate is entered, amount is set to the
-        # Netherlands default
-        if request.form.get("tax_rate") == '':
-            tax_rate_to_int = 121
-        else:
-        # makes a concatenated string out of the number entered by the user
-        # allowing a "1" to be inserted before, which puts the tax rate into
-        # the most useable format by the database
-            tax_rate_to_string = "1" + str(request.form.get("tax_rate"))
-            tax_rate_to_int = int(tax_rate_to_string)
-        
-        # create a starting disposable income
-        starting_disposable_income = start_credit_to_int - user_overheads_to_int
-
-        # gets a datestamp
-        now = datetime.now()
-        month = now.strftime("%B %Y")
-        # create a starting month object
-        start_month = {
+        # validate form
+        # get request form object
+        form = request.form 
+        errors = validate_registration_form(form)
+        if errors == []:
+            # check if username exists
+            existing_user = mongo.db.users.find_one(
+                {"name": request.form.get("name").lower()})
+            if existing_user:
+                flash("Username exists!")
+                return redirect(url_for('register'))
+            # create dictionary for new user
+            # uses the very handy generate password hash from Werkzeug
+            register_user = {
             "name": request.form.get("name").lower(),
-            "datestamp": month,
-            "credit": start_credit_to_int,
-            "user_overheads": user_overheads_to_int,
-            "income_this_month": 0,
-            "spent_this_month": 0,
-            "spent_on_overheads": 0,
-            "spent_on_extras": 0,
-            "overheads_to_be_paid": user_overheads_to_int,
-            "tax_rate": tax_rate_to_int,
-            "tax_to_set_aside": 0,
-            "suggested_savings_amount": 0,
-            "disposable_income": starting_disposable_income,
-            "user_notes": '',
-            "preferred_theme": "dark"
-        }
-        
-        # send dictionaries to Mongo
+            "password": generate_password_hash(request.form.get("password"))
+            }
+            #  create dictionary for new starting month
+            # sets the starting credit and the users overheads, defined by the user
+            start_credit_to_int = euros_to_cents(request.form.get("starting-credit"))
+            user_overheads_to_int = euros_to_cents(request.form.get("user-overheads"))
 
-        mongo.db.users.insert_one(register_user)
-        mongo.db.current_month.insert_one(start_month)
+            # handling the tax rate, a key part of the app
+            # if no tax rate is entered, amount is set to the
+            # Netherlands default
+            if request.form.get("tax_rate") == '':
+                tax_rate_to_int = 121
+            else:
+            # makes a concatenated string out of the number entered by the user
+            # allowing a "1" to be inserted before, which puts the tax rate into
+            # the most useable format by the database
+                tax_rate_to_string = "1" + str(request.form.get("tax_rate"))
+                tax_rate_to_int = int(tax_rate_to_string)
+            
+            # create a starting disposable income
+            starting_disposable_income = start_credit_to_int - user_overheads_to_int
 
-        # put user into a session cookie
-        session["user"] = request.form.get("name").lower()
-        # puts user tax rate into a session cookie
-        session["tax_rate"] = tax_rate_to_int
-        # create cookie for display theme, defaults to dark
-        session["theme"] = "dark"
-        # give some user feedback
-        flash("Registration Successful")
-        # go to the new users profile
-        return redirect(url_for('profile'))
+            # gets a datestamp
+            now = datetime.now()
+            month = now.strftime("%B %Y")
+            # create a starting month object
+            start_month = {
+                "name": request.form.get("name").lower(),
+                "datestamp": month,
+                "credit": start_credit_to_int,
+                "user_overheads": user_overheads_to_int,
+                "income_this_month": 0,
+                "spent_this_month": 0,
+                "spent_on_overheads": 0,
+                "spent_on_extras": 0,
+                "overheads_to_be_paid": user_overheads_to_int,
+                "tax_rate": tax_rate_to_int,
+                "tax_to_set_aside": 0,
+                "suggested_savings_amount": 0,
+                "disposable_income": starting_disposable_income,
+                "user_notes": '',
+                "preferred_theme": "dark"
+            }
+            
+            # send dictionaries to Mongo
 
+            mongo.db.users.insert_one(register_user)
+            mongo.db.current_month.insert_one(start_month)
+
+            # put user into a session cookie
+            session["user"] = request.form.get("name").lower()
+            # puts user tax rate into a session cookie
+            session["tax_rate"] = tax_rate_to_int
+            # create cookie for display theme, defaults to dark
+            session["theme"] = "dark"
+            # give some user feedback
+            flash("Registration Successful")
+            # go to the new users profile
+            return redirect(url_for('profile'))
+        else:
+            for error in errors:
+                flash(f"{error}")
+            errors = []
+            return render_template("register.html")
     return render_template("register.html")
 
 
