@@ -534,9 +534,12 @@ def invoice():
     creates the page that allows the user to see their income, add income,
     modify the income, delete entries etc
     '''
+    # gets a datestamp
+    now = datetime.now()
+    this_month = now.strftime("%B %Y")
     user_key = {"name": session['user']}
     invoices = mongo.db.invoices.find(user_key) 
-    return render_template("invoice.html", invoices=invoices)
+    return render_template("invoice.html", invoices=invoices, this_month=this_month)
 
 
 @app.route("/add_invoice", methods=["GET", "POST"])
@@ -555,10 +558,14 @@ def add_invoice():
         invoice_tax_amount = round(new_invoice_tax(invoice_amount_cents, tax_rate))
         # calculate the profit amount
         post_tax_income = round(new_invoice_income(invoice_amount_cents, tax_rate))
+        # gets a datestamp
+        now = datetime.now()
+        month = now.strftime("%B %Y")
         # create a new invoice object
         new_invoice = {
             "name": session['user'],
             "date": request.form.get("invoice_date"),
+            "datestamp": month,
             "invoice_number": request.form.get("invoice_number").lower(),
             "invoice_recipient": request.form.get("invoice_recipient").lower(),
             "amount": invoice_amount_cents,
@@ -689,9 +696,13 @@ def edit_invoice(invoice_id):
         # calculate the profit amount
         post_tax_income = round(new_invoice_income(invoice_amount_cents, tax_rate))
         # create a new invoice object
+        # gets a datestamp
+        now = datetime.now()
+        month = now.strftime("%B %Y")
         to_update = {
              "name": session['user'],
             "date": request.form.get("invoice_date"),
+            "datestamp": month,
             "invoice_number": request.form.get("invoice_number").lower(),
             "invoice_recipient": request.form.get("invoice_recipient").lower(),
             "amount": invoice_amount_cents,
@@ -834,9 +845,12 @@ def expenses():
     '''
     generates the page that shows the outgoing expenses and gives the
     user the controls to add/edit/delete them
-    '''
+    '''    
+    # gets a datestamp
+    now = datetime.now()
+    this_month = now.strftime("%B %Y")
     expenses = mongo.db.expenses.find({"name": session['user']})
-    return render_template("expenses.html", expenses=expenses)
+    return render_template("expenses.html", expenses=expenses, this_month=this_month)
 
 
 @app.route("/add_expense", methods=["GET", "POST"])
@@ -853,9 +867,13 @@ def add_expense():
         # transform the amount into cents
         amount_to_cents = euros_to_cents(request.form.get("amount_spent"))   
         # create an expense object to send to the db
+        # gets a datestamp
+        now = datetime.now()
+        month = now.strftime("%B %Y")
         new_expense = {
             "name": session['user'],
             "date": request.form.get("invoice_date"),
+            "datestamp": month,
             "type": request.form.get("type"),
             "recipient": request.form.get('recipient'),
             "amount": amount_to_cents,
@@ -952,9 +970,13 @@ def edit_expense(expense_id):
 
         # process the edited document
         amount_to_cents = euros_to_cents(request.form.get("amount_spent"))
+        # gets a datestamp
+        now = datetime.now()
+        month = now.strftime("%B %Y")
         edited_expense = {
             "name": session['user'],
             "date": request.form.get("invoice_date"),
+            "datestamp": month,
             "type": request.form.get("type"),
             "recipient": request.form.get('recipient'),
             "amount": amount_to_cents,
@@ -1074,8 +1096,10 @@ def user_history():
     '''
     generates a page in which the user can see a history of their activity
     '''
+    expenses = mongo.db.expenses.find({"name": session['user']})
+    invoices = mongo.db.invoices.find({"name": session['user']})
     history = mongo.db.in_out_history.find({"name":session['user']})
-    return render_template("user_history.html", history=history, name = session['user'])
+    return render_template("user_history.html", history=history, name = session['user'], invoices=invoices, expenses=expenses)
 
 
 @app.route("/end_tax", methods=["GET", "POST"])

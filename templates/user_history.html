@@ -23,4 +23,13 @@
     <p>{{ story.recipient }}</p>
     <p>{{ story.credit_after / 100 }}</p>
 {% endfor %}
+
+<h2>Outgoing Expenses</h2>
+{% for expense in expenses %}
+<p>{{expense}}</p>
+{% endfor %}
+<h2>Income</h2>
+{% for invoice in invoices %}
+<p>{{ invoice }}</p>
+{% endfor %}
 {% endblock %}
