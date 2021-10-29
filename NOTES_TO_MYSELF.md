@@ -1,16 +1,14 @@
 form validation
 login with email
-update() instead of multiple update_one()s
 db schema
 if datestamp on invoices and expenses doesn't match current month, no CRUDding.
 delete pages as confirmation
-crud ugly squoosh
 PEP... 8... COMPLIANT
 Don't forget debug=true
 history page shows tax seasons and previous months
 search feature!
 currency titles, maybe always have credit one colour
-Round off the figures with the floats tiny nearby
+Round off the figures with the floats tiny nearby?
 https://themeforest.net/category/site-templates?term=dashboard
 https://drive.google.com/drive/u/0/folders/1n2iFWqA44Wlc4GLXCBwN023L-KGAYE2D
 Refactor modules

@@ -4,12 +4,13 @@
 <h2>Deductibles Calculator</h2>
 <h3>Have a receipt without a stated tax amount? Enter the total below and we will calculate it for you.</h3>
 <form action="{{ url_for('calculator') }}" method="POST">
-    <label for="calculator">Input the total including tax:</label>
+    <label for="calculator">Input the total including tax (calculating at {{ session['tax_rate'] -100 }}%):</label>
     <input type="number" name="calculator" id="calculator" pattern="[0-9]+" step="0.01">
     <button type="submit" class="btn btn-manage">Calculate Tax</button>
 </form>
 {% if tax %}
 <h3>Tax you can claim on this amount: {{ tax | round }}</h3>
+<h3>Cost without tax: {{ income | round }}</h3>
 {% endif %}
 <form action="{{url_for('end_tax')}}" method="POST">
     <label for="confirm_tax_end">Check the box if you are sure you want to end the tax period.</label>

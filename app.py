@@ -1,3 +1,7 @@
+'''
+imports and app configuration
+'''
+
 from datetime import datetime
 import os
 from functools import wraps
@@ -22,7 +26,7 @@ mongo = PyMongo(app)
 
 
 def ensure_user(route):
-    # decorator for routes that ensure access only to a logged in user
+    '''decorator for routes that ensure access only to a logged in user'''
     # uses "wraps" function from "functools"
     @wraps(route)
     def wrapper_function(*args, **kwargs):
@@ -35,8 +39,11 @@ def ensure_user(route):
 
 
 def calculate_disposable_income():
-    # to be inserted after any income/expense calculation
-    # takes overheads, tax and suggested savings, adds them and subtracts the sum from credit
+    '''
+    to be inserted after any income/expense calculation
+    takes overheads, tax and suggested savings, adds them and subtracts the 
+    sum from credit
+    '''
     # create a user key 
     user_key = {"name": session['user']}
     # get the current month object
@@ -56,6 +63,10 @@ def calculate_disposable_income():
 
 
 def check_end_month():
+    '''
+    to be inserted into the login view - checks to see if the month has changed
+    and if so, starts a new month and creates a record 
+    '''
     # session user key
     user_key = {"name": session['user']}
     #  gets the users current month for reference
@@ -104,7 +115,9 @@ def check_end_month():
 
 
 def create_income_record(db_object):
-    # creates a record of every income, for the user_history.html page
+    '''
+    creates a record of every income, for the user_history.html page
+    '''
     # create user key
     user_key = {"name": session['user']}
     # get a real time date stamp for the object
@@ -133,7 +146,9 @@ def create_income_record(db_object):
 
 
 def create_modified_income_record(db_object):
-    # creates a record of every modified income
+    '''
+    creates a record of every modified income
+    '''
     # create user key
     user_key = {"name": session['user']}
     # get a real time date stamp for the object
@@ -163,10 +178,12 @@ def create_modified_income_record(db_object):
 
 
 def create_deleted_income_record_part_one(db_object):
-    # creates a record of every deleted income
-    # since the credit can only be calculated after the deletion
-    # the function is in two parts, one before the database manipulation
-    # and one after, to insert the "credit after" amount
+    '''
+    creates a record of every deleted income
+    since the credit can only be calculated after the deletion
+    the function is in two parts, one before the database manipulation
+    and one after, to insert the "credit after" amount
+    '''
     # get datestamp
     datestamp = datetime.today().strftime('%d-%m-%Y')
     # get a hours minutes seconds stamp to match records correctly
@@ -195,7 +212,9 @@ def create_deleted_income_record_part_one(db_object):
 
 
 def create_deleted_income_record_part_two():
-    # updates the object created in part_one with the recalculated credit_after
+    '''
+    updates the object created in part_one with the recalculated credit_after
+    '''
     # create user key
     user_key = {"name": session['user']}
     # get current credit
@@ -209,7 +228,9 @@ def create_deleted_income_record_part_two():
 
 
 def create_expense_record(db_object):
-    # creates a record of every expense
+    '''
+    creates a record of every expense
+    '''
     # create a user key
     user_key = {"name": session['user']}
     # get a datestamp for the new object
@@ -240,7 +261,9 @@ def create_expense_record(db_object):
 
 
 def create_modified_expense_record(db_object):
-    # creates a record of every modified expense
+    '''
+    creates a record of every modified expense
+    '''
     # create a user key
     user_key = {"name": session['user']}
     # create a datestamp for the record
@@ -272,9 +295,11 @@ def create_modified_expense_record(db_object):
 
 
 def create_deleted_expense_record_part_one(db_object):
-    # creates a record of every deleted expense
-    # in two parts, so that the updated credit can be inserted 
-    # after the database is manipulated
+    '''
+    creates a record of every deleted expense
+    in two parts, so that the updated credit can be inserted 
+    after the database is manipulated
+    '''
     # get a datestamp for the new record
     datestamp = datetime.today().strftime('%d-%m-%Y')
     # get now for the timestamp
@@ -306,7 +331,9 @@ def create_deleted_expense_record_part_one(db_object):
 
 
 def create_deleted_expense_record_part_two():
-    # allows for updating the object created in part_one with the recalculated credit_after
+    '''
+    allows for updating the object created in part_one with the recalculated credit_after
+    '''
     # create a user key
     user_key = {"name": session['user']}
     # get the current credit from the current month object
@@ -322,7 +349,9 @@ def create_deleted_expense_record_part_two():
 @app.route("/")
 @ensure_user
 def index():
-    # handles when the user navigates to the site initially
+    '''
+    handles when the user navigates to the site initially
+    '''
     # creates a quick view of credit, overheads to be paid and disposable income
     money = mongo.db.current_month.find_one({"name": session['user']})
     return render_template("index.html", money=money)
@@ -330,7 +359,9 @@ def index():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    # allows the user to register a new account
+    '''
+    allows the user to register a new account
+    '''
     if request.method == "POST":
         # validate form
         # get request form object
@@ -418,6 +449,9 @@ def register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    '''
+    as the name implies, this is the login view
+    '''
     if request.method == "POST":
         # check if username exists
         existing_user = mongo.db.users.find_one(
@@ -454,25 +488,35 @@ def login():
 @app.route("/profile/") 
 @ensure_user
 def profile():
+    '''
+    view for the page that gives the user a more granular control over their
+    financial overview
+    '''
     # get the dictionary from the database in cents
     money = mongo.db.current_month.find_one({"name": session["user"]})
     return render_template("profile.html", money=money)
 
-@app.route("/create_note", methods=["GET", "POST"])
+@app.route("/create_note", methods=["POST"])
 @ensure_user
 def create_note():
-    if request.method == "POST":
-        new_note = request.form.get("create_note")
-        mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"user_notes": new_note}})
-        flash("Note Added!")
-        
-    money = mongo.db.current_month.find_one({"name": session["user"]})
+    '''
+    gives the user the ability to make notes regarding their finances which
+    can be easily updated directly within the profile view
+    '''    
+    new_note = request.form.get("create_note")
+    mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"user_notes": new_note}})
+    flash("Note Added!")
     return redirect(url_for('profile'))
+        
+
 
 
 @app.route("/edit_note", methods=["GET", "POST"])
 @ensure_user
 def edit_note():
+    '''
+    allows user to edit their profile note
+    '''
     if request.method == "POST":
         new_note = request.form.get("edited_note")
         mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"user_notes": new_note}})
@@ -486,6 +530,10 @@ def edit_note():
 @app.route("/invoice")
 @ensure_user
 def invoice():
+    '''
+    creates the page that allows the user to see their income, add income,
+    modify the income, delete entries etc
+    '''
     user_key = {"name": session['user']}
     invoices = mongo.db.invoices.find(user_key) 
     return render_template("invoice.html", invoices=invoices)
@@ -494,6 +542,10 @@ def invoice():
 @app.route("/add_invoice", methods=["GET", "POST"])
 @ensure_user
 def add_invoice():
+    '''
+    allows the user to add an invoice, with the option of whether or not to
+    calculate taxes 
+    '''
     if request.method == "POST":
         # set the tax rate variable
         tax_rate = session["tax_rate"]
@@ -569,6 +621,10 @@ def add_invoice():
 @app.route("/edit_invoice/<invoice_id>", methods=["GET", "POST"])
 @ensure_user
 def edit_invoice(invoice_id):
+    '''
+    allows the user to edit a previous income log, and includes the logic to
+    dynamically update the affected fields both before and after editing
+    '''
     if request.method == "POST":
         # recalculate credit and relevant fields before updating
         # set tax rate
@@ -696,6 +752,10 @@ def edit_invoice(invoice_id):
 @app.route("/delete_invoice/<invoice_id>", methods=["GET", "POST"])
 @ensure_user
 def delete_invoice(invoice_id):
+    '''
+    allows the user to delete an income log, and recalculates the affected
+    fields 
+    '''
     if request.method == "POST":
         # set tax rate 
         tax_rate = session["tax_rate"]
@@ -771,6 +831,10 @@ def delete_invoice(invoice_id):
 @app.route("/expenses")
 @ensure_user
 def expenses():
+    '''
+    generates the page that shows the outgoing expenses and gives the
+    user the controls to add/edit/delete them
+    '''
     expenses = mongo.db.expenses.find({"name": session['user']})
     return render_template("expenses.html", expenses=expenses)
 
@@ -778,6 +842,11 @@ def expenses():
 @app.route("/add_expense", methods=["GET", "POST"])
 @ensure_user
 def add_expense():
+    '''
+    allows the user to add an outgoing expense, with the option of 
+    determining whether or not an expense affects their monthly
+    overheads
+    '''
     # create reusable user_key
     user_key = {"name": session['user']}
     if request.method == "POST":
@@ -838,6 +907,9 @@ def add_expense():
 @app.route("/edit_expense/<expense_id>", methods=["GET", "POST"])
 @ensure_user
 def edit_expense(expense_id):
+    '''
+    allows the user to edit an expense while updating the affected fields
+    '''
     if request.method == "POST":
         # to recalculate finances so that updated amounts modify rather than add to
         # get original expense amount, credit and add back in
@@ -937,6 +1009,9 @@ def edit_expense(expense_id):
 @app.route("/delete_expense/<expense_id>", methods=["GET", "POST"])
 @ensure_user
 def delete_expense(expense_id):
+        '''
+        allows the user to delete an expense and updates the affected fields
+        '''
         if request.method == "POST":
             # refactor amount back into credit and update the relevant fields
             # to recalculate finances so that updated amounts modify rather than add to
@@ -996,6 +1071,9 @@ def delete_expense(expense_id):
 @app.route("/user_history")
 @ensure_user
 def user_history():
+    '''
+    generates a page in which the user can see a history of their activity
+    '''
     history = mongo.db.in_out_history.find({"name":session['user']})
     return render_template("user_history.html", history=history, name = session['user'])
 
@@ -1003,6 +1081,10 @@ def user_history():
 @app.route("/end_tax", methods=["GET", "POST"])
 @ensure_user
 def end_tax():
+    '''
+    generates a page which allows the user to end a tax season, with a
+    calculator tool and some supporting information
+    '''
     if request.method == "POST":
         if request.form.get("confirm_tax_end") == "on":
             # create user key
@@ -1031,18 +1113,27 @@ def end_tax():
 
 @app.route("/calculator", methods=["POST"])
 @ensure_user
-def calculator():  
+def calculator():
+    '''
+    gives the user a handy calculator to work out receipts with totals
+    that don't include tax information
+    '''  
     # get session tax rate cookie
     tax_rate = session['tax_rate']
     total_with_tax = float(request.form.get("calculator"))
     tax_to_deduct = new_invoice_tax(total_with_tax, tax_rate)
-    return render_template("end_tax.html", tax=tax_to_deduct)
+    income_to_separate = new_invoice_income(total_with_tax, tax_rate)
+    return render_template("end_tax.html", tax=tax_to_deduct, income=income_to_separate)
     
 
 
 @app.route("/wishlist", methods=["GET","POST"])
 @ensure_user
 def wishlist():
+    '''
+    generates a page that gives the user the ability to keep track of desired
+    items and know when they can afford to buy them
+    '''
     # get user wishlist from db
     wishlist = mongo.db.wishlist.find({"name": session["user"]})
     return render_template("wishlist.html", wishlist=wishlist)
@@ -1051,6 +1142,9 @@ def wishlist():
 @app.route("/add_wish", methods=["POST"])
 @ensure_user  
 def add_wish():
+    '''
+    allows the user to add a wish
+    '''
     # user_key
     user_key = {"name": session['user']}
     # get disposable income
@@ -1080,6 +1174,9 @@ def add_wish():
 @app.route("/edit_wish/<wish>", methods=["GET", "POST"])
 @ensure_user
 def edit_wish(wish):
+    '''
+    allows a user to edit a wish
+    '''
     if request.method == "POST":
         # user_key
         user_key = {"name": session['user']}
@@ -1112,6 +1209,9 @@ def edit_wish(wish):
 @app.route("/delete_wish/<wish>", methods=["POST"])
 @ensure_user
 def delete_wish(wish):
+    '''
+    allows a user to delete a wish
+    '''
     wish_to_delete = mongo.db.wishlist.find_one({"_id": ObjectId(wish)})
     mongo.db.wishlist.remove(wish_to_delete)
     flash("Wish deleted!")
@@ -1121,7 +1221,11 @@ def delete_wish(wish):
 
 @app.route("/reward")
 @ensure_user
-def reward():   
+def reward(): 
+    '''
+    generates a page where the user can inspire themselves with an image
+    and caption to remind them of long term goals
+    '''  
     user_reward = mongo.db.rewards.find_one({"name": session['user']})
     return render_template("reward.html", user_reward=user_reward)
 
@@ -1129,12 +1233,18 @@ def reward():
 @app.route("/image/<filename>")
 @ensure_user
 def image(filename):
+    '''
+    utility function that allows the app to get an image from the Mongo database
+    '''
     return mongo.send_file(filename)
 
 
 @app.route("/add_reward", methods=["GET", "POST"])
 @ensure_user
 def add_reward():
+    '''
+    allows the user to add a reward image and caption
+    '''
     if request.method == "POST" and "image" in request.files:
         img = request.files['image']
         to_post = {
@@ -1157,6 +1267,10 @@ def add_reward():
 @app.route("/logout")
 @ensure_user
 def logout():
+    '''
+    logs a user out and clears all session cookies, redirecting to the login
+    page
+    '''
     session.clear()
     flash("You have been logged out.")
     return redirect(url_for('login'))
@@ -1165,6 +1279,10 @@ def logout():
 @app.route("/settings")
 @ensure_user
 def settings():
+    '''
+    generates a page for the user to change key settings for the app, including
+    overheads, tax rate and display theme
+    '''
     # get the current overheads to display on the template for user reference
     current_month = mongo.db.current_month.find_one({"name": session['user']})
     return render_template("settings.html", user=session["user"], current_month=current_month)
@@ -1173,8 +1291,9 @@ def settings():
 @app.route("/change_overheads", methods=["POST"])
 @ensure_user
 def change_overheads():
-    # allows the user to change their monthly overheads
-    # accessed from the settings page
+    '''
+    allows the user to change their monthly overheads
+    '''
     # set the user_key to session user
     user_key = {"name": session['user']}
     
@@ -1210,6 +1329,9 @@ def change_overheads():
 @app.route("/change_tax_rate", methods=["POST"])
 @ensure_user
 def change_tax_rate():
+    '''
+    allows the user to change their tax rate
+    '''
     # check to see if a tax rate is selected
     if request.form.get("new_tax_rate") == '':
         # if not, stay as it is
@@ -1232,7 +1354,11 @@ def change_tax_rate():
 
 @app.route("/change_theme", methods=["POST"])
 @ensure_user
-def change_theme():    
+def change_theme():
+    '''
+    crucial for some of us - allows a user to change from dark to light themes
+    :)
+    '''    
     if session['theme'] == "dark":
         mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"preferred_theme": "light"}})
         session['theme'] = "light"
@@ -1247,12 +1373,17 @@ def change_theme():
 @app.route("/admin")
 @ensure_user
 def admin():
+    '''
+    generates an admin page to get rid of unwanted user data etc
+    '''
     return render_template("admin.html")
 
 @app.route("/admin_delete", methods=["GET", "POST"])
 @ensure_user
 def admin_delete():
-    # allows the admin to delete a users account
+    '''
+    allows the admin to delete a user
+    '''
     if request.method == "POST":
         # checks that the admin is sure
         if request.form.get("check_delete") == "on":
@@ -1285,6 +1416,11 @@ def admin_delete():
 @app.route("/delete_account", methods=["GET", "POST"])
 @ensure_user
 def delete_account():
+    '''
+    not to be confused with the function above, this function
+    is from the user settings panel, which allows them to 
+    delete their own account
+    '''
     if request.method == "POST":
         user_key = {"name": session['user']}
         mongo.db.users.remove(user_key)
@@ -1303,6 +1439,10 @@ def delete_account():
         return redirect('login')
 
     return render_template("delete_account.html")
+
+'''
+the "run" code which sets up the development environment
+'''
 
 
 if __name__ == "__main__":

@@ -577,6 +577,9 @@ user to see exactly what it is that they need to fix in order for their input
 to succeed. 
 
 After looking at a sample function that the mentor had passed along, the author
-went ahead and started writing the code. 
+went ahead and started writing the code. Instead of creating a single form 
+validator that could adapt to most of the forms (and since there are such
+specific requirements that may require maintenance later) the author decided
+to go with a "per form" approach. 
 
 
