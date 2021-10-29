@@ -87,7 +87,8 @@ def check_end_month():
             "income_this_month": current_month['income_this_month'],
             "spent_on_overheads": current_month['spent_on_overheads'],
             "spent_on_extras": current_month['spent_on_extras'],
-            "tax_to_set_aside": current_month['tax_to_set_aside']
+            "tax_to_set_aside": current_month['tax_to_set_aside'],
+            "ending_credit": current_month['credit']
         }
         # insert the object into the previous month database
         mongo.db.previous_months.insert_one(previous_month)
@@ -453,33 +454,40 @@ def login():
     as the name implies, this is the login view
     '''
     if request.method == "POST":
+        form = request.form
+        errors = validate_login_form(form)
         # check if username exists
-        existing_user = mongo.db.users.find_one(
-            {"name": request.form.get("name").lower()})
+        if errors == []:
+            existing_user = mongo.db.users.find_one(
+                {"name": request.form.get("name").lower()})
         
-        if existing_user:
-            # check password
-            if check_password_hash(
-                existing_user["password"], request.form.get("password")):
-                    # set session cookies
-                    # get current month object with cookie settings
-                    session["user"] = request.form.get("name").lower()
-                    current_month = mongo.db.current_month.find_one({"name": session['user']})
-                    session["theme"] = current_month["preferred_theme"]
-                    session["tax_rate"] = current_month["tax_rate"]
-                    # check if its a new month since the last login
-                    check_end_month()
-                    # provide some user feedback
-                    flash("Welcome, {}".format(request.form.get("name")))
-                    money = current_month
-                    return render_template("index.html", money=money)
+            if existing_user:
+                # check password
+                if check_password_hash(
+                    existing_user["password"], request.form.get("password")):
+                        # set session cookies
+                        # get current month object with cookie settings
+                        session["user"] = request.form.get("name").lower()
+                        current_month = mongo.db.current_month.find_one({"name": session['user']})
+                        session["theme"] = current_month["preferred_theme"]
+                        session["tax_rate"] = current_month["tax_rate"]
+                        # check if its a new month since the last login
+                        check_end_month()
+                        # provide some user feedback
+                        flash("Welcome, {}".format(request.form.get("name")))
+                        money = current_month
+                        return render_template("index.html", money=money)
+                else:
+                    flash("Incorrect Username or Password")
+                    return redirect(url_for('login'))
+
             else:
+                # no such user
                 flash("Incorrect Username or Password")
                 return redirect(url_for('login'))
-
         else:
-            # no such user
-            flash("Incorrect Username or Password")
+            for error in errors:
+                flash(f"{error}")
             return redirect(url_for('login'))
 
     return render_template("login.html")
@@ -1096,8 +1104,10 @@ def user_history():
     '''
     generates a page in which the user can see a history of their activity
     '''
+    previous_months = mongo.db.previous_months.find({"name": session['user']})
+    tax_seasons = mongo.db.tax_seasons.find({"name": session['user']})
     history = mongo.db.in_out_history.find({"name":session['user']})
-    return render_template("user_history.html", history=history, name = session['user'])
+    return render_template("user_history.html", history=history, name = session['user'], tax_seasons=tax_seasons, previous_months=previous_months)
 
 
 @app.route("/end_tax", methods=["GET", "POST"])

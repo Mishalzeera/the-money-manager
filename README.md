@@ -582,4 +582,12 @@ validator that could adapt to most of the forms (and since there are such
 specific requirements that may require maintenance later) the author decided
 to go with a "per form" approach. 
 
+### Limiting CRUD Functionality For Previous Months Income/Expense Records
+
+Since the users finances are reset when a new month starts, it makes it easier
+if users can no longer update or delete invoices or expenses once they are 
+part of a previous months records. A datestamp was added that Jinja templating
+checks against, then either allows or disallows the edit/delete buttons in the
+relevant views.
+
 

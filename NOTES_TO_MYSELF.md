@@ -1,8 +1,8 @@
 form validation
 login with email
 db schema
-if datestamp on invoices and expenses doesn't match current month, no CRUDding.
 delete pages as confirmation
+add credit after to monthly record
 PEP... 8... COMPLIANT
 Don't forget debug=true
 history page shows tax seasons and previous months

@@ -35,11 +35,7 @@ def validate_registration_form(form):
     '''takes in the request.form object and applies conditional logic'''
     #returns an error list
 
-    #create variables
-    name_maxlength = 50
-    name_minlength = 4
-    password_maxlength = 15
-    password_minlength = 5
+    #create empty error list
     error_list = []
 
     if not form["name"] or len(form["name"]) > 50 or len(form["name"]) < 4:
@@ -71,5 +67,22 @@ def validate_registration_form(form):
         error_list.append(
             "You must enter your monthly overheads and it must be a number.")
 
+
+    return error_list
+
+
+def validate_login_form(form):
+    '''
+    validates the login form, giving the user feedback as well as preventing
+    any deliberate bypassing of the html form settings
+    '''
+    # create empty error list
+    error_list = []
+
+    if not form['name'] or len(form['name']) > 50 or len(form['name']) < 4:
+        error_list.append("You must enter a login name less than 50 and more than 4 characters.")
+
+    if not form['password'] or len(form['password']) >15 or len(form['password']) < 5:
+        error_list.append("You must enter a password less than 15 and more than 5 characters long.")
 
     return error_list
