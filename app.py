@@ -1376,7 +1376,8 @@ def admin():
     '''
     generates an admin page to get rid of unwanted user data etc
     '''
-    return render_template("admin.html")
+    users = mongo.db.users.find()
+    return render_template("admin.html", users=users)
 
 @app.route("/admin_delete", methods=["GET", "POST"])
 @ensure_user
@@ -1407,8 +1408,8 @@ def admin_delete():
             # gives admin feedback
             flash("User deleted!")
             return render_template("admin.html")
-        flash("Check The Box If You Want To Delete A User")
-        return render_template("admin.html")
+        flash("Check The Box If You Want To Delete A User")        
+        return redirect(url_for('admin'))
             
     return render_template("admin.html")
 

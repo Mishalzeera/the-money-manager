@@ -1,5 +1,5 @@
 {% extends "base.html" %} {% block content %}
-
+<p>{{money.name | title }}'s Money</p>
 <h1>Credit: {{ money.credit / 100}} </h1>
 <h4>Disposable Income: {{ money.disposable_income / 100 }}</h4>
 {% if money.overheads_to_be_paid >= 0 %}
@@ -7,6 +7,8 @@
 {% else %}
 <h4>Overheads For This Month Are Paid</h4>
 {% endif %}
-<p class="index-notes">{{ money.user_notes }}</p>
+{% if money.user_notes %}
+<p class="index-notes">"{{ money.user_notes }}"</p>
+{% endif %}
 
 {% endblock %}
