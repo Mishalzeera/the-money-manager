@@ -1096,10 +1096,8 @@ def user_history():
     '''
     generates a page in which the user can see a history of their activity
     '''
-    expenses = mongo.db.expenses.find({"name": session['user']})
-    invoices = mongo.db.invoices.find({"name": session['user']})
     history = mongo.db.in_out_history.find({"name":session['user']})
-    return render_template("user_history.html", history=history, name = session['user'], invoices=invoices, expenses=expenses)
+    return render_template("user_history.html", history=history, name = session['user'])
 
 
 @app.route("/end_tax", methods=["GET", "POST"])
