@@ -2,7 +2,7 @@
 {% block content %}
 <h2>Rewards page</h2>
 
-<img src="{{ url_for('image', filename=[user_reward.img])}}" style="max-width: 100px" alt="">
+<img src="{{ url_for('image', filename=[user_reward.img])}}" class="reward-image">
 <h1>{{img }}</h1>
 {% if user_reward.caption %}
     <p>"{{ user_reward.caption }}"</p>

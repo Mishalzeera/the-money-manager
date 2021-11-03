@@ -48,7 +48,7 @@ color: var(--emerald-200);
 
 .register-card {
   background-color: var(--sky-800-o);
-  color: var(--amber-50)
+  color: var(--sky-200);
 }
 
 input, textarea {

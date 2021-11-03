@@ -28,7 +28,7 @@
 {% else %}
 <form action="{{ url_for('create_note') }}" method="POST" class="form-left">
     <label for="create_note">Create A Note: </label>
-    <textarea name="create_note" id="create_note" cols="30" rows="10" class="textarea-left"></textarea>
+    <textarea name="create_note" id="create_note" cols="30" rows="10" class="textarea-left" placeholder="Write yourself any useful information about bills you have to pay, invoice due dates etc. Then click 'Create Note' below."></textarea>
     <button type="submit" class="btn btn-manage">Create Note</button>
 </form>
 {% endif %}

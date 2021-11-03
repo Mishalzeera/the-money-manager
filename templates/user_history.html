@@ -2,48 +2,54 @@
 {% block content %}
 <h1>{{ name | title }}'s History</h1>
 
-
-<h2>Income and Expenses</h2>
-{% for story in history | reverse %}
-        {% if story.type == "income" %}
-        <p>+</p>
-        {% elif story.type == "income-modified" %}
-        <p>+=</p>
-        {% elif  story.type == "income-deleted" %}
-        <p>+-</p>
-        {% elif story.type == "expense" %}
-        <p>-</p>
-        {% elif story.type == "expense-modified" %}
-        <p>-=</p>
-        {% elif story.type == "expense-deleted" %}
-        <p>--</p>       
-        {% endif %}
-    <p>{{ story.date }}</p>
-    <p>{{ story.amount / 100 }}</p>
-    {% if story.tax == "on" %}
-    <p>Tax was calculated for this income</p>
-    {% endif %}
-    <p>{{ story.recipient }}</p>
-    <p>{{ story.credit_after / 100 }}</p>
-{% endfor %}
-
-<h2>Previous Months</h2>
-{% for months in previous_months | reverse %}
-<p>Period: {{months.period}}</p>
-<p>Total Spent: {{ months.spent_this_month /100 }}</p>
-<p>Total Income: {{ months.income_this_month /100}}</p>
-<p>Spent On Overheads: {{ months.spent_on_overheads /100}}</p>
-<p>Spent On Extras: {{ months.spent_on_extras /100}}</p>
-<p>Tax Set Aside: {{ months.tax_to_set_aside /100}}</p>
-<p>Ending Credit: {{ months.ending_credit /100}}</p>
-{% endfor %}
-
-<h2>Previous Tax Seasons</h2>
-{% for seasons in tax_seasons | reverse %}
-<p>For Period Ending On: {{ seasons.period_ending }}</p>
-<p>Tax Paid: {{ seasons.tax_to_set_aside /100}}</p>
-<p>Credit After: {{ seasons.credit_after /100}}</p>
-<p>Calculated At: {{ seasons.tax_rate - 100}}%</p>
-{% endfor %}
+<div class="history-flex-primary">
+    
+    <div class="history-child-left">
+        <h2>Income and Expenses</h2>
+        {% for story in history | reverse %}
+                {% if story.type == "income" %}
+                <p>+</p>
+                {% elif story.type == "income-modified" %}
+                <p>+=</p>
+                {% elif  story.type == "income-deleted" %}
+                <p>+-</p>
+                {% elif story.type == "expense" %}
+                <p>-</p>
+                {% elif story.type == "expense-modified" %}
+                <p>-=</p>
+                {% elif story.type == "expense-deleted" %}
+                <p>--</p>
+                {% endif %}
+            <p>{{ story.date }}</p>
+            <p>{{ story.amount / 100 }}</p>
+            {% if story.tax == "on" %}
+            <p>Tax was calculated for this income</p>
+            {% endif %}
+            <p>{{ story.recipient }}</p>
+            <p>{{ story.credit_after / 100 }}</p>
+        {% endfor %}
+    </div>
+    
+    <div class="history-child-right">
+        <h2>Previous Months</h2>
+        {% for months in previous_months | reverse %}
+        <p>Period: {{months.period}}</p>
+        <p>Total Spent: {{ months.spent_this_month /100 }}</p>
+        <p>Total Income: {{ months.income_this_month /100}}</p>
+        <p>Spent On Overheads: {{ months.spent_on_overheads /100}}</p>
+        <p>Spent On Extras: {{ months.spent_on_extras /100}}</p>
+        <p>Tax Set Aside: {{ months.tax_to_set_aside /100}}</p>
+        <p>Ending Credit: {{ months.ending_credit /100}}</p>
+        {% endfor %}
+        
+        <h2>Previous Tax Seasons</h2>
+        {% for seasons in tax_seasons | reverse %}
+        <p>For Period Ending On: {{ seasons.period_ending }}</p>
+        <p>Tax Paid: {{ seasons.tax_to_set_aside /100}}</p>
+        <p>Credit After: {{ seasons.credit_after /100}}</p>
+        <p>Calculated At: {{ seasons.tax_rate - 100}}%</p>
+        {% endfor %}
+    </div>
+</div>
 
 {% endblock %}
