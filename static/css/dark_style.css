@@ -1,4 +1,9 @@
-/* Space Invaders, Apple IIc */
+:root {
+  --blue-500-o: #3b83f64f;
+  --sky-800-o: #0759858f;
+  --emerald-900-o: #064e3b6b;
+  --red-900-o: #7f1d1d79;
+}
 
 body {
   background-color: var(--cool-gray-900);
@@ -6,7 +11,7 @@ body {
   color: var(--emerald-400);
 }
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4, h5, h6 {
   color: var(--emerald-400);
 }
 
@@ -24,30 +29,29 @@ h1, h2, h3, h4 {
   color: var(--amber-50);
 }
 
-/* 
-.a-btn {    
-  
-background-color: var(--green-400);
-color: var(--indigo-900);
-
-
-} */
 
 .btn-in {
-background-color: var(--teal-700);
-color: var(--amber-50);
+background-color: var(--emerald-900-o);
+color: var(--emerald-200);
 }
 
 .btn-manage {
-
+  background-color: var(--blue-500-o);
+  color: var(--blue-200);
 }
 
 .btn-out {
-
+  background-color: var(--red-900-o);
+  color: var(--red-200);
 }
 
 
 .register-card {
-  background-color: var(--cool-gray-700);
+  background-color: var(--sky-800-o);
   color: var(--amber-50)
+}
+
+input, textarea {
+  background-color: var(--sky-800-o);
+  color: var(--sky-200);
 }

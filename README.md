@@ -676,3 +676,12 @@ site in the authors opinion, so the CDN was added. There is a nice centering
 of content, plenty of whitespace and generally a feeling of comfort to using
 it. A few things will need to be overridden, but generally its okay.
 
+### Button Styling And Conflicts
+
+Some hours were spent styling the buttons to the appropriate colour and size.
+It seems a one-size fits all approach is not going to work, and sizing buttons
+per page would be a very long task. On some pages the alignment of the buttons
+is in conflict with the alignment of the fomrs. For the most part it is 
+acceptable, and the author is anxious to style the tables for the History 
+page. The author expects that to be a challenge of navigating Jinja templates 
+and HTML/CSS structures.

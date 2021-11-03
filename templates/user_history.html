@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>{{ name | title }}'s History</h1>
+
+
 <h2>Income and Expenses</h2>
 {% for story in history | reverse %}
         {% if story.type == "income" %}

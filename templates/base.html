@@ -60,7 +60,7 @@
     {% endwith %}
     {% block content %} {% endblock %}
     {% if session["user"] %}
-    <a href="{{url_for('settings')}}" class="a-btn btn-manage">Settings</a>
+    <a href="{{url_for('settings')}}" class="a-btn btn-in">Settings</a>
     {% endif %}
   </body>
 </html>
