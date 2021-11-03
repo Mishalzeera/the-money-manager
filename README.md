@@ -599,4 +599,29 @@ their spending patterns have been. At the moment the page is an unbearable
 mess of data, but the author plans to organise it into neat sections that have
 clear visual hierarchy and provide good feedback for a user.
 
+### Last Check Before Styling
 
+While the author is certain that some things will need to be fixed in the 
+backend of the project, the time is coming soon to submit the app. Further,
+the author took a peek at Django and finds it both interesting and quite
+daunting, and would like to get to grips with it as soon as possible. For
+a final check of functionality, there was relatively few things to sort out.
+Mostly they were having lists in the correct order (for instance on the 
+history page, showing from most recent instead of from the oldest).
+
+### Design Ideas
+
+The author has the idea to make the app styled around Middle Eastern cultural
+imagery, to a subtle extent. The intention is to provide a sense of protection
+and support to a user, via personalising the app with an impressive and yet
+benign Sheikh figure. So, while there will still be money green and bank black,
+the author is looking to include dark reds to increase the sense of gravity and
+royalty. Red also adds some relief to the eye, as the contrast between green 
+and black gets tiring after some time. As for the light theme, the author is 
+not a light theme fan, so there is some difficulty of being sure whats best.
+For the time being, the dark theme will be used as the reference, and once 
+the imagery is all in place, the light theme will be worked on. 
+
+Over to Figma now.
+
+###
