@@ -24,16 +24,21 @@ body {
   font-size: 1.3rem;
 }
 
+
+
 img {
     width: 100%;
 }
 
 a {
     transition: all 300ms ease-in-out;
+    text-decoration: none;
 }
 
 a:hover {
     opacity: .7;
+    text-decoration: none;
+
 }
 
 /* Header Styles */

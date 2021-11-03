@@ -7,6 +7,11 @@ body {
     color: var(--indigo-900);
   }
 
+
+  h1, h2, h3, h4 {
+    color: var(--indigo-900);
+  }
+
   .money-dingbat {
 
     color:var(--green-800)

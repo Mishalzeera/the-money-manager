@@ -6,6 +6,10 @@ body {
   color: var(--emerald-400);
 }
 
+h1, h2, h3, h4 {
+  color: var(--emerald-400);
+}
+
 .money-dingbat {
 
   color:var(--green-400)

@@ -11,6 +11,13 @@ https://drive.google.com/drive/u/0/folders/1n2iFWqA44Wlc4GLXCBwN023L-KGAYE2D
 Refactor modules
 {{number | round | int }}
 
+btn in  emerald900 opacity .6 textcolour same but brighter
+btn out red900
+btn mng blue500 
+
+input textarea sky800 opacity .5 textcolour same but brighter
+
+
 
 Style ideas:
 

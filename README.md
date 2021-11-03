@@ -624,4 +624,55 @@ the imagery is all in place, the light theme will be worked on.
 
 Over to Figma now.
 
-###
+### The Design 
+
+The author began with an image and a layout, to get a sense of where to go:
+
+ ![First mockup of style](wireframes/landing-page-mockup.jpg "Starting point")
+
+Which led to discovering some practical design problems. Firstly, the purpose 
+of the app is to conveniently and quickly give the user important information.
+The intention is not to create too many 'click-barriers', rather once the user
+is logged in, everything is quick. Secondly, the user will sometimes switch to
+the Dashboard view, which is highly detailed and complicated. Also the history
+page. So the artistic direction should serve that purpose. 
+
+By using the main image of Sheikh Salman as a background image with a very
+reduced opacity, as well as a very dark grey background colour, the problem
+was more or less solved. Text looks nice and readable, and the benign, regal
+character of the Sheikh still comes through. 
+
+For the buttons and input elements, there was some work put into picking the
+right hues. A balance was found between richness and a muted quality which
+somehow the app asks for. To some degree the author feels that his styling
+may leave something to be desired at the end of the process, but due to this
+being so much outside his comfort zone, getting it good enough is the most
+realistic option. 
+
+A theme of btn-in btn-out and btn-manage colours was written into the html
+and css from the start (with a vague idea of it coming in handy later). It
+came in handy to create a realistic and limited palette for the author to
+work on. Previously every design the author made was haphazard in that 
+regards, so something was learned there. 
+
+A basic mockup of how the screen would look along with some elements:
+
+ ![Mockup with elements](wireframes/basic-elements.jpg "Reduce opacity, balance colours.")
+
+And a sheet with some numbers:
+
+ ![Abridged view mockup](wireframes/abridged-view.jpg "Less clutter, more Qatar.")
+
+For the rest, the author decided to try some interesting CSS mini-frameworks
+to speed things along. These frameworks, including Water, Sakura and Marx are
+named Classless frameworks as they style things according to the basic HTML.
+They are to be placed early in the stylesheet sequence and then modified after
+by the light/dark and general CSS sheets. 
+
+### Water CSS
+
+After trying a few options, the Water framework had the best effect on the 
+site in the authors opinion, so the CDN was added. There is a nice centering
+of content, plenty of whitespace and generally a feeling of comfort to using
+it. A few things will need to be overridden, but generally its okay.
+
