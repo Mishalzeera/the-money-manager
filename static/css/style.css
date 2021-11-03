@@ -98,10 +98,15 @@ a:hover {
     font-size: .8rem;;
 }
 
+.register-card button {
+    width: unset;
+}
+
 input {
     font-family: inherit;
     padding: .3rem;
     border: unset;
+    width: 100%;
 }
 
 
@@ -149,6 +154,7 @@ input {
     align-items: flex-start;
 }
 
+}
 textarea {
     resize: none;
     width: 300px;
@@ -167,6 +173,9 @@ textarea {
     font-size: .8rem;
 }
 
+.history-child-left i {
+    font-size: 2rem;
+}
 .wish {
     margin: 1rem;
 }
@@ -177,9 +186,6 @@ textarea {
     text-align: center;
 }
 
-.btn-center {
-    margin: 1rem auto;
-}
 
 .reward-image {
     max-width: 100%;

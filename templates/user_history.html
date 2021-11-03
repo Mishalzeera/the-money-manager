@@ -8,18 +8,29 @@
         <h2>Income and Expenses</h2>
         {% for story in history | reverse %}
                 {% if story.type == "income" %}
-                <p>+</p>
+                <i class="fa-solid fa-plus"></i>
+                <p>Income</p>
                 {% elif story.type == "income-modified" %}
-                <p>+=</p>
+                <i class="fa-solid fa-pen-to-square"></i>
+                <i class="fa-solid fa-plus"></i>
+                <p>Modified Income</p>
                 {% elif  story.type == "income-deleted" %}
-                <p>+-</p>
+                <i class="fa-solid fa-delete-left"></i>
+                <i class="fa-solid fa-plus"></i>
+                <p>Income Deleted</p>
                 {% elif story.type == "expense" %}
-                <p>-</p>
+                <i class="fa-solid fa-minus"></i>
+                <p>Spent</p>
                 {% elif story.type == "expense-modified" %}
-                <p>-=</p>
+                <i class="fa-solid fa-pen-to-square"></i>
+                <i class="fa-solid fa-minus"></i>
+                <p>Modified Expense</p>
                 {% elif story.type == "expense-deleted" %}
-                <p>--</p>
+                <i class="fa-solid fa-delete-left"></i>
+                <i class="fa-solid fa-minus"></i>
+                <p>Expense Deleted</p>
                 {% endif %}
+
             <p>{{ story.date }}</p>
             <p>{{ story.amount / 100 }}</p>
             {% if story.tax == "on" %}
@@ -27,6 +38,7 @@
             {% endif %}
             <p>{{ story.recipient }}</p>
             <p>{{ story.credit_after / 100 }}</p>
+            <br><hr><br>
         {% endfor %}
     </div>
     

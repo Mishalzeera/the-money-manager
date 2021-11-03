@@ -1026,7 +1026,7 @@ def edit_expense(expense_id):
         # calculate users disposable income
         calculate_disposable_income()
         # create a record
-        create_expense_record(edited_expense)
+        create_modified_expense_record(edited_expense)
         # give some user feedback
         flash("Expense Edited Successfully!")
         expenses = mongo.db.expenses.find(user_key)
