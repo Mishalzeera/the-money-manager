@@ -4,7 +4,7 @@
 <h1>Invoices:</h1>
 <br><br>
 
-{% for invoice in invoices %}
+{% for invoice in invoices | reverse %}
 <div class="register-card" style="border-bottom: 1px solid rgba(128, 128, 128, 0.322)">
 
   {% if invoice.date != "" %}

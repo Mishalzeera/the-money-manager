@@ -590,4 +590,13 @@ part of a previous months records. A datestamp was added that Jinja templating
 checks against, then either allows or disallows the edit/delete buttons in the
 relevant views.
 
+### Extending User History To Include Previous Months & Tax Seasons
+
+The User History page has so far been a history of incoming and outgoing money,
+but it should also include the previous months and tax seasons. This allows 
+the user to keep an eye on how much tax has been paid over the year, and how
+their spending patterns have been. At the moment the page is an unbearable
+mess of data, but the author plans to organise it into neat sections that have
+clear visual hierarchy and provide good feedback for a user.
+
 

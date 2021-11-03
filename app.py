@@ -628,7 +628,7 @@ def add_invoice():
         create_income_record(new_invoice)
         # provide confirmation to user:
         flash("Invoice successfully added!")
-        return redirect(url_for('profile'))
+        return redirect(url_for('invoice'))
 
     return render_template("add_invoice.html")
 
