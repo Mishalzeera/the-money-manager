@@ -84,8 +84,18 @@ a:hover {
     color: inherit;
 }
 
-
+@media (max-width: 450px) {
+    header {
+        font-size: .8rem;
+    }
+}
 /* Registration form */
+
+.login-or-registered {
+    margin-top: 1rem;
+    opacity: .5;
+    font-size: .8rem;
+}
 
 .register-card {
     
@@ -107,6 +117,7 @@ input {
     padding: .3rem;
     border: unset;
     width: 100%;
+    opacity: .8;
 }
 
 
@@ -154,7 +165,9 @@ input {
     align-items: flex-start;
 }
 
-}
+
+
+
 textarea {
     resize: none;
     width: 300px;
@@ -183,9 +196,14 @@ textarea {
 .flashes {
     
     font-size: 2rem;
-    text-align: center;
+    text-align: left;
 }
 
+@media (max-width: 450px) {
+    .flashes {
+        text-align: center;
+    }
+}
 
 .reward-image {
     max-width: 100%;
