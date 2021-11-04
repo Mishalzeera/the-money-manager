@@ -47,6 +47,20 @@ a:hover {
 
 }
 
+.watermark-logo {
+    font-size: 4rem;
+    position: fixed;
+    right: 5vw;
+    top: 40vh;
+    margin-left: auto;
+    text-align: right;
+    opacity: .1;
+}
+
+.watermark-logo p {
+    font-size: .7rem;
+}
+
 /* Header Styles */
 
 .money-dingbat {
@@ -146,11 +160,7 @@ input {
 }
 
 
-.btn:hover,
-.a-btn:hover {
-    opacity: .7;
-    cursor: pointer;
-}
+
 
 .btn-in {
     font-family: inherit;
@@ -174,6 +184,23 @@ textarea {
     
 }
 
+@media (max-width: 370px) {
+    .btn, .a-btn {
+        width: 260px;
+    }
+
+    textarea {
+        width: 260px;
+    }
+}
+
+
+
+.btn:hover,
+.a-btn:hover {
+    opacity: .7;
+    cursor: pointer;
+}
 
 .history-flex-primary {
     display: flex;

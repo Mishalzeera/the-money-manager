@@ -20,7 +20,12 @@
     <title>The Money Manager</title>
   </head>
   <body>
+    <div class="watermark-logo">
+      <h1>Munificent</h1>
+      <p>Sheikh Salman Bin Isa's Most Excellent And Beneficial Money Manager</p>
+    </div>
     <header class="header-flex-parent">
+     
       {% if session['user'] %}
           {% if request.path != "/profile/" %}
           <a href="{{url_for('profile', username=session['user'])}}" class="money-dingbat">f<span class="to-dashboard">To Dashboard</span></a>
@@ -29,7 +34,7 @@
           {% endif %}
       
       {% else %}
-      <a href="{{ url_for('login') }}" class="money-dingbat">f<span class="to-dashboard">Munificent - The Money Manager</span></a>
+      <a href="{{ url_for('login') }}" class="money-dingbat">f</a>
       
       {% endif %}
       <nav>
