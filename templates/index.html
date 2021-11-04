@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block content %}
-<p>{{money.name | title }}'s Money</p>
-<h1>Credit: {{ money.credit / 100}} </h1>
+<h1>{{money.name | title }}'s Money</h1>
+<h2>Credit: {{ money.credit / 100}} </h2>
 <h4>Disposable Income: {{ money.disposable_income / 100 }}</h4>
 {% if money.overheads_to_be_paid >= 0 %}
 <h4>Overheads To Be Paid : {{ money.overheads_to_be_paid }}</h4>

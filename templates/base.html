@@ -29,9 +29,9 @@
      
       {% if session['user'] %}
           {% if request.path != "/profile/" %}
-          <a href="{{url_for('profile', username=session['user'])}}" class="money-dingbat">f<span class="to-dashboard">To Dashboard</span></a>
+          <a href="{{url_for('profile', username=session['user'])}}" class="money-dingbat">f<div class="to-dashboard">To Dashboard</div></a>
           {% else %}
-          <a href="{{url_for('index', username=session['user'])}}" class="money-dingbat">f<span class="to-dashboard">To Abridged View</span></a>
+          <a href="{{url_for('index', username=session['user'])}}" class="money-dingbat">f<div class="to-dashboard">To Abridged View</div></a>
           {% endif %}
       
       {% else %}
