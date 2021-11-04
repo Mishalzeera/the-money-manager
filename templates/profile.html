@@ -8,7 +8,7 @@
 {% if money.overheads_to_be_paid > 0 %}
 <h2>Overheads to be paid this month: {{money.overheads_to_be_paid / 100 }} left to pay of {{money.user_overheads / 100}}</h2>
 {% else %}
-<h2>Overheads for this month are paid.</h2> <p>For next months overheads: {{money.user_overheads / 100 - money.overheads_to_be_paid * -1 / 100 }} left to pay of {{money.user_overheads / 100}}</p>
+<h2>Overheads for this month are paid.</h2> 
 {% endif %}
 <h2>Disposable Income: {{money.disposable_income / 100}}</h2>
 <h3>Income this month: {{money.income_this_month / 100}}</h3>
