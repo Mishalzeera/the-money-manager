@@ -5,14 +5,12 @@
   --sky-800-o: #075985ad;
   --emerald-900-o: #064e3ba2;
   --red-900-o: #7f1d1da2;
-  --red-400-o: #f8717156;
+  --red-400-o: #f8717131;
   --indigo-800-o: #3830a38f;
 }
 
 body {
-    /* background-color: #111; */
-    background-color: var(--blue-gray-600);
-    /* font-family: "Noto Sans Mono", sans-serif; */
+    background-color: var(--blue-gray-700);
     color: var(--red-900);
   }
 
@@ -22,6 +20,20 @@ body {
     color: var(--red-900);
   }
   
+.watermark-logo {
+  opacity: .7;
+}
+
+  .watermark-logo h1{
+    background-color: unset;
+    opacity: .8;
+  }
+
+
+  .watermark-logo p {
+    font-size: .8rem;
+  }
+
   .money-dingbat {
   
     color:var(--red-400)
