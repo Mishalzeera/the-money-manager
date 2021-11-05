@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Welcome to Munificent, The Money Manager</h2>
+<br>
+<h3>Introduction</h3>
+<p>Thank you for using Munificent. This app is aimed for the entrepreneur of 
+    middling financial sense. It's main purpose is to give you an instant 
+    overview of your financial status, so that you can best make decisions
+    for yourself.
+</p>
+<br>
+
+<h3>Main Features</h3>
+<p>The app takes into account your monthly overheads and current credit, and
+    keeps an eye on taxes to be paid as well as a suggested savings amount of
+    20%. 
+</p>
+<br>
+<h3>Profile Dashboard</h3>
+<p>The Profile Dashboard is where you can see all your relevant figures as well
+    as controls to add income, add expenses, manage your quarterly taxes etc.
+    It is by far the most dense of all the pages. Not to worry, as there is an
+    abridged view that gives you a quick overview without having too much
+    clutter. Simply click the icon at the top left of the page to switch between
+     the abridged view and the profile dashboard. 
+</p>
+<p>Lets go through each of the options on the Profile Dashboard in more detail.</p>
+
+<br>
+<h3>Create/Edit Note</h3>
+<p>It might be handy to keep some notes for yourself about your current 
+    affairs. This could be something as simple as "dont forget its Christmas 
+    next month and I need to buy presents for everyone", but of course could 
+    be anything useful to you for this particular month. 
+</p>
+<p>Simply fill in the notepad and click "Create Note". From then on you can
+    edit it as you wish.</p>
+
+<h3>Manage Invoices/Income</h3>
+<p>In this area of the app, you can enter money coming into your account, and
+    let us know if you would like to calculate the tax you need to pay. Simply
+    click the "New Invoice" button and add an invoice. You don't have to fill
+    in every field, but it is recommended to do so. 
+</p>
+<p>If you do tick the "tax" option on an invoice/income entry, the app will 
+    automatically separate the relevant amounts into "income" and "tax to set 
+    aside". While the total including tax is added to your "Credit" field, note 
+    that "tax wo be set aside" is now updated with the tax amount of your 
+    most recent entry. "Disposable income" will be updated with the remainder.
+</p>
+<p>On the Income page, you will see all your previous entries, along with
+    options to modify or delete them.
+</p>
+<br>
+
+<h3>Manage Expenses</h3>
+<p>In much the same way, the Expenses area allows you to keep track of outgoing
+    payments. Here, after clicking to "Add Outgoing Expense", you come to a 
+    form which allows you to enter as much information as you feel is 
+    necessary for you particular style of doing things. 
+</p>
+<p>Of particular importance, however, is the "Overheads" vs "Extras" selector.
+    This allows the app to calculate how many of your monthly overheads you 
+    have paid off, which affects your "disposable income" and "overheads to be
+    paid" fields. 
+</p>
+<br>
+<h3>User History</h3>
+<p>This page allows you to see all the ins and outs of your finances, as well
+    as previous months and tax seasons. On the left is a log of all your
+    actions on the app. This includes modifying and deleting both expenses 
+    and incomes. On the right, you have an overview of your previous months
+    finances. Beneath that, an overview of your tax seasons. 
+</p>
+<p>Please note that the dates on the left panel of the history reflect the 
+    date of the action, not the specific invoices etc. 
+</p>
+<br>
+<h3>End Your Tax Period</h3>
+<p>We included a handy tax calculator for when you are going through reciepts.
+    This is handy for when you have a lot of reciepts that don't include their
+    tax calculations for you. 
+</p>
+<p>Simply enter your totals into the field, click "Calculate Tax" and you will
+    see the figures for both the tax amount and the post tax total. 
+</p>
+<p>To reset your current "tax to set aside" fields and create a record of your
+    season, select the checkbox "...if you are sure you want to end your tax
+    period.". Then click "End Your Tax Period".
+</p>
+<br>
+<h3>Wishlist</h3>
+<p>In this page, you can add all the things that you would like to buy or 
+    invest in. This can be anything from new clothing or kitchenware to 
+    an exciting course you would like to take and invest in yourself. The 
+    app will automatically let you know if it is realistically affordable
+    by using your "disposable income" field as a reference point.
+
+</p>
+
+<br>
+<h3>Reward</h3>
+<p>In this page you can remind yourself of a "big picture" life goal you have,
+    so that you don't lose focus. Its very easy to get lost in the details now
+    with all the extra pressures on ourselves just to get by. This page, which
+    might perhaps be of a lot of importance to some, is to inspire you with a 
+    picture and caption you choose. 
+</p>
+<p>You are allowed only one, so choose something that makes you feel good
+    every time you see it.
+</p>
+<br>
+<h3>Settings</h3>
+<p>In this important page, you can manage all the key settings of your Money 
+    Manager.</p> 
+    <p>The first field is regarding your monthly overheads. Once you 
+    have paid a debt off, or cancelled a subscription, you can come here and
+    re-enter the figure you calculate for your monthly expenditures. You will 
+    see an indication of the current amount in the field box
+</p>
+
+<p>The second field is your tax rate settings. Here you can adjust the 
+    percentage used to calculate your taxes. You will also see the current
+    amount indicated in the field box.
+</p>
+
+<p>A light vs dark theme toggle switch is there, for those who are particular
+    about such things.
+</p>
+<p>Finally, the option to delete your account. Please note that all your 
+    information will be erased, including your wishlist and reward images as 
+    well.
+</p>
+
+
+
+
+
+{% endblock %}

@@ -4,9 +4,9 @@
   --blue-500-o: #3b83f67a;
   --sky-800-o: #075985ad;
   --emerald-900-o: #064e3ba2;
-  --red-900-o: #7f1d1da2;
+  --red-900-o: #cc3030a2;
   --red-400-o: #f8717131;
-  --indigo-800-o: #3830a38f;
+  --indigo-800-o: #453db48f;
 }
 
 body {
@@ -31,7 +31,7 @@ body {
 
 
   .watermark-logo p {
-    font-size: .8rem;
+    background-color: unset;
   }
 
   .money-dingbat {

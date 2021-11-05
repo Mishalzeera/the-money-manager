@@ -347,6 +347,12 @@ def create_deleted_expense_record_part_two():
     mongo.db.in_out_history.update_one({"timestamp": timestamp}, {"$set": {"credit_after": credit}})
 
 
+@app.route("/manual")
+@ensure_user
+def manual():
+    return render_template("manual.html")
+
+
 @app.route("/")
 @ensure_user
 def index():

@@ -1,15 +1,9 @@
-login with email
+Manual
+favicon
 db schema
-delete pages as confirmation
 PEP... 8... COMPLIANT
 Don't forget debug=true
 search feature!
-currency titles, maybe always have credit one colour
-Round off the figures with the floats tiny nearby?
-https://themeforest.net/category/site-templates?term=dashboard
-https://drive.google.com/drive/u/0/folders/1n2iFWqA44Wlc4GLXCBwN023L-KGAYE2D
-Refactor modules
-{{number | round | int }}
 
 btn in  emerald900 opacity .6 textcolour same but brighter
 btn out red900

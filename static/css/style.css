@@ -58,7 +58,7 @@ a:hover {
 }
 
 .watermark-logo p {
-    font-size: .6rem;
+    font-size: .7rem;
 }
 
 
@@ -68,6 +68,7 @@ a:hover {
         top: 0;
         margin: 0 auto;
         text-align: left;
+        opacity: .1;
     }
 
     .watermark-logo p {

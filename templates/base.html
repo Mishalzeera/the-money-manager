@@ -23,7 +23,7 @@
   <body>
     <div class="watermark-logo">
       <h1>Munificent</h1>
-      <p>Sheikh Salman Bin Isa's Most Excellent And Beneficial Money Manager</p>
+      <p>Sheikh Salman Bin Isa's Most Excellent Money Manager</p>
     </div>
     <header class="header-flex-parent">
      
@@ -68,6 +68,9 @@
     {% block content %} {% endblock %}
     {% if session["user"] %}
     <a href="{{url_for('settings')}}" class="a-btn btn-in">Settings</a>
+    {% if request.path != "/manual"%}
+    <a href="{{url_for('manual')}}" class="a-btn btn-manage">User Manual</a>
+    {% endif %}
     {% endif %}
   </body>
 </html>
