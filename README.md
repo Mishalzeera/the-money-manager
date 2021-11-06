@@ -685,3 +685,93 @@ is in conflict with the alignment of the fomrs. For the most part it is
 acceptable, and the author is anxious to style the tables for the History 
 page. The author expects that to be a challenge of navigating Jinja templates 
 and HTML/CSS structures.
+
+### Ending The Styling Process
+
+At a certain point, things reached a stable state and the visuals were less
+obtrusive, and more in tune with the authors own sensibilities. The app does
+not look like something the bank made to "increase user engagement", but, in 
+the authors opinion, it looks rather like something coming from "us" as normal
+everyday people. At least this is the closest that the author can simulate of 
+his conceptual intent. 
+
+### Writing A User Manual
+
+During the app creation process, the author started a .md file that would keep
+track of the features and explain them for a new user. It was first written in
+a quasi-humourous style, but then the author felt it best to just write it as
+straightforwardly as possible. The intended user is a person who would feel 
+overwhelmed at first by a lot of these ideas and features, and it is hoped 
+that the overall tone of the user documents be welcoming, soothing and 
+somehow also confidence-inspiring. 
+
+### Commenting CSS And HTML
+
+The commenting process of the CSS and HTML was done for the sake of future
+maintainability. The idea that the author has, in general when it comes to
+documentation, is that someone who cannot understand code can still follow
+along with every step of the way. Of course they would have to be patient and
+willing to follow along, but this also makes it easier for even the author in
+the future to find sections and change them if necessary.
+
+### Thoughts About Documentation Approach
+
+The unconventional documentation approach taken this time had its moments. 
+Namely, the best thing about it was realising that sometimes the authors 
+technical intent was not really clear. It was helpful to write down first
+what the intention to achieve was, as clearly as possible. This actually led
+to many moments of insight into how to progress. It abstracted away any limits
+on the part of the authors technical ability, which is a huge impediment, and
+let the emphasis lie on what the desired outcome was, functionally.
+
+You hear it said in the software world often: "Our job is not to write fancy
+code but to solve real world problems". 
+
+It seems that taking that approach to heart means you also can learn a lot 
+really quickly. Once you identify clearly the problem you want to solve, a 
+quick Google search and some trial and error means a lot can be done with
+confidence in the end result.
+
+The drawbacks were that sometimes it was difficult to keep the process so 
+linear. You could say that there was quite a lot of "asynchronous" coding
+going on. While updating the app.py functionality, a style issue had to be 
+resolved. While going through an endless series of tests, in particular, the
+author simply had to create an admin page just to be able to delete all the
+accounts cluttering up the database with outdated schematics.
+
+This led to sneaky commits that didn't include all the functionality done. The
+character limit on the commit messages aside, the author often felt that the
+small things here and there didn't really always merit a mention. Spelling
+mistakes, or changing a render_template to a redirect, for example.
+
+### Thoughts On Flask/The Project After A Quick Look At Django
+
+Django is undoubtedly a very big deal and a very handy tool. After learning a 
+little bit about the setup system and package-oriented approach from the 
+Django module, coming back to Flask was interesting. 
+
+Munificent was written somewhat in a monolithic style - one large "app.py" and
+a small "utils.py". The if name equals main part is on the same page, all the
+imports and secondary functions (more or less) as well. This was really a 
+pain to navigate through when wanting to crossreference functions. 
+
+Also, writing forms directly in the HTML is fussy and insecure. The author
+was a bit too far into the project when he discovered WTForms, which would
+have made it all a lot more fun and easier to test, also to prepare for 
+Django - which has a similar function built-in.
+
+Coming to some familiarity with basic Flask concepts made the core concepts
+regarding "the backend" clearer for the author. Sometimes there is some 
+confusion, it is suspected that many are confused and there is often a misuse
+of the term even by professionals. There is much less of that, and the author
+is less stressed by the thought of "which backend framework should I learn",
+considering that the basic concepts are the same and its simply a matter of
+syntax and conventions.
+
+Overall a pivotal and interesting learning experience with an end result that
+is hoped will help a rather blank CV, considering the author has been a cook,
+baker and musician his whole adult life. 
+
+
+
+
