@@ -2,13 +2,12 @@
 {% block content %}
 <h2>Edit Expense</h2>
 
+<!-- form to edit an expense -->
+
 <form action="{{url_for('edit_expense', expense_id=expense._id)}}" method="POST">
     <div class="register-card">
         <label for="invoice_date">Date</label>
         <input type="text" name="invoice_date" id="invoice_date" value="{{ expense.date }}">
-
-
-
 
         <div class="radio-buttons" style="display: flex;">
             <label for="overheads" style="margin:1rem;">Overheads</label><br>
@@ -33,10 +32,12 @@
         <label for="comments">Comments</label>
         <textarea name="comments" id="comments" cols="30" rows="10">{{ expense.comments }}</textarea>
         <button type="submit" class="btn btn-manage">Save Changes</button>
+
     </div>
+
 </form>
 
-
+<!-- returns back to expenses overview -->
 
 <a href="{{ url_for('expenses') }}" class="a-btn btn-out">Back To Expenses</a>
 

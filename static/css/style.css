@@ -1,23 +1,26 @@
-/* Global Styles */
+/* BASE CUSTOM STYLESHEET FOR THE APP */
 
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@500&display=swap");
+/* font imports first Lato and then a custom dingbat font */
+
 @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 
 @font-face {
     font-family: 'money_money_moneyregular';
     src: url('../fonts/money_money_money-webfont.woff2') format('woff2'),
-         url('../fonts/money_money_money-webfont.woff') format('woff');
+            url('../fonts/money_money_money-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
-
 }
 
+/* reset margin and paddings on elements and fix box sizing */
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+
+/* add the background image and background tiling, set the font */
 
 body {
     padding: 2rem;
@@ -26,11 +29,11 @@ body {
     background-position-x:center;
     background-attachment: fixed, scroll;
     background-repeat: no-repeat, repeat;
-  font-family: "Lato", sans-serif;
-  font-size: 1rem;
+    font-family: "Lato", sans-serif;
+    font-size: 1rem;
 }
 
-
+/* some basic global settings for "img" and "a" elements */
 
 img {
     width: 100%;
@@ -47,6 +50,8 @@ a:hover {
 
 }
 
+/* styling for the watermark logo */
+
 .watermark-logo {
     font-size: 2rem;
     position: fixed;
@@ -61,6 +66,7 @@ a:hover {
     font-size: .7rem;
 }
 
+/* media queries in this project are kept close to related elements for better readability */
 
 @media (max-width:450px) {
     .watermark-logo {
@@ -77,7 +83,7 @@ a:hover {
 }
 
 
-/* Header Styles */
+/* header, styling the dingbat dashboard links etc as well as layout basics */
 
 .money-dingbat {
     font-family: "money_money_moneyregular";
@@ -93,17 +99,23 @@ a:hover {
     
 }
 
+/* flex parent for the header */
+
 .header-flex-parent{
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
+/* flex parent for the navigation */
+
 .nav-flex-parent {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
 }
+
+/* styling for the nav items and links */
 
 .nav-item {
     list-style: none;
@@ -120,13 +132,16 @@ a:hover {
         font-size: .8rem;
     }
 }
-/* Registration form */
+
+/* styling for muted "already a member?" queries */
 
 .login-or-registered {
     margin-top: 1rem;
     opacity: .5;
     font-size: .8rem;
 }
+
+/* used throughout the project for forms as well */
 
 .register-card {
     
@@ -139,9 +154,13 @@ a:hover {
     font-size: .8rem;;
 }
 
+/* unsetting the width added some visual hierarchy to an inner button */
+
 .register-card button {
     width: unset;
 }
+
+/* styling the input fields */
 
 input {
     font-family: inherit;
@@ -151,6 +170,7 @@ input {
     opacity: .8;
 }
 
+/* styling a global button for all buttons to inherit from */
 
 .btn {
     width: 300px;
@@ -162,9 +182,9 @@ input {
     text-align: center;
     padding: .5rem 2rem;
     margin-top: 1rem;
-
 }
 
+/* styling the "a" link buttons to match regular buttons, also to inherit from */
 
 .a-btn {    
     width: 300px;
@@ -173,32 +193,20 @@ input {
     text-align: center;
     padding: .5rem 2rem;
     margin-top: 1rem;
-
 }
 
-
-
-
-.btn-in {
-    font-family: inherit;
-    font-style: inherit;
-    padding: .5rem 2.5rem;
-    transition: all 300ms ease-in-out;
-}
-
+/* styles some elements that wouldn't flow well on the left side of the page */
 
 .form-left {
     margin-top: 1rem;
     align-items: flex-start;
 }
 
-
-
+/* textarea size and resizing options set */
 
 textarea {
     resize: none;
     width: 300px;
-    
 }
 
 @media (max-width: 370px) {
@@ -211,7 +219,7 @@ textarea {
     }
 }
 
-
+/* some global hover settings for the buttons */
 
 .btn:hover,
 .a-btn:hover {
@@ -219,26 +227,30 @@ textarea {
     cursor: pointer;
 }
 
+/* main flex parent for the history page */
+
 .history-flex-primary {
     display: flex;
     justify-content: space-between;
     width: 100%;
 }
 
+/* some stylistic muting for the right child of history page */
+
 .history-child-right {
     opacity: .6;
     font-size: .8rem;
 }
 
+/* larger font to add some hierarchy to the icons in the left child of the history page */
+
 .history-child-left i {
     font-size: 2rem;
 }
-.wish {
-    margin: 1rem;
-}
 
-.flashes {
-    
+/* style the flashes Flask sends back */
+
+.flashes {    
     font-size: 2rem;
     text-align: left;
 }
@@ -248,6 +260,8 @@ textarea {
         text-align: center;
     }
 }
+
+/* ennsure the reward image is a good size */
 
 .reward-image {
     max-width: 100%;

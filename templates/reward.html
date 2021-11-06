@@ -1,17 +1,34 @@
 {% extends "base.html" %}
 {% block content %}
+
 <h2>Rewards page</h2>
 
+<!-- displays an image for the user to be inspired by -->
+
 <img src="{{ url_for('image', filename=[user_reward.img])}}" class="reward-image">
+
 <h1>{{img }}</h1>
+
+<!-- if the user added a caption, it would display here -->
+
 {% if user_reward.caption %}
     <p>"{{ user_reward.caption }}"</p>
 {% endif %}
+
+<!-- if the user has a reward image, the text reflects "modify" -->
+
 {% if user_reward %}
+
 <a href="{{ url_for('add_reward') }}" class="a-btn btn-manage">Change Your Reward Image</a>
+
 <p>Please note that your old one will be deleted.</p>
+
+<!-- if the user has no reward image, the text reflects "add" -->
+
 {% else %}
+
 <a href="{{ url_for('add_reward') }}" class="a-btn btn-in">Add An Inspiring Image To Remind You Of Your Goals</a>
+
 {% endif %}
 
 {% endblock %}

@@ -4,13 +4,22 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- favicon -->
+
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/money-favicon.png')}}" type="image/x-icon">
+
+<!-- stylesheets, first Water, then Font Awesome, then a coloursheet -->
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/tw-colours.css')}}">
     
     <link rel="stylesheet" href="{{url_for('static',
     filename='css/style.css')}}">
+
+    <!-- conditional that checks which theme setting a user has chosen and sets a style sheet accordingly -->
+
     {% if session['theme'] == "dark" or not session['theme'] %}
     <link rel="stylesheet" href="{{url_for('static',
     filename='css/dark_style.css')}}">
@@ -20,28 +29,40 @@
     {% endif %}
     
     <title>The Money Manager</title>
+
   </head>
+
   <body>
+
+<!-- watermark logo that is mainly for large screens -->
+
     <div class="watermark-logo">
       <h1>Munificent</h1>
       <p>Sheikh Salman Bin Isa's Most Excellent Money Manager</p>
     </div>
     <header class="header-flex-parent">
+
+<!-- conditional that checks if a user is in session -->
      
       {% if session['user'] %}
+
+      <!-- conditional that checks the request path is not the profile page, so that a single button can be used to toggle -->
+
           {% if request.path != "/profile/" %}
           <a href="{{url_for('profile', username=session['user'])}}" class="money-dingbat">f<div class="to-dashboard">To Dashboard</div></a>
           {% else %}
           <a href="{{url_for('index', username=session['user'])}}" class="money-dingbat">f<div class="to-dashboard">To Abridged View</div></a>
           {% endif %}
-      
       {% else %}
       <a href="{{ url_for('login') }}" class="money-dingbat">f</a>
       
       {% endif %}
+
+<!-- nav section with conditionals checking if user is in session as well as a hidden admin page -->
+
       <nav>
+
         <ul class="nav-flex-parent">
-          <!-- <li class="nav-item"><a href="{{ url_for('index')}}" class="nav-link">Home</a></li> -->
 
           {% if session["user"] %}
           <li class="nav-item"><a href="{{ url_for('logout') }}" class="nav-link">Log Out</a></li>
@@ -57,6 +78,9 @@
         </ul>
       </nav>
     </header>
+
+    <!-- section for flashed messages -->
+
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         {% for message in messages %}
@@ -66,12 +90,22 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
+
+    <!-- the content block -->
+
     {% block content %} {% endblock %}
+
+    <!-- on every page, a link to the settings and manual pages, except when its redundant -->
+
     {% if session["user"] %}
-    <a href="{{url_for('settings')}}" class="a-btn btn-in">Settings</a>
-    {% if request.path != "/manual"%}
-    <a href="{{url_for('manual')}}" class="a-btn btn-manage">User Manual</a>
+
+      {% if request.path != "/settings"%}
+      <a href="{{url_for('settings')}}" class="a-btn btn-in">Settings</a>
+      {% endif %}
+      {% if request.path != "/manual"%}
+      <a href="{{url_for('manual')}}" class="a-btn btn-manage">User Manual</a>
+      {% endif %}
     {% endif %}
-    {% endif %}
+    
   </body>
 </html>

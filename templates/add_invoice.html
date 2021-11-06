@@ -1,11 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
+
 <h2>Add New Invoice/Income</h2>
+
 <p>If income is not via an invoice, leave the relevant fields blank. Only "amount" is required.</p>
+
+<!-- form to add new income/invoice -->
+
 <form action="{{url_for('add_invoice')}}" method="POST">
       <div class="register-card">
         <label for="invoice_date">Date</label>
-          <input type="text" name="invoice_date" id="invoice_date" placeholder="dd-mm-yyyy" default="N/a">
+        <input type="text" name="invoice_date" id="invoice_date" placeholder="dd-mm-yyyy" default="N/a">
         <label for="invoice_number">Invoice Number</label>
         <input type="text" name="invoice_number" id="invoice_number" placeholder="e.g. INV-4566">
         <label for="invoice_recipient">Invoice Recipient</label>
@@ -21,8 +26,9 @@
         <button type="submit" class="btn btn-in">Add Invoice</button>
       </div>
 </form>
+
+<!-- returns back to the invoices page -->
+
 <a href="{{url_for('invoice')}}" class="a-btn btn-in">Back To Invoices</a>
 
 {% endblock %}
-
-<!-- Dont forget to add a date stamp on the app end, also convert the currency -->

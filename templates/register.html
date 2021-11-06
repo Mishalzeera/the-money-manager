@@ -4,6 +4,7 @@
 
 <h3>Register Here</h3>
 
+<!-- form for registering a new user -->
 
 <form action="{{url_for('register') }}" method="POST">
     <div class="register-card">
@@ -20,8 +21,13 @@
         <button type="submit" class="btn btn-in">Register</button>
 
     </div>
+
 </form>
+
+<!-- if the user already has an account, handy link to log in -->
+
 <p class="login-or-registered">Already registered?</p>
+
 <a href="{{url_for('login')}}" class="a-btn btn-in">Log In, Inshallah.</a>
 
 {% endblock %}

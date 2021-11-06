@@ -1,18 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
+
 <h2>Add Reward</h2>
 
+<!-- form to add a reward image -->
 
     <form action="{{ url_for('add_reward') }}" method="POST" enctype="multipart/form-data">
+
         <div class="register-card">
             <label for="image">Upload an image</label>
             <input type="file" name="image" id="image">
             <label for="caption">Write Something To Remind You Of Your Goals</label>
             <textarea name="caption" id="caption" cols="30" rows="10"></textarea>
             <button type="submit" class="btn btn-in">Add Reward</button>
-    </div>
+        </div>
+
     </form>
 
+<!-- returns back to the reward page -->
 
 <a href="{{ url_for('reward') }}" class="a-btn btn-manage">Back To Reward View</a>
 

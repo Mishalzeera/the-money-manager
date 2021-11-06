@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
+
 <h2>Edit Invoice {{invoice.invoice_number}}</h2>
+
+<!-- form to edit an invoice -->
+
 <form action="{{url_for('edit_invoice', invoice_id=invoice._id)}}" method="POST">
+
   <div class="register-card">
+
     <label for="invoice_date" >Date</label>
       <input type="text" name="invoice_date" id="invoice_date" value="{{ invoice.date }}">
     <label for="invoice_number">Invoice Number</label>
@@ -11,6 +17,7 @@
     <input type="text" name="invoice_recipient" id="invoice_recipient" value="{{ invoice.invoice_recipient }}" >
     <label for="amount_invoiced">Amount (including tax)</label>
     <input type="number" name="amount_invoiced" id="amount_invoiced" pattern="[0-9]+"  step="0.01" title="Please input numbers only."value="{{ invoice.amount / 100}}" required>
+    
     <div class="check-flex" style="display: flex; justify-content: space-between;align-items: center;">
       <label for="tax">Check to set tax aside--> </label>
       {% if invoice.tax =="on" %}
@@ -20,11 +27,17 @@
       {% endif %}
 
     </div>
+
     <label for="comments">Comments</label>
     <textarea name="comments" id="comments" cols="30" rows="10">{{ invoice.comments }}</textarea>
     <button type="submit" class="btn btn-manage">Save Changes</button>
+
   </div>
+
 </form>
+
+<!-- returns back to the invoices/income overview -->
+
 <a href="{{url_for('invoice')}}" class="a-btn btn-in">Back To Invoices</a>
 
 {% endblock %}

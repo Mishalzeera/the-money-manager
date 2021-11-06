@@ -1,3 +1,7 @@
+/* STYLESHEET FOR "DARK" THEME USER SETTING */
+
+/* customised colours from tw-colours coloursheet */
+
 :root {
   --blue-500-o: #3b83f64f;
   --sky-800-o: #0759858f;
@@ -7,7 +11,6 @@
 
 body {
   background-color: var(--cool-gray-900);
-  /* font-family: "Noto Sans Mono", sans-serif; */
   color: var(--emerald-400);
 }
 
@@ -21,18 +24,17 @@ h1, h2, h3, h4, h5, h6 {
   
 }
 
+/* button colour section */
 
 .btn,
-.a-btn {
-  
+.a-btn {  
   background-color: var(--teal-700);
   color: var(--amber-50);
 }
 
-
 .btn-in {
-background-color: var(--emerald-900-o);
-color: var(--emerald-200);
+  background-color: var(--emerald-900-o);
+  color: var(--emerald-200);
 }
 
 .btn-manage {
@@ -45,11 +47,14 @@ color: var(--emerald-200);
   color: var(--red-200);
 }
 
+/* colours for the card template used throughout */
 
 .register-card {
   background-color: var(--sky-800-o);
   color: var(--sky-200);
 }
+
+/* colours for the input and textarea fields */
 
 input, textarea {
   background-color: var(--sky-800-o);

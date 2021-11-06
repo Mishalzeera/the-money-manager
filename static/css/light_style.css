@@ -1,4 +1,6 @@
-/* Tiki, Nostalgia, Pleasure seeking */
+/* STYLESHEET FOR THE "LIGHT" USER THEME SETTING */
+
+/* customised tw-colours from tw-colours stylesheet */
 
 :root {
   --blue-500-o: #3b83f67a;
@@ -14,71 +16,77 @@ body {
     color: var(--red-900);
   }
 
-
   h1, h2, h3, h4, h5, h6, p {
     background-color: var(--red-400-o);
     color: var(--red-900);
   }
+
+/* due to contrast issues, adapt the watermark to stand out a bit better */
   
 .watermark-logo {
   opacity: .7;
 }
 
-  .watermark-logo h1{
-    background-color: unset;
-    opacity: .8;
-  }
+.watermark-logo h1 {
+  background-color: unset;
+  opacity: .8;
+}
+
+.watermark-logo p {
+  background-color: unset;
+}
+
+.money-dingbat { 
+  color:var(--red-400)    
+}
+
+/* due to contrast issues, a bit of bg colour and padding added to nav items */
+
+.nav-item {
+  background-color: var(--red-400-o);
+  padding: 0 1rem;
+}
+  
+/* button colour styles */
+
+.btn-in {
+background-color: var(--indigo-800-o);
+color: var(--emerald-100);
+}
+
+.btn-manage {
+  background-color: var(--blue-500-o);
+  color: var(--blue-100);
+}
+
+.btn-out {
+  background-color: var(--red-900-o);
+  color: var(--red-100);
+}
+  
+/* colour styles for the card template used throughout */
+.register-card {
+  background-color:var(--red-400-o);
+  color: var(--red-900);
+}
 
 
-  .watermark-logo p {
-    background-color: unset;
-  }
+/* colour styles for the input and textarea elements */
+input, textarea {
+  background-color:var(--red-400-o);
+  color: var(--red-900);
+}
 
-  .money-dingbat {
-  
-    color:var(--red-400)
-    
-  }
+/* makes the placeholder text much more visible  */
 
-  .nav-item {
-    background-color: var(--red-400-o);
-    padding: 0 1rem;
-  }
-  
-  
-  
-  .btn-in {
-  background-color: var(--indigo-800-o);
-  color: var(--emerald-100);
-  }
-  
-  .btn-manage {
-    background-color: var(--blue-500-o);
-    color: var(--blue-100);
-  }
-  
-  .btn-out {
-    background-color: var(--red-900-o);
-    color: var(--red-100);
-  }
-  
-  
-  .register-card {
-    background-color:var(--red-400-o);
-    color: var(--red-900);
-  }
-  
-  input, textarea {
-    background-color:var(--red-400-o);
-    color: var(--red-900);
-  }
+::placeholder {
+  color: var(--red-900);
+  opacity: .8;
+}
 
-  ::placeholder {
-    color: var(--red-900);
-    opacity: .8;
-  }
+/* makes the flashes more appealing and visible */
 
-  .flashes {
-    background-color:var(--red-400-o);
-    color: var(--red-900);
-  }
+.flashes {
+  background-color:var(--red-400-o);
+  color: var(--red-900);
+}

@@ -5,21 +5,25 @@
 <br>
 <p>Current users:</p>
 <br>
+
+<!-- displays a list of current users from the database -->
+
 {% for user in users %}
-{% if user.name != "admin" %}
-<h3>{{ user.name | title }}</h3>
-{% endif %}
+    {% if user.name != "admin" %}
+        <h3>{{ user.name | title }}</h3>
+    {% endif %}
 {% endfor %}
     
-
+<!-- form to delete any user by name -->
 
 <form action="{{ url_for('admin_delete') }}" method="POST">
+
     <label for="search_user">Enter User Name To Delete</label>
     <input type="text" name="search_user" id="search_user">
     <label for="check_delete">Delete User, Are You Sure?</label>
     <input type="checkbox" name="check_delete" id="check_delete">
     <button type="submit" class="btn btn-out">Delete User</button>
+    
 </form>
-
 
 {% endblock %}

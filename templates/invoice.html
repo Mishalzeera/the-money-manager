@@ -1,47 +1,70 @@
 {% extends "base.html" %}
 {% block content %}
-<a href="{{url_for('add_invoice', invoice_id='22')}}" class="a-btn btn-in btn-center">New Invoice</a>
-<h1>Invoices:</h1>
+
+<!-- sends the user to the "add income" page -->
+
+<a href="{{url_for('add_invoice', invoice_id='22')}}" class="a-btn btn-in btn-center">Add New Income</a>
+
+<h1>Invoices/Income Entries:</h1>
+
 <br><br>
 
 {% for invoice in invoices | reverse %}
+
 <div class="register-card" style="border-bottom: 1px solid rgba(128, 128, 128, 0.322)">
 
   {% if invoice.date != "" %}
-  <h4>Date: {{ invoice.date  }}</h4>
+    <h4>Date: {{ invoice.date  }}</h4>
   {% endif %}
+
   {% if invoice.invoice_number != "" %}
-  <h2>Invoice number: {{ invoice.invoice_number | title}}</h2>
+    <h2>Invoice number: {{ invoice.invoice_number | title}}</h2>
   {% endif %}
+
   {% if invoice.invoice_recipient != "" %}
-  <h2>Invoice Recepient: {{invoice.invoice_recipient | title}}</h2>
+    <h2>Invoice Recepient: {{invoice.invoice_recipient | title}}</h2>
   {% endif %}
+
   <h3>Amount: EU {{ invoice.amount / 100 }}</h3>
-    {% if invoice.tax %}
-        {% if invoice.invoice_tax_amount != null %}
-    <p>Tax set aside: {{ invoice.invoice_tax_amount / 100 }}</p>
-        {% endif %}
-        {% if invoice.post_tax_income != null %}
-    <p>Credit added: {{ invoice.post_tax_income / 100}}</p>
-        {% endif %}
-    {% else %}
-    <p>No tax was calculated for this entry.</p>
-    {%endif%}
+
+<!-- checks if tax has been entered in the db and adapts the display accordingly -->
+
+        {% if invoice.tax %}
+            {% if invoice.invoice_tax_amount != null %}
+        <p>Tax set aside: {{ invoice.invoice_tax_amount / 100 }}</p>
+            {% endif %}
+            {% if invoice.post_tax_income != null %}
+        <p>Credit added: {{ invoice.post_tax_income / 100}}</p>
+            {% endif %}
+        {% else %}
+        <p>No tax was calculated for this entry.</p>
+        {%endif%}
+
+<!-- checks if there are comments to display -->
+
   {% if invoice.comments != "" %}
-  <p>Additional Comments: {{ invoice.comments }}</p>
+    <p>Additional Comments: {{ invoice.comments }}</p>
   {% endif %}
+
+<!-- conditional that ensures only current month invoices/entries can be modified -->
+
 {% if invoice.datestamp == this_month %}
-<form action="{{url_for('edit_invoice', invoice_id=invoice._id)}}" method="GET">
-  <button type="submit" class="btn btn-manage">Modify</button>
-</form>
-<form action="{{url_for('delete_invoice', invoice_id=invoice._id)}}" method="GET">
-  <button type="submit" class="btn btn-out">Delete</button>
-</form>
+
+  <form action="{{url_for('edit_invoice', invoice_id=invoice._id)}}" method="GET">
+    <button type="submit" class="btn btn-manage">Modify</button>
+  </form>
+  <form action="{{url_for('delete_invoice', invoice_id=invoice._id)}}" method="GET">
+    <button type="submit" class="btn btn-out">Delete</button>
+  </form>
+  
 {% else %}
+
 <p><em>This entry can no longer be modified or deleted</em></p>
+
 {% endif %}
 
 </div>
+
 {% endfor %}
 
 {% endblock %}

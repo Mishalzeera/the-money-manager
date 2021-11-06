@@ -1,11 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
+
 <h1>{{ name | title }}'s History</h1>
 
+<!-- the page is set up in a two column flexbox, first the parent div -->
+
 <div class="history-flex-primary">
+
+    <!-- left child div -->
     
     <div class="history-child-left">
+        
         <h2>Income and Expenses</h2>
+
+<!-- displays the users account history by type of action-->
+
         {% for story in history | reverse %}
                 {% if story.type == "income" %}
                 <i class="fa-solid fa-plus"></i>
@@ -40,9 +49,15 @@
             <p>{{ story.credit_after / 100 }}</p>
             <br><hr><br>
         {% endfor %}
+
     </div>
     
+<!-- right child div -->
+
     <div class="history-child-right">
+
+        <!-- shows an overview of previous months -->
+
         <h2>Previous Months</h2>
         {% for months in previous_months | reverse %}
         <p>Period: {{months.period}}</p>
@@ -54,6 +69,8 @@
         <p>Ending Credit: {{ months.ending_credit /100}}</p>
         {% endfor %}
         
+<!-- shows an overview of previous tax seasons -->
+
         <h2>Previous Tax Seasons</h2>
         {% for seasons in tax_seasons | reverse %}
         <p>For Period Ending On: {{ seasons.period_ending }}</p>
@@ -61,7 +78,9 @@
         <p>Credit After: {{ seasons.credit_after /100}}</p>
         <p>Calculated At: {{ seasons.tax_rate - 100}}%</p>
         {% endfor %}
+
     </div>
+
 </div>
 
 {% endblock %}
