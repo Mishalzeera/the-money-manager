@@ -80,11 +80,6 @@ possibly unwieldy document, but it is an approach the author would like to try
 in the spirit of learning good methodology. Also, Flask/Python/backend dev in
 general seems like it could be helpful to have a trail of trials and eroors.
 
-If it doesn't work out that well, he will return back to flailing around in his
-code editor while mismanaging his extensions. He will return to writing his
-READMEs at the end of his processes, more to vent frustration than provide
-any clear guidance to a future collaborator.
-
 ## Order of operations
 
 On the advice of the author's mentor, backend/database functionality should
