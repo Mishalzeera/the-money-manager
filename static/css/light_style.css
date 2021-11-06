@@ -21,6 +21,10 @@ body {
     color: var(--red-900);
   }
 
+  p {
+    font-weight: bold;
+  }
+
 /* due to contrast issues, adapt the watermark to stand out a bit better */
   
 .watermark-logo {
