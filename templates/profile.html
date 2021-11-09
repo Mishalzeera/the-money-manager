@@ -16,7 +16,13 @@
     <h2>Overheads for this month are paid.</h2> 
 {% endif %}
 
+
+{% if money. disposable_income > 0 %}
 <h2>Disposable Income: {{money.disposable_income / 100}}</h2>
+{% else %}
+<h2>No disposable income, you have {{ money.disposable_income /100 * -1}} in overheads and taxes to pay.</h2>
+{% endif %}
+
 
 <h3>Income this month: {{money.income_this_month / 100}}</h3>
 

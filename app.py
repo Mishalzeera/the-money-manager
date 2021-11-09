@@ -350,6 +350,9 @@ def create_deleted_expense_record_part_two():
 @app.route("/manual")
 @ensure_user
 def manual():
+    '''
+    sends the user to the manual
+    '''
     return render_template("manual.html")
 
 
@@ -510,6 +513,7 @@ def profile():
     money = mongo.db.current_month.find_one({"name": session["user"]})
     return render_template("profile.html", money=money)
 
+
 @app.route("/create_note", methods=["POST"])
 @ensure_user
 def create_note():
@@ -522,8 +526,6 @@ def create_note():
     flash("Note Added!")
     return redirect(url_for('profile'))
         
-
-
 
 @app.route("/edit_note", methods=["GET", "POST"])
 @ensure_user
@@ -1121,7 +1123,7 @@ def user_history():
 def end_tax():
     '''
     generates a page which allows the user to end a tax season, with a
-    calculator tool and some supporting information
+    calculator tool 
     '''
     if request.method == "POST":
         if request.form.get("confirm_tax_end") == "on":
@@ -1163,7 +1165,6 @@ def calculator():
     income_to_separate = new_invoice_income(total_with_tax, tax_rate)
     return render_template("end_tax.html", tax=tax_to_deduct, income=income_to_separate)
     
-
 
 @app.route("/wishlist", methods=["GET","POST"])
 @ensure_user
@@ -1256,7 +1257,6 @@ def delete_wish(wish):
     return redirect(url_for('wishlist'))    
 
 
-
 @app.route("/reward")
 @ensure_user
 def reward(): 
@@ -1301,6 +1301,7 @@ def add_reward():
         flash("Reward successfully added!")
         return redirect(url_for('reward'))
     return render_template("add_reward.html")
+
 
 @app.route("/logout")
 @ensure_user
@@ -1363,7 +1364,6 @@ def change_overheads():
         return redirect(url_for('settings'))
     
 
-
 @app.route("/change_tax_rate", methods=["POST"])
 @ensure_user
 def change_tax_rate():
@@ -1387,8 +1387,6 @@ def change_tax_rate():
     # reload the same "settings" page
     return redirect(url_for('settings'))
 
-   
-
 
 @app.route("/change_theme", methods=["POST"])
 @ensure_user
@@ -1407,7 +1405,6 @@ def change_theme():
     return redirect(url_for('settings'))
     
 
-
 @app.route("/admin")
 @ensure_user
 def admin():
@@ -1416,6 +1413,7 @@ def admin():
     '''
     users = mongo.db.users.find()
     return render_template("admin.html", users=users)
+
 
 @app.route("/admin_delete", methods=["GET", "POST"])
 @ensure_user
@@ -1474,7 +1472,7 @@ def delete_account():
         mongo.db.previous_months.remove(user_key)
         mongo.db.tax_seasons.remove(user_key)
         session.clear()
-        flash("May Allah enrich all your days. Your account has been deleted.")
+        flash("Your account has been successfully deleted.")
         return redirect('login')
 
     return render_template("delete_account.html")
@@ -1482,7 +1480,6 @@ def delete_account():
 '''
 the "run" code which sets up the development environment
 '''
-
 
 if __name__ == "__main__":
     app.run(
