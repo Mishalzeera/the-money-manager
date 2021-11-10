@@ -8,7 +8,7 @@
 
 <h1>Credit: {{ money.credit / 100}}</h1>
 
-<!-- conditional that avoids negative numbers when overheads are paid -->
+<!-- conditionals that avoid negative numbers when inappropriate -->
 
 {% if money.overheads_to_be_paid > 0 %}
     <h2>Overheads to be paid this month: {{money.overheads_to_be_paid / 100 }} left to pay of {{money.user_overheads / 100}}</h2>
@@ -16,17 +16,23 @@
     <h2>Overheads for this month are paid.</h2> 
 {% endif %}
 
-
 {% if money. disposable_income > 0 %}
 <h2>Disposable Income: {{money.disposable_income / 100}}</h2>
 {% else %}
-<h2>No disposable income, you have {{ money.disposable_income /100 * -1}} in overheads and taxes to pay.</h2>
+<h2>Disposable Income: 0 ({{ money.disposable_income /100 * -1}} in overheads and taxes to pay)</h2>
 {% endif %}
 
-
+{% if money.income_this_month > 0 %}
 <h3>Income this month: {{money.income_this_month / 100}}</h3>
+{% else %}
+<h3>Income this month: 0</h3>
+{% endif %}
 
+{% if money.tax_to_set_aside > 0 %}
 <h3>Tax to set aside: {{money.tax_to_set_aside / 100}}</h3>
+{% else %}
+<h3>No tax to set aside.</h3>
+{% endif %}
 
 <h3>Suggested savings amount: {{money.suggested_savings_amount / 100}}</h3>
 
