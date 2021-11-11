@@ -83,4 +83,12 @@ is not familiar with real testing methods, and the short glimpse from the
 Django introduction was enough to make him realise there is a lot more to be
 done with testing than previously thought.
 
+## Lighthouse
+
+At the suggestion of the mentor, Lighthouse was used to check the accessibility 
+and general "best practises" of the app. Both light and dark themes got "100" 
+for Best Practises, "91" for SEO. Dark theme got "84" for Accessibility, where
+light theme got "91". For Performance, dark theme got "91" and light theme got
+"84". 
+
 
