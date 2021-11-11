@@ -12,6 +12,7 @@
     <div class="history-child-left">
         
         <p class="text-large">Income and Expenses</p>
+        <br>
 
 <!-- displays the users account history by type of action-->
 
@@ -58,8 +59,9 @@
 
         <!-- shows an overview of previous months -->
 
-        <p class="text-medium">Previous Months</p>
+        <p class="text-medium underline">Previous Months</p>
         {% for months in previous_months | reverse %}
+        <br>
         <p>Period: {{months.period}}</p>
         <p>Total Spent: {{ months.spent_this_month /100 }}</p>
         <p>Total Income: {{ months.income_this_month /100}}</p>
@@ -67,16 +69,19 @@
         <p>Spent On Extras: {{ months.spent_on_extras /100}}</p>
         <p>Tax Set Aside: {{ months.tax_to_set_aside /100}}</p>
         <p>Ending Credit: {{ months.ending_credit /100}}</p>
+        <br>
         {% endfor %}
         
 <!-- shows an overview of previous tax seasons -->
 
-        <p class="text-medium">Previous Tax Seasons</p>
+        <p class="text-medium underline">Previous Tax Seasons</p>
         {% for seasons in tax_seasons | reverse %}
+        <br>
         <p>For Period Ending On: {{ seasons.period_ending }}</p>
         <p>Tax Paid: {{ seasons.tax_to_set_aside /100}}</p>
         <p>Credit After: {{ seasons.credit_after /100}}</p>
         <p>Calculated At: {{ seasons.tax_rate - 100}}%</p>
+        <br>
         {% endfor %}
 
     </div>

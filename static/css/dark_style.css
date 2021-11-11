@@ -59,4 +59,5 @@ h1, h2, h3, h4, h5, h6 {
 input, textarea {
   background-color: var(--sky-800-o);
   color: var(--sky-200);
+  border: 1px solid var(--sky-400);
 }

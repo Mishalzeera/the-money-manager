@@ -9,11 +9,11 @@
 {% if wishlist %}
 
     {% for wish in wishlist %}
-
+        <br>
         <div class="wish">
 
-            <p class="text-medium">{{ wish.wish_name | title}}</p>
-            <p class="text-medium">{{ wish.wish_cost / 100}} EU</p class="text-medium">
+            <p class="text-medium underline">{{ wish.wish_name | title}}</p>
+            <p class="text-small">{{ wish.wish_cost / 100}} EU</p class="text-medium">
             <p class="text-small">"{{wish.wish_description}}"</p>
 
 <!-- checks if the wish is affordable or not -->
@@ -34,18 +34,17 @@
             </form>
 
         </div>
+        <br>
 
     {% endfor %}
 
 {%endif %}
 
-<p class="text-medium">Manage Your Wishlist</p>
-
 <!-- form to add a new wish -->
 
 <form action="{{ url_for('add_wish') }}" method="POST">
     <div class="register-card">
-        <p class="text-medium">Add A New Wish!</p>
+        <p class="text-medium">Add A New Wish</p>
         <label for="wish_name">Item Name</label>
         <input type="text" name="wish_name" id="wish_name" pattern="^[a-zA-Z0-9]{1-50}$" required>
         <label for="wish_cost">Cost of Wished For Item</label>

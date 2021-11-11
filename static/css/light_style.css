@@ -12,12 +12,11 @@
 }
 
 body {
-    background-color: var(--blue-gray-700);
+    background-color: var(--blue-gray-300);
     color: var(--red-900);
   }
 
   h1, h2, h3, h4, h5, h6, p {
-    background-color: var(--red-400-o);
     color: var(--red-900);
   }
 
@@ -44,28 +43,25 @@ body {
   color:var(--red-400)    
 }
 
-/* due to contrast issues, a bit of bg colour and padding added to nav items */
-
-.nav-item {
-  background-color: var(--red-400-o);
-  padding: 0 1rem;
+.to-dashboard {
+  opacity: .9;
 }
-  
+
 /* button colour styles */
 
 .btn-in {
 background-color: var(--indigo-800-o);
-color: var(--emerald-100);
+color: inherit;
 }
 
 .btn-manage {
   background-color: var(--blue-500-o);
-  color: var(--blue-100);
+  color: inherit;
 }
 
 .btn-out {
   background-color: var(--red-900-o);
-  color: var(--red-100);
+  color: inherit;
 }
   
 /* colour styles for the card template used throughout */
@@ -79,18 +75,17 @@ color: var(--emerald-100);
 input, textarea {
   background-color:var(--red-400-o);
   color: var(--red-900);
+  border: 1px solid var(--red-900);
 }
 
 /* makes the placeholder text much more visible  */
 
 ::placeholder {
   color: var(--red-900);
-  opacity: .8;
 }
 
 /* makes the flashes more appealing and visible */
 
 .flashes {
-  background-color:var(--red-400-o);
   color: var(--red-900);
 }

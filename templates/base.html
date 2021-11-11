@@ -38,7 +38,7 @@
 
     <div class="watermark-logo">
       <h1>Munificent</h1>
-      <p>Sheikh Salman Bin Hamad's Most Excellent Money Manager</p>
+      <p>The Money Manager</p>
     </div>
     <header class="header-flex-parent">
 
@@ -67,7 +67,7 @@
           {% if session["user"] %}
 
           {% if request.path == "/profile/" %}
-          <li class="nav-item"><a href="{{ url_for('user_history')}} "class="nav-link">User History</a></li>
+          <li class="nav-item"><a href="{{ url_for('user_history')}} "class="nav-link">History</a></li>
 
           <li class="nav-item"><a href="{{ url_for('wishlist')}}" class="nav-link">Wishlist</a></li>
 
@@ -78,15 +78,16 @@
           <li class="nav-item"><a href="{{url_for('manual')}}" class="nav-link"> Manual</a></li>
           {% endif %}
 
+          
+          <li class="nav-item"><a href="{{ url_for('logout') }}" class="nav-link">Logout</a></li>
+          
           {% if request.path != "/settings"%}
           <li class="nav-item"><a href="{{url_for('settings')}}" class="nav-link"><i class="fa fa-cogs"></i></a></li>
           {% endif %}          
 
-          <li class="nav-item"><a href="{{ url_for('logout') }}" class="nav-link">Log Out</a></li>
-
           {% else %}
 
-          <li class="nav-item"><a href="{{ url_for('login') }}" class="nav-link">Log In</a></li>
+          <li class="nav-item"><a href="{{ url_for('login') }}" class="nav-link">Login</a></li>
           <li class="nav-item"><a href="{{ url_for('register') }}" class="nav-link">Register</a></li>
 
           {% endif %}
@@ -111,10 +112,10 @@
       {% endif %}
     {% endwith %}
 
-    <!-- the content block -->
-
+    <!-- the content block, wrapped in a main tag -->
+<main>
     {% block content %} {% endblock %}
-
+  </main>
     
   </body>
 </html>
