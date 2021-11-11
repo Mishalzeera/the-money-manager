@@ -5,7 +5,7 @@
 
 <a href="{{url_for('add_invoice', invoice_id='22')}}" class="a-btn btn-in btn-center">Add New Income</a>
 
-<h1>Invoices/Income Entries:</h1>
+<h2 class="underline">Invoices/Income Entries:</h2>
 
 <br><br>
 
@@ -14,36 +14,36 @@
 <div class="register-card" style="border-bottom: 1px solid rgba(128, 128, 128, 0.322)">
 
   {% if invoice.date != "" %}
-    <h4>Date: {{ invoice.date  }}</h4>
+    <p class="text-small">Date: {{ invoice.date  }}</p>
   {% endif %}
 
   {% if invoice.invoice_number != "" %}
-    <h2>Invoice number: {{ invoice.invoice_number | title}}</h2>
+    <p class="text-medium">Invoice number: {{ invoice.invoice_number | title}}</p>
   {% endif %}
 
   {% if invoice.invoice_recipient != "" %}
-    <h2>Invoice Recepient: {{invoice.invoice_recipient | title}}</h2>
+    <p class="text-medium">Invoice Recepient: {{invoice.invoice_recipient | title}}</p>
   {% endif %}
 
-  <h3>Amount: EU {{ invoice.amount / 100 }}</h3>
+  <p class="text-medium">Amount: EU {{ invoice.amount / 100 }}</p>
 
 <!-- checks if tax has been entered in the db and adapts the display accordingly -->
 
         {% if invoice.tax %}
             {% if invoice.invoice_tax_amount != null %}
-        <p>Tax set aside: {{ invoice.invoice_tax_amount / 100 }}</p>
+        <p class="text-small">Tax set aside: {{ invoice.invoice_tax_amount / 100 }}</p>
             {% endif %}
             {% if invoice.post_tax_income != null %}
-        <p>Credit added: {{ invoice.post_tax_income / 100}}</p>
+        <p class="text-small">Credit added: {{ invoice.post_tax_income / 100}}</p>
             {% endif %}
         {% else %}
-        <p>No tax was calculated for this entry.</p>
+        <p class="text-small">No tax was calculated for this entry.</p>
         {%endif%}
 
 <!-- checks if there are comments to display -->
 
   {% if invoice.comments != "" %}
-    <p>Additional Comments: {{ invoice.comments }}</p>
+    <p class="text-small">Additional Comments: {{ invoice.comments }}</p>
   {% endif %}
 
 <!-- conditional that ensures only current month invoices/entries can be modified -->

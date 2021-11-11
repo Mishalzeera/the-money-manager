@@ -5,12 +5,12 @@
 
 <a href="{{ url_for('add_expense') }}" class="a-btn btn-out btn-center">Add Outgoing Expense</a>
 
-<h2>Expenses page</h2>
+<h2 class="underline">Expenses page</h2>
 
 <!-- displays all expense entries -->
 
 <div class="register-card">
-    <h2>Expenses this month</h2>
+    <p class="text-medium">Expenses this month</p>
     {% for expense in expenses | reverse %}
 
             <p>Added on: {{ expense.date }}</p>

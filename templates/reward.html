@@ -1,13 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2>Rewards page</h2>
+<h2 class="underline">Rewards page</h2>
 
 <!-- displays an image for the user to be inspired by -->
 
 <img src="{{ url_for('image', filename=[user_reward.img])}}" class="reward-image">
-
-<h1>{{img }}</h1>
 
 <!-- if the user added a caption, it would display here -->
 

@@ -53,7 +53,7 @@ a:hover {
 /* different text size classes */
 
 .text-large {
-    font-size: 2rem;
+    font-size: 2.5rem;
 }
 
 .text-medium {
@@ -78,6 +78,12 @@ a:hover {
 
 .watermark-logo p {
     font-size: .7rem;
+}
+
+/* underline class for h2 headings */
+
+.underline {
+    text-decoration: underline;
 }
 
 /* media queries in this project are kept close to related elements for better readability */
@@ -137,13 +143,24 @@ a:hover {
 }
 
 .nav-link {
+    font-size: .9rem;
     text-decoration: none;
     color: inherit;
+    margin: 0 1rem;
 }
 
 @media (max-width: 450px) {
     header {
         font-size: .8rem;
+    }
+    
+}
+
+@media (max-width: 800px) {
+    .nav-flex-parent {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 1rem;
     }
 }
 
@@ -267,6 +284,15 @@ textarea {
 .flashes {    
     font-size: 2rem;
     text-align: left;
+}
+
+@media (min-width: 800px) {
+.flashes::after {
+    font-family: 'money_money_moneyregular';
+    font-size: 5rem;
+    content: 'c';
+    display:inline;
+}
 }
 
 @media (max-width: 450px) {

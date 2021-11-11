@@ -4,13 +4,19 @@
 
 <!-- main dashboard overview -->
 
-<h2>Dashboard</h2>
+<h2 class="underline">Dashboard</h2>
 
 <p class="text-medium">{{ money.name | title}}'s Money</p>
 
-<p class="text-large">Credit: {{ money.credit / 100}}</p>
+<p class="text-medium">Credit: {{ money.credit / 100}}</p>
 
 <!-- conditionals that avoid negative numbers when inappropriate -->
+
+{% if money. disposable_income > 0 %}
+<p class="text-large">Disposable Income: {{money.disposable_income / 100}}</p>
+{% else %}
+<p class="text-large">Disposable Income: 0 ({{ money.disposable_income /100 * -1}} in overheads and taxes to pay)</p>
+{% endif %}
 
 {% if money.overheads_to_be_paid > 0 %}
     <p class="text-medium">Overheads to be paid this month: {{money.overheads_to_be_paid / 100 }} left to pay of {{money.user_overheads / 100}}</p>
@@ -18,11 +24,6 @@
     <p class="text-medium">Overheads for this month are paid.</p> 
 {% endif %}
 
-{% if money. disposable_income > 0 %}
-<p class="text-medium">Disposable Income: {{money.disposable_income / 100}}</p>
-{% else %}
-<p class="text-medium">Disposable Income: 0 ({{ money.disposable_income /100 * -1}} in overheads and taxes to pay)</p>
-{% endif %}
 
 {% if money.income_this_month > 0 %}
 <p class="text-medium">Income this month: {{money.income_this_month / 100}}</p>
@@ -68,13 +69,11 @@
 
 <a href="{{ url_for('expenses')}} "class="a-btn btn-out">Manage Expenses</a>
 
-<a href="{{ url_for('user_history')}} "class="a-btn btn-manage">User History</a>
+
 
 <a href="{{ url_for('end_tax')}} "class="a-btn btn-manage">End Your Tax Period</a>
 
-<a href="{{ url_for('wishlist')}}" class="a-btn btn-manage">Wishlist</a>
 
-<a href="{{ url_for('reward') }}"class="a-btn btn-manage">Reward</a>
 
 {% endblock %}
 

@@ -51,7 +51,7 @@
           {% if request.path != "/profile/" %}
           <a href="{{url_for('profile', username=session['user'])}}" class="money-dingbat">f<div class="to-dashboard">To Dashboard</div></a>
           {% else %}
-          <a href="{{url_for('index', username=session['user'])}}" class="money-dingbat">f<div class="to-dashboard">To Abridged View</div></a>
+          <a href="{{url_for('index', username=session['user'])}}" class="money-dingbat">f<div class="to-dashboard">To Quick View</div></a>
           {% endif %}
       {% else %}
       <a href="{{ url_for('login') }}" class="money-dingbat">f</a>
@@ -65,12 +65,32 @@
         <ul class="nav-flex-parent">
 
           {% if session["user"] %}
+
+          {% if request.path == "/profile/" %}
+          <li class="nav-item"><a href="{{ url_for('user_history')}} "class="nav-link">User History</a></li>
+
+          <li class="nav-item"><a href="{{ url_for('wishlist')}}" class="nav-link">Wishlist</a></li>
+
+          <li class="nav-item"><a href="{{ url_for('reward') }}"class="nav-link">Reward</a></li>
+          {% endif %}
+
+          {% if request.path != "/manual"%}
+          <li class="nav-item"><a href="{{url_for('manual')}}" class="nav-link"> Manual</a></li>
+          {% endif %}
+
+          {% if request.path != "/settings"%}
+          <li class="nav-item"><a href="{{url_for('settings')}}" class="nav-link"><i class="fa fa-cogs"></i></a></li>
+          {% endif %}          
+
           <li class="nav-item"><a href="{{ url_for('logout') }}" class="nav-link">Log Out</a></li>
+
           {% else %}
 
           <li class="nav-item"><a href="{{ url_for('login') }}" class="nav-link">Log In</a></li>
           <li class="nav-item"><a href="{{ url_for('register') }}" class="nav-link">Register</a></li>
+
           {% endif %}
+
           {% if session['user'] == "admin" %}
           <li class="nav-item"><a href="{{ url_for('admin')}}" class="nav-link">Admin</a></li>
           {% endif %}
@@ -95,17 +115,6 @@
 
     {% block content %} {% endblock %}
 
-    <!-- on every page, a link to the settings and manual pages, except when its redundant -->
-
-    {% if session["user"] %}
-
-      {% if request.path != "/settings"%}
-      <a href="{{url_for('settings')}}" class="a-btn btn-in">Settings</a>
-      {% endif %}
-      {% if request.path != "/manual"%}
-      <a href="{{url_for('manual')}}" class="a-btn btn-manage">User Manual</a>
-      {% endif %}
-    {% endif %}
     
   </body>
 </html>

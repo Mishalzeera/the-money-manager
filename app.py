@@ -485,7 +485,7 @@ def login():
                         # provide some user feedback
                         flash("Welcome, {}".format(request.form.get("name")))
                         money = current_month
-                        return redirect(url_for('profile'))
+                        return redirect(url_for('index'))
                 else:
                     flash("Incorrect Username or Password")
                     return redirect(url_for('login'))

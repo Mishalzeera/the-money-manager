@@ -2,7 +2,7 @@
 
 {% block content%}
 
-<h2>Your Wishlist</h2>
+<h2 class="underline">Your Wishlist</h2>
 
 <!-- displays a users wishlist -->
 
@@ -12,16 +12,16 @@
 
         <div class="wish">
 
-            <h3>{{ wish.wish_name | title}}</h4>
-            <h4>{{ wish.wish_cost / 100}} EU</h4>
-            <p>"{{wish.wish_description}}"</p>
+            <p class="text-medium">{{ wish.wish_name | title}}</p>
+            <p class="text-medium">{{ wish.wish_cost / 100}} EU</p class="text-medium">
+            <p class="text-small">"{{wish.wish_description}}"</p>
 
 <!-- checks if the wish is affordable or not -->
 
             {% if wish.is_affordable %}
-                <h5>Is affordable!</h5>
+                <p class="text-small">Is affordable!</p>
                 {% else %}
-                <h5>Is not affordable.</h5>
+                <p class="text-small">Is not affordable.</p>
             {% endif %}
 
 <!-- gives the user some controls over the wishes -->
@@ -39,20 +39,20 @@
 
 {%endif %}
 
-<h3>Manage Your Wishlist</h3>
+<p class="text-medium">Manage Your Wishlist</p>
 
 <!-- form to add a new wish -->
 
 <form action="{{ url_for('add_wish') }}" method="POST">
     <div class="register-card">
-        <h2>Add A New Wish!</h2>
+        <p class="text-medium">Add A New Wish!</p>
         <label for="wish_name">Item Name</label>
         <input type="text" name="wish_name" id="wish_name" pattern="^[a-zA-Z0-9]{1-50}$" required>
         <label for="wish_cost">Cost of Wished For Item</label>
         <input type="number" name="wish_cost" id="wish_cost" pattern="[0-9]+" step="0.01" title="Please input numbers only." required>
         <label for="wish_description">Description Of Wish</label>
         <textarea name="wish_description"id="wish_description" ></textarea>    
-        <button type="submit" class="btn btn-in">Add New Item</button>
+        <button type="submit" class="btn btn-in">Add New Wish</button>
 
     </div>
     
