@@ -50,6 +50,20 @@ a:hover {
 
 }
 
+/* different text size classes */
+
+.text-large {
+    font-size: 2rem;
+}
+
+.text-medium {
+    font-size: 1.5rem;
+}
+
+.text-small {
+    font-size: 1rem;
+}
+
 /* styling for the watermark logo */
 
 .watermark-logo {

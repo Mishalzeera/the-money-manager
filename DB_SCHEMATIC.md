@@ -2,8 +2,11 @@ DATABASE SCHEMATIC FOR MUNIFICENT
 
 money_db (parent database passed to the Pymongo() function)
 
+<!-- The parent database that all the other collections are stored in -->
 
     -current_month:
+
+<!-- The main current user database that is used for the main dashboard -->
 
         ---id: {mongo generated}
         ---name: {user defined string}
@@ -24,6 +27,8 @@ money_db (parent database passed to the Pymongo() function)
 
     -expenses
 
+<!-- The collection that stores expenses used to calculate key user figures -->
+
         ---id: {mongo generated}
         ---name: {user defined string}
         ---date: {user defined string}
@@ -35,12 +40,16 @@ money_db (parent database passed to the Pymongo() function)
 
     -fs.chunks
 
+<!-- A collection created by Mongo that stores the actual image binary code -->
+
         ---id: {mongo generated}
         ---files-id: {mongo generated, connects to fs.files}
         ---n: {mongo generated}
         ---data: {mongo generated, binary}
 
     -fs.files
+
+<!-- A collection created by Mongo that stores image-related data -->
 
         ---id: {mongo generated}
         ---filename: {mongo generated}
@@ -53,6 +62,8 @@ money_db (parent database passed to the Pymongo() function)
 
     -in_out_history
 
+<!-- A collection of user records displayed on the history.html template -->
+
         ---id: {mongo generated}
         ---name: {user defined string}
         ---date: {automatically generate month/year stamp}
@@ -64,6 +75,8 @@ money_db (parent database passed to the Pymongo() function)
 
 
     -invoices
+
+<!--  A collection of income entries with user defined tax Boolean -->
 
         ---id: {mongo generated}
         ---name: {user defined string}
@@ -79,6 +92,8 @@ money_db (parent database passed to the Pymongo() function)
 
     -previous_months
 
+<!-- A collection of past month records, generated upon login when the month has passed -->
+
         ---id: {mongo generated}
         ---name: {user defined string}
         ---period: {automatically generate month/year stamp}
@@ -91,12 +106,16 @@ money_db (parent database passed to the Pymongo() function)
 
     -rewards
 
+<!-- A collection of images, one per user, for the rewards.html template -->
+
         ---id: {mongo generated}
         ---name: {user defined string}
         ---img: {image name from file upload}
         ---caption: {user defined string}
 
     -tax_seasons
+
+<!-- A collection of tax records to display on the history.html template -->
 
         ---id: {mongo generated}
         ---name: {user defined string}
@@ -107,11 +126,15 @@ money_db (parent database passed to the Pymongo() function)
 
     -users
 
+<!-- A collection of current users with their hashed passwords -->
+
         ---id: {mongo generated}
         ---name: {user defined string}
         ---password: {user defined string}
 
     -wishlist
+
+<!-- A collection of wishlist items with an 'is_affordable' Boolean -->
 
         ---id: {mongo generated}
         ---name: {user defined string}

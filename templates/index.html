@@ -2,16 +2,18 @@
 
 <!-- shows an abridged view of the users finances -->
 
-<h1>{{money.name | title }}'s Money</h1>
+<h2>Quick Glance</h2>
 
-<h2>Credit: {{ money.credit / 100}} </h2>
+<p class="text-medium">{{money.name | title }}'s Money</p>
 
-<h4>Disposable Income: {{ money.disposable_income / 100 }}</h4>
+<p class="text-large">Credit: {{ money.credit / 100}} </p>
+
+<p class="text-medium">Disposable Income: {{ money.disposable_income / 100 }}</p>
 
 {% if money.overheads_to_be_paid >= 0 %}
-    <h4>Overheads To Be Paid : {{ money.overheads_to_be_paid }}</h4>
+    <p class="text-medium">Overheads To Be Paid : {{ money.overheads_to_be_paid }}</p>
     {% else %}
-    <h4>Overheads For This Month Are Paid</h4>
+    <p class="text-medium">Overheads For This Month Are Paid</p>
     {% endif %}
     {% if money.user_notes %}
     <p class="index-notes">"{{ money.user_notes }}"</p>

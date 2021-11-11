@@ -4,43 +4,45 @@
 
 <!-- main dashboard overview -->
 
-<h2>{{ money.name | title}}'s Money</h2>
+<h2>Dashboard</h2>
 
-<h1>Credit: {{ money.credit / 100}}</h1>
+<p class="text-medium">{{ money.name | title}}'s Money</p>
+
+<p class="text-large">Credit: {{ money.credit / 100}}</p>
 
 <!-- conditionals that avoid negative numbers when inappropriate -->
 
 {% if money.overheads_to_be_paid > 0 %}
-    <h2>Overheads to be paid this month: {{money.overheads_to_be_paid / 100 }} left to pay of {{money.user_overheads / 100}}</h2>
+    <p class="text-medium">Overheads to be paid this month: {{money.overheads_to_be_paid / 100 }} left to pay of {{money.user_overheads / 100}}</p>
     {% else %}
-    <h2>Overheads for this month are paid.</h2> 
+    <p class="text-medium">Overheads for this month are paid.</p> 
 {% endif %}
 
 {% if money. disposable_income > 0 %}
-<h2>Disposable Income: {{money.disposable_income / 100}}</h2>
+<p class="text-medium">Disposable Income: {{money.disposable_income / 100}}</p>
 {% else %}
-<h2>Disposable Income: 0 ({{ money.disposable_income /100 * -1}} in overheads and taxes to pay)</h2>
+<p class="text-medium">Disposable Income: 0 ({{ money.disposable_income /100 * -1}} in overheads and taxes to pay)</p>
 {% endif %}
 
 {% if money.income_this_month > 0 %}
-<h3>Income this month: {{money.income_this_month / 100}}</h3>
+<p class="text-medium">Income this month: {{money.income_this_month / 100}}</p>
 {% else %}
-<h3>Income this month: 0</h3>
+<p class="text-medium">Income this month: 0</p>
 {% endif %}
 
 {% if money.tax_to_set_aside > 0 %}
-<h3>Tax to set aside: {{money.tax_to_set_aside / 100}}</h3>
+<p class="text-medium">Tax to set aside: {{money.tax_to_set_aside / 100}}</p>
 {% else %}
-<h3>No tax to set aside.</h3>
+<p class="text-medium">No tax to set aside.</p>
 {% endif %}
 
-<h3>Suggested savings amount: {{money.suggested_savings_amount / 100}}</h3>
+<p class="text-medium">Suggested savings amount: {{money.suggested_savings_amount / 100}}</p>
 
-<p>Total amount spent this month: {{money.spent_this_month / 100}}</p>
+<p class="text-small">Total amount spent this month: {{money.spent_this_month / 100}}</p>
 
-<p>Amount spent on overheads: {{money.spent_on_overheads / 100}}</p>
+<p class="text-small">Amount spent on overheads: {{money.spent_on_overheads / 100}}</p>
 
-<p>Amount spent on extras: {{money.spent_on_extras / 100}}</p>
+<p class="text-small">Amount spent on extras: {{money.spent_on_extras / 100}}</p>
 
 <!-- conditional that checks if a note is saved then either creates or edits a note -->
 
