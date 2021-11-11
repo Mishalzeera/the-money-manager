@@ -41,7 +41,7 @@ be good at keeping track of what their financial standing is.
   of a chore.
 
 - A general dashboard that gives basic feedback, primarily "Total Credit" and
-  "Amount spent this month".
+  "Disposable Income".
 
 - A more detailed page where the user can see more endpoints, such as "amount
   spent this month on bills", "income from invoices", "pending invoices"
@@ -78,7 +78,7 @@ This means that no code will be written or any action on the project undertaken
 without a README entry being written about it. This will lead to a long and
 possibly unwieldy document, but it is an approach the author would like to try
 in the spirit of learning good methodology. Also, Flask/Python/backend dev in
-general seems like it could be helpful to have a trail of trials and eroors.
+general seems like it could be helpful to have a trail of trials and erorrs.
 
 ## Order of operations
 
@@ -161,7 +161,7 @@ the author had watched.
 
 In the registration function, the data is split into two streams. One stream is 
 the new user and password dataset, the other is a "current month" dataset. 
-Within the body of the function, the helper functions from "functions.py" were 
+Within the body of the function, the helper functions from "utils.py" were 
 invoked and used to provide the cents value for the "insert_one" method.
 
 There were a few issues of syntax which caused the data to arrive in an "array" 
@@ -236,7 +236,7 @@ The author has been grappling with the organisation of concerns, and has found
 that having a basic HTML and render_template route for a feature in place helps. 
 This allows the flow of operations to be clear to the author, who has to focus 
 on small tasks, one at a time. The basic CRUD setup of the invoicing feature may 
-involve separate pages for some functions, butremain in the same template for 
+involve separate pages for some functions, but remain in the same template for 
 others. The invoice structure was set up as a series of pages for the time 
 being. Once everything was set up and working, there was some grappling with 
 the return value of the amount field from the database, which was in cents. 
@@ -280,7 +280,7 @@ to the db.
 
 ### All Basic CRUD Functionality In Place
 
-From here on, the next thing to focus on is building up the "functions.py" 
+From here on, the next thing to focus on is building up the "utils.py" 
 module so that "app.py" can process the data in and out of its way to the 
 front-end. During this process it is expected that some core functionality of 
 the app may be adapted as the overview becomes clear. At the moment the author is 
@@ -337,7 +337,7 @@ verbose but workable code in the right place did the job.
 
 One puzzling bug was forgetting to update the object sent back from the 
 edit-invoice to match the original add invoice schema. It was a big learning 
-moment for the author about the practicalities of the assingment. There was a 
+moment for the author about the practicalities of the assignment. There was a 
 persistent key error when trying to reupdate an invoice (past the first
 time updating it) since important values (specifically the checkbox that 
 determines whether or not tax should be calculated) were being replaced with 
@@ -676,7 +676,7 @@ it. A few things will need to be overridden, but generally its okay.
 Some hours were spent styling the buttons to the appropriate colour and size.
 It seems a one-size fits all approach is not going to work, and sizing buttons
 per page would be a very long task. On some pages the alignment of the buttons
-is in conflict with the alignment of the fomrs. For the most part it is 
+is in conflict with the alignment of the forms. For the most part it is 
 acceptable, and the author is anxious to style the tables for the History 
 page. The author expects that to be a challenge of navigating Jinja templates 
 and HTML/CSS structures.
@@ -697,8 +697,8 @@ track of the features and explain them for a new user. It was first written in
 a quasi-humourous style, but then the author felt it best to just write it as
 straightforwardly as possible. The intended user is a person who would feel 
 overwhelmed at first by a lot of these ideas and features, and it is hoped 
-that the overall tone of the user documents be welcoming, soothing and 
-somehow also confidence-inspiring. 
+that the overall tone of the user documents be welcoming, soothing and
+ also confidence-inspiring. 
 
 ### Commenting CSS And HTML
 
