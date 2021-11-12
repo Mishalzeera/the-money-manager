@@ -4,8 +4,9 @@
 <h2 class="underline">Rewards page</h2>
 
 <!-- displays an image for the user to be inspired by -->
-
+{% if user_reward.img %}
 <img src="{{ url_for('image', filename=[user_reward.img])}}" class="reward-image">
+{% endif %}
 
 <!-- if the user added a caption, it would display here -->
 

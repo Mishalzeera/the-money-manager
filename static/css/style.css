@@ -183,6 +183,12 @@ a:hover {
     width: unset;
 }
 
+/* gap between the Dashboard text and the buttons */
+
+.profile-notes {
+    margin-bottom: 1rem;
+}
+
 /* styling the input fields */
 
 input {
@@ -204,7 +210,12 @@ input {
     text-decoration: none;
     text-align: center;
     padding: .5rem 2rem;
-    margin-top: 1rem;
+    /* margin-top: 1rem; */
+}
+
+.btn-small {
+    width: 150px;
+    font-size: .7rem;
 }
 
 /* styling the "a" link buttons to match regular buttons, also to inherit from */
@@ -236,6 +247,10 @@ textarea {
     .btn, .a-btn {
         width: 260px;
     }
+
+.btn-small {
+    width: 130px;
+}
 
     textarea {
         width: 260px;

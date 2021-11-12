@@ -8,10 +8,15 @@
 
 <p class="text-medium">Credit: {{ money.credit / 100}} </p>
 
+{% if money.disposable_income > 0 %}
 <p class="text-large">Disposable Income: {{ money.disposable_income / 100 }}</p>
+{% else %}
+<p class="text-large">Disposable Income: 0 </p>
+<p class="text-small">({{ money.disposable_income /100 * -1 + money.credit / 100 - money.suggested_savings_amount / 100}} in overheads and taxes to pay)</p>
+{% endif %}
 
 {% if money.overheads_to_be_paid >= 0 %}
-    <p class="text-medium">Overheads To Be Paid : {{ money.overheads_to_be_paid }}</p>
+    <p class="text-medium">Overheads To Be Paid : {{ money.overheads_to_be_paid /100 }}</p>
     {% else %}
     <p class="text-medium">Overheads For This Month Are Paid</p>
     {% endif %}

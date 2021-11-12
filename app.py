@@ -56,7 +56,7 @@ def calculate_disposable_income():
     tax_to_set_aside = current_month['tax_to_set_aside']
     # get the suggested savings amount
     suggested_savings_amount = current_month['suggested_savings_amount']
-    # calculate the disposable income
+    # calculate the disposable income   
     disposable_income = credit - (overheads_to_be_paid + tax_to_set_aside + suggested_savings_amount)
     # ...and update the database with the amount
     mongo.db.current_month.update_one(user_key, {"$set": {"disposable_income": disposable_income}})
@@ -446,7 +446,7 @@ def register():
             # give some user feedback
             flash("Registration Successful")
             # go to the new users profile
-            return redirect(url_for('profile'))
+            return redirect(url_for('index'))
         else:
             for error in errors:
                 flash(f"{error}")
@@ -1038,7 +1038,7 @@ def edit_expense(expense_id):
         # give some user feedback
         flash("Expense Edited Successfully!")
         expenses = mongo.db.expenses.find(user_key)
-        return render_template("expenses.html", expenses=expenses)
+        return render_template("expenses.html", expenses=expenses, this_month=month)
 
     expense_to_edit = mongo.db.expenses.find_one({"_id": ObjectId(expense_id)})
     return render_template("edit_expense.html", expense=expense_to_edit)
@@ -1485,5 +1485,5 @@ if __name__ == "__main__":
     app.run(
         host=os.environ.get("IP", "0.0.0.0"),
         port=int(os.environ.get("PORT", "5500")),
-        debug=False
+        debug=True
     )

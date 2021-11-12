@@ -91,4 +91,63 @@ for Best Practises, "91" for SEO. Dark theme got "84" for Accessibility, where
 light theme got "91". For Performance, dark theme got "91" and light theme got
 "84". 
 
+# Suggested Tests For Possible Future Maintainability
+
+
+| Test Label |Test Action  |Expected Outcome|Test Outcome|
+|--|--|--|--|
+|Navigate to app  |Enter the base URL |Auto-redirects to '/login' - **Login**|PASS |
+|Switch to **Register**|Click either link labelled 'Register'|Switches to the Registration form|PASS|
+|Register a new user|Enter details in the registration form|App goes to '/index' - **Quick View**|PASS|
+|Navigate to **Dashboard**|Click the logo-icon with the label 'To Dashboard'|App goes to '/profile/username' - **Dashboard**|PASS|
+|Toggle **Dashboard** to **Quick View**|Click the same logo-icon now labelled 'To Quick View'|App reverts to **Quick View** and back to **Dashboard**|PASS|
+|Create Note|Enter some text in the note-field and click 'Create Note'|New note created, input field changes to note, 'Create Note' button now 'Edit Note'|PASS|
+|Navigate to **Edit Note**|Click the 'Edit Note' button|App goes to '/edit_note/' - **Edit Note** page|PASS|
+|Test Note Modification|Change the text in the note-field and click 'Modify Note'|Return to **Dashboard** and see modified note.|PASS|
+|Navigate to **Invoice/Income** page|Click the 'Invoices/Income' button|App navigates to '/invoice' - **Invoice/Income** page|PASS|
+|Navigate to **Add New Invoice/Income**|Click 'Add New Income' button|App navigates to '/add_invoice/...' **Add New Invoice/Income**| PASS |
+|Add An Invoice|Fill in the form and click 'Add Invoice'|App navigates back to **Invoice/Income** and the new income is visible|PASS|
+|Modify The Invoice|Click the 'Modify' button under the new entry, adapt the entry and click 'Modify'|App navigates back to **Invoice/Income**, tax and income is recalculated in all related fields in **Dashboard**|PASS|
+|Delete the Invoice|Click the 'Delete' button under the entry|App navigates to a warning page, upon confirmation the app redirects to the **Invoice/Income** page and all related fields in **Dashboard** reflect the deletion|PASS|
+|Navigate to the **Expenses** page|Click the 'Manage Expenses' button in **Dashboard**|App navigates to the **Expenses** page|PASS|
+|Add an Expense|Click the 'Add Outgoing Expense' button, fill and submit form|App navigates to the **Add Expense** page, upon submit the app navigates back to **Expenses** and shows the new entry - all related entries updated in **Dashboard**|PASS|
+|Modify an Expense|Click 'Modify' under newly created entry, change some fields and submit|App reverts to **Expenses** and shows the updated entry, all related **Dashboard** fields correctly reflect the modification|PASS|
+|Delete an Expense|Click 'Delete' under entry, and confirm |Upon confirmation Expense is deleted, all related fields in **Dashboard** reflect the change.|PASS|
+|Navigate to **End Your Taxes** page|Click 'End Your Tax Period' in the **Dashboard**|App navigates to '/end_tax' - **End Your Taxes**|PASS|
+|Test the Calculator|Enter a total of an amount including tax into the Calculator, submit and check that tax is separated from non-taxed amount|Tax and non-taxed amount appear on the screen in correct proportions determined by the global tax rate|PASS|
+|End the Tax Period|Navigate to the '/user_history' **History** page, check that there is no 'Previous Tax Season', navigate back to **End Your Taxes** check the box and click 'End Your Tax Period' - Navigate back to **History** to check|In **History** a new Previous Tax Season shows|PASS|
+|Check **History** shows correct data|Use **Expense** and **Invoice/Income** pages to add dummy data, log out and manually change the current month datestamp field in the database (current_month-> datestamp) then log in again. Repeat the **End Your Taxes** test, then navigate to **History**|In the History page, on the left are all the types of in and out activity, the right has a Previous Months entry and a PreviousTax Seasons entry |PASS|
+|Navigate to **Wishlist**|From **Dashboard** click the 'Wishlist' link item in the navbar|Navigates to the **Wishlist** page|PASS|
+|Test Add Wish|Fill in the form and press 'Add New Wish'|App refreshes the **Wishlist** page and the new Wish appears|PASS|
+|Test Modify Wish|Click the 'Edit Wish' button by the new wish, alter the entry, click 'Save Changes' |App returns to the **Wishlist** page showing the updated entry|PASS|
+|Test Delete Wish|Click the 'Delete' button by the new Wish|Page refreshes and Wish is deleted|PASS|
+|Navigate to **Reward**|From **Dashboard** click the 'Reward' link item in the navbar|Navigates to **Reward**|PASS|
+|Test Add Reward|Click on 'Add An Inspiring...' button, fill in and submit the form|**Reward** pages refreshes with added image and caption, button changing to 'Change Your...'|PASS|
+|Navigate to **Manual**| From any page in the app, click the 'Manual' link item in the navbar|Navigates to the **Manual**|PASS|
+|Navigate to **Settings**|From any page in the app, click the cogs icon in the navbar|Navigates to **Settings**|PASS|
+|Test Overheads Update|Making note of the placeholder number in the input field, enter a new overheads figure and click 'Change Your Monthly Overheads'|Page refreshes and placeholder updates to the new amount, check **Dashboard** to be certain|PASS|
+|Test Change Tax Rate|Making note of the placeholder percentage, enter a new percentage and click 'Change Your Tax Rate'|Page refreshes and placeholder updates to the new amount, check **Dashboard** to be certain|PASS|
+|Test Toggle Light/Dark Theme|Making sure your eyes are open, click on the 'Toggle Theme Light/Dark' button|The appearance switches from dark to light and vice versa|PASS|
+|Test Delete Account|Using a temporary fake account, log in to MUNIFICENT, click 'Delete Account' and confirm|Navigates to **Login** and deleted username is no longer recognised|PASS|
+|Navigate to **Admin**|Log into Admin account, and click the 'Admin' link item in the navbar|Navigates to **Admin**|PASS|
+|Test Delete User|From list of current users, select a particularily offensive user, tick the safety box and click 'Delete User'|User is deleted from the app, including all data, check database|PASS|
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
