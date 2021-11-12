@@ -2,13 +2,14 @@
 # The Money Manager
 http://mishals-money-manager.herokuapp.com/
 
-An app that will allow a user to keep track of different streams of financial
-concern. Expenditure in areas like bills, rent and general overheads,
-as well as an income area where invoice details can be entered,
-which will then calculate a tax amount to set aside and set into a different
-category.
+An app that will allow a user to keep track of their money in a realistic
+way. Expenditure is divided into overheads and extras, income divided into
+taxeable and non-taxeable income. The app will then calculate what actual
+disposable income the user has, as well as how much to set aside for taxes.
+A suggested savings of 20% is included, as per conventional good financial
+sense.
 
-There will be different constant variable sums:
+There will be different constant sums for the app, for example:
 
 - total credit
 - total monthly expenditure
@@ -16,9 +17,8 @@ There will be different constant variable sums:
 - total monthly tax to pay
 - suggested savings amount
 
-Also a wishlist area that stores links to desired products, and keeps track of
-when you have enough extra money that purchasing one of your wishlist products
-is viable.
+There will be a wishlist area that stores links to desired products, and keeps 
+track of when you have enough extra money to buy it.
 
 The ideal user is a freelancer who has relatively simple finances and a young
 business she is nurturing. While they aren't terrible with money, they may not
@@ -62,9 +62,9 @@ Due to the complex way in which personal finances can work, this app can be
 set up for a person on a normal job contract who wishes to keep track of
 their expenses and save up for, for example, a new motorbike.
 
-However, the author had the idea to create a corresponding feature which would
+However, I had the idea to create a corresponding feature which would
 push the figures to an Google Spreadsheet to make tax season easier. While the
-feature may well be built in the future, the author felt it would be
+feature may well be built in the future, I felt it would be
 beyond the scope of this app. This is due to the possibility of a user who is,
 as mentioned in the previous paragraph, on a contract and has a different
 setup, financially.
@@ -73,18 +73,19 @@ setup, financially.
 
 Previously there was some difficulty with creating a useful README. In earlier
 projects, wireframes and other development journaling were omitted to some
-degree. In this project the author will attempt to document the process from
+degree. In this project I will attempt to document the process from
 start to finish via the README creation process.
 
-This means that no code will be written or any action on the project undertaken
-without a README entry being written about it. This will lead to a long and
-possibly unwieldy document, but it is an approach the author would like to try
-in the spirit of learning good methodology. Also, Flask/Python/backend dev in
-general seems like it could be helpful to have a trail of trials and erorrs.
+This means that (as much as realistically possible) no code will be written or 
+any action on the project undertaken without a README entry being written about 
+it. This will lead to a long and possibly unwieldy document, but it is an 
+approach I would like to try in the spirit of learning good methodology. 
+Also, Flask/Python/backend dev in general seems like it could be helpful 
+to have a trail of trials and erorrs.
 
 ## Order of operations
 
-On the advice of the author's mentor, backend/database functionality should
+On the advice of my mentor, backend/database functionality should
 be done first before spending time on styling. In this instance, the
 application will be built first and then styled afterwards. The mockups will
 therefore be attended to further into the development process.
@@ -101,7 +102,7 @@ project repository files.
 
 ### Basic file structures
 
-Since this is a Flask project, the author will create the "templates" and
+Since this is a Flask project, I will create the "templates" and
 "static" folders first. Then, "app.py", ".gitignore", "env.py", "Procfile",
 then a "requirements.txt", since these are all going to be used.
 
@@ -159,7 +160,7 @@ at the top of app.py, functions within the helper page were finetuned to
 convert the string value from the the form first to a float, then an integer 
 multiplied by 100. This gives the value in cents, which is the standard way 
 to store and retrieve currency data, according to a Youtube film on ecommerce 
-the author had watched. 
+I had watched. 
 
 In the registration function, the data is split into two streams. One stream is 
 the new user and password dataset, the other is a "current month" dataset. 
@@ -172,12 +173,12 @@ committed and pushed to Github.
 
 ### Create Login Functionality
 
-Despite having attempted a few Flask projects, the author found it necessary to 
+Despite having attempted a few Flask projects, I found it necessary to 
 follow along with the Flask Mini Project 20 and adapt the code moves as 
 necessary. Similarly to the project walkthrough, the registration page was 
 adapted. There was more indepth research of regex patterns to ensure that the 
 "starting credit" and "monthly costs" registration fields were correct, so that 
-the database is in good shape. So there was some going back and forth beteen the 
+the database is in good shape. So there was some going back and forth between the 
 login and registration pages and views. 
 
 ### Addressing 302 Error Loops
@@ -212,7 +213,7 @@ For the sake of keeping things coherent, an if statement was added to base.html,
 showing login/register vs logout options depending on the state. The condition 
 of "user" being in session cookies was used as the deciding factor. Also it is 
 worth noting that around here the CI walkthrough project was no longer of much 
-help and the author stopped using it as a reference.
+help and I stopped using it as a reference.
 
 ### Create Settings Page That Allows User To Delete Account
 
@@ -228,15 +229,15 @@ user would like to save up for. This is sent to its own collection in the
 database after a "add wish" form is filled in. The item appears immediately 
 in the wishlist. Adding a dynamically generated a-tag with a url_for that 
 links to a route only allows for the routing but not passing any variables 
-back. Despite combing the Jinja and Flask docs, the author could only find 
+back. Despite combing the Jinja and Flask docs, I could only find 
 limited mention of any related information. The issue was resolved by changing
 the a-tag to a button, and wrapping in a form tag. 
 
 ### Create Invoice Structure
 
-The author has been grappling with the organisation of concerns, and has found 
+I have been grappling with the organisation of concerns, and have found 
 that having a basic HTML and render_template route for a feature in place helps. 
-This allows the flow of operations to be clear to the author, who has to focus 
+This allows the flow of operations to be clear to myself, having to focus 
 on small tasks, one at a time. The basic CRUD setup of the invoicing feature may 
 involve separate pages for some functions, but remain in the same template for 
 others. The invoice structure was set up as a series of pages for the time 
@@ -254,11 +255,11 @@ The idea of the rewards page is to provide a single, ongoing source of
 inspiration to the user. It is hoped that during times when the user is tempted 
 to spend their remaining income on something unnecessary, the reward image and 
 caption will remind them of a greater goal. For the sake of simplicity as well 
-as adding a learning outcome - uploading a file - the author will limit the 
+as adding a learning outcome - uploading a file - I will limit the 
 reward section to an image and a simple caption.
 
 With the help of a Youtube video "Save and Retrieve Files In MongoDB With 
-Flask + Pymongo" the author was able to create an image upload/display 
+Flask + Pymongo" I was able to create an image upload/display 
 function. A new method was learned using a route as a way to pass data rather 
 than for managing templates. In the template where the image was to be 
 displayed, within an img tag, the src attribute was given the url_for(
@@ -276,7 +277,7 @@ It was realised at this late stage that "Expense" functionality had not been
 added, despite being of primary importance to the concept behind the app. In 
 the process of setting it up and connecting it to the database, much was 
 learned about the difference between GET and POST settings in the form tag. 
-A recurring error kept the author occupied until the method was changed in the 
+A recurring error kept me occupied until the method was changed in the 
 form, since the request being made was not, in fact, posting any information 
 to the db. 
 
@@ -285,12 +286,12 @@ to the db.
 From here on, the next thing to focus on is building up the "utils.py" 
 module so that "app.py" can process the data in and out of its way to the 
 front-end. During this process it is expected that some core functionality of 
-the app may be adapted as the overview becomes clear. At the moment the author is 
-still unclear on how it would be to use the app in practise, since the author 
-himself is really the ideal candidate for the role of User. In other words, not 
+the app may be adapted as the overview becomes clear. At the moment I am 
+still unclear on how it would be to use the app in practise, since I 
+myself am really the ideal candidate for the role of User. In other words, not 
 the most financially astute. Current challenges include the most succinct and 
 adaptable way to process individual value fields coming as a BSON object from 
-Mongo. The author will begin with writing the core mathematic functions.
+Mongo. I will begin with writing the core mathematic functions.
 
 ### Streamlining Basic Functionality In Motion
 
@@ -326,11 +327,11 @@ the old invoice amount correctly regarding tax etc. Then the new amount is
 processed. 
 
 Similarly, with expenses being checked as of type "overhead" or not, the 
-dynamic recalculation of expense amounts is now possible. The author is hoping 
-that his understanding of how session cookies work is correct, in that anything 
+dynamic recalculation of expense amounts is now possible. I am hoping 
+that my understanding of how session cookies work is correct, in that anything 
 can be assigned as a session variable. 
 
-So far this approach seems overly verbose, and the author is sure that some 
+So far this approach seems overly verbose, and I am sure that some 
 kind of refactoring of functions behind the scenes could take place. However, 
 it may be best to do that after all the functionality is in place, however 
 naive it may be. It may be simply a matter of managing imports and modules 
@@ -339,7 +340,7 @@ verbose but workable code in the right place did the job.
 
 One puzzling bug was forgetting to update the object sent back from the 
 edit-invoice to match the original add invoice schema. It was a big learning 
-moment for the author about the practicalities of the assignment. There was a 
+moment for me about the practicalities of the assignment. There was a 
 persistent key error when trying to reupdate an invoice (past the first
 time updating it) since important values (specifically the checkbox that 
 determines whether or not tax should be calculated) were being replaced with 
@@ -349,7 +350,7 @@ was going on.
 
 ### Adding Session User Key To FsFiles, FsChunks
 
-The author at this point stumbled upon the problem of managing the deletion of 
+At this point I stumbled upon the problem of managing the deletion of 
 data. The data needs some common reference that allows for the "remove" method 
 to zero in on. When a file is uploaded, two new collections are automatically 
 added to the database. These important collections have no direct reference to 
@@ -366,26 +367,26 @@ This can be seen in the "add reward" function.
 
 Its handy for the user to have a trail of incoming and outgoing finances in a 
 single overview. It is also helpful to include modifications and deletions. 
-A new database called "in_out_history" was created to contain this data. The 
-author created the functions outside of the view codeblocks which made things 
+A new database called "in_out_history" was created to contain this data.  
+I created the functions outside of the view codeblocks which made things 
 a lot easier to visualise and debug. The template simply shows the rudimentary 
 return of data. More work will be done at the styling phase.
 
 ### Create Decorator That Ensures Functionality Only When User Is Logged In
 
-The author has been using the same key, {"name": session['user']} over and over 
+I have been using the same key, {"name": session['user']} over and over 
 everywhere in the app. Other than it being a nuisance to type out multiple 
 times, there is also the additional security layer needed for when a page is 
 directly accessed while no user is in session. This could potentially expose
 data. Mentor recommended the routes all starting with "if user in session:" 
 then handling the functions with the "else" pointing to the login page. Mentor 
-called this the "naive" approach which didn't not sit well with the authors 
-feeling of needing to prove himself for some reason. 
+called this the "naive" approach which didn't not sit well with my slightly
+competitive spirit. 
 
 This involved some research - the Flask documentation was very handy as well 
 as Stack Overflow. The "wraps" method was imported from functools and used to 
 wrap the decorator. Being able to declare a variable to be accessed by the 
-route from within the decorator was more of a challenge. The author was able 
+route from within the decorator was more of a challenge. I was able 
 to find a way of defining it in the global scope from within the decorator but 
 that seemed to defeat the purpose. However, the security purpose was met. 
 
@@ -400,7 +401,7 @@ This was added to the settings page.
 
 ### Give User A Deductibles Calculator 
 
-In the authors experience, it is common that one may have a receipt that only 
+In my experience, it is common that one may have a receipt that only 
 lists the total amount spent on an item. For instance, the Apple Store will 
 sell you a laptop and not say explicitly on the bill "laptop 1000EU, tax 120EU, 
 total 1120EU". The mysterious final figure, for a person without an accountant 
@@ -440,12 +441,12 @@ def new_invoice_income_with_tax_rate(invoice_amount, tax_rate):
     return total
 
 In practise it was relatively straightforward except for a two and a half hour 
-period where the author was wondering if there was something wrong with the 
+period where I was wondering if there was something wrong with the 
 logic of the apparent universe. A test amount of "100" was entered with a tax 
-rate of 50%, and the author was convinced something was wrong with the 33 
+rate of 50%, and I was convinced something was wrong with the 33 
 result for the tax. Finally realising (after numerous, now entertaining, 
 coderewrites) that in fact it was perfectly correct in calculating the amount 
-of tax from 100, after the fact. Which the author had been working with all 
+of tax from 100, after the fact. Which I had been working with all 
 along. 
 
 The figure can also be updated in the settings panel. 
@@ -458,11 +459,11 @@ new overhead. After some guessing and thinking, a simple solution was reached.
 
 ### Start Python Documentation
 
-The author will try and take documentation very seriously for this project. The 
+I will try and take documentation more seriously for this project. The 
 goal is that a person who does not have any understanding of Python would be 
-able to read the code and follow along with what is taking place. While the 
-author has been writing documentation from the start, it has been sporadic. 
-The author has also found it a good way to expose bugs and issues with the
+able to read the code and follow along with what is taking place. While I
+have been writing documentation from the start, it has been sporadic. 
+I have also found it a good way to expose bugs and issues with the
 app. 
 
 ### Create Endmonth Function
@@ -478,7 +479,7 @@ user history page.
 ### Create End Tax Season Page
 
 This handy page is for when it is time to end your tax period. By coincidence 
-the author had to do his taxes the day before, and realised it is handy to be 
+I had to do my taxes the day before, and realised it is handy to be 
 able to decide for yourself when you want to send in your invoices and receipts, 
 and when you want to hold on a bit longer. Now there is a page (with the handy 
 tax calculator) where you can work out your taxes, and then initiate the "end 
@@ -491,7 +492,7 @@ reset.
 ### Create An Admin Profile
 
 This (also very handy) page was made right before the app is to be shared with 
-the mentor and friends for feedback. This allows the author access to delete 
+the mentor and friends for feedback. This allows me access to delete 
 any account with all its associated data, as it is difficult to keep track of 
 everyones bits and pieces. An admin.html page was made that shows only when 
 "admin" is logged in. From the admin dashboard, the admin can enter the name 
@@ -514,9 +515,9 @@ Jinja templating engine.
 ### Basic Styling
 
 The app, while not as hideous as it was a few steps back (see screenshots 
-for just how horrible), is still not aesthetically what the author would like. 
-At the moment, it sometimes has a clean, bank friendly look which makes the 
-author want to vomit a little bit. However, the goal was to get the CRUD 
+for just how horrible), is still not aesthetically what I would like. 
+At the moment, it sometimes has a clean, bank friendly look which makes me 
+want to vomit a little bit. However, the goal was to get the CRUD 
 functionality in place before styling, as per the mentor's advice. So, it will 
 be left at "CRUD-ugly" and pushed as such to Heroku. From now on there will be 
 less pushes to Heroku as the styling is gone into.
@@ -533,14 +534,14 @@ less pushes to Heroku as the styling is gone into.
 
 ### Meeting With Mentor
 
-At this point the author met with his mentor, who gave some good feedback, and
+At this point I met with my mentor, who gave some good feedback, and
 some ideas how to streamline the application. This includes writing back-end
 form validation, using better .update() methodology, as well as lots of other
 smaller tips. Too many to mention, but all will be done before the styling.
 
 ### The Update Method
 
-The author took many naive routes to accomplish some basic actions. One of
+I took many naive routes to accomplish some basic actions. One of
 which was using update_one repetitively to change the same database colletion.
 This was also a good exercise in going through the code from a birdseye view.
 Code at this length does seem to be a lot harder to read and get through than
@@ -548,15 +549,15 @@ when its under 500 lines.
 
 ### Redirect vs Render Template
 
-The author could at no point clearly comprehend the difference and application
+I could at no point clearly comprehend the difference and application
 of the two methods. This had in part to do with a misunderstanding of the 
-correct syntax involved. For the whole project the author had been using
+correct syntax involved. For the whole project I had been using
 redirect(url_for('')) which has a different application. Life would have been 
 a lot easier if this was clearer from the start. 
 
 ### Add Delete Confirmation Pages
 
-Previously the author was of the mentality that the User should live 
+Previously I was of the mentality that the User should live 
 dangerously. This means that the User had no safety net previously using the
 app. In other words, the app deleted important things like your invoices,
 expenses and your profile without any warning. Mentor warned against this.
@@ -573,10 +574,10 @@ limits. When they don't, a specific error message is returned that allows the
 user to see exactly what it is that they need to fix in order for their input
 to succeed. 
 
-After looking at a sample function that the mentor had passed along, the author
+After looking at a sample function that the mentor had passed along, I
 went ahead and started writing the code. Instead of creating a single form 
 validator that could adapt to most of the forms (and since there are such
-specific requirements that may require maintenance later) the author decided
+specific requirements that may require maintenance later) I decided
 to go with a "per form" approach. 
 
 ### Limiting CRUD Functionality For Previous Months Income/Expense Records
@@ -593,14 +594,14 @@ The User History page has so far been a history of incoming and outgoing money,
 but it should also include the previous months and tax seasons. This allows 
 the user to keep an eye on how much tax has been paid over the year, and how
 their spending patterns have been. At the moment the page is an unbearable
-mess of data, but the author plans to organise it into neat sections that have
+mess of data, but I plan to organise it into neat sections that have
 clear visual hierarchy and provide good feedback for a user.
 
 ### Last Check Before Styling
 
-While the author is certain that some things will need to be fixed in the 
+While I am certain that some things will need to be fixed in the 
 backend of the project, the time is coming soon to submit the app. Further,
-the author took a peek at Django and finds it both interesting and quite
+I took a peek at Django and finds it both interesting and quite
 daunting, and would like to get to grips with it as soon as possible. For
 a final check of functionality, there was relatively few things to sort out.
 Mostly they were having lists in the correct order (for instance on the 
@@ -608,13 +609,13 @@ history page, showing from most recent instead of from the oldest).
 
 ### Design Ideas
 
-The author has the idea to make the app styled around Middle Eastern cultural
+I had the idea to make the app styled around Middle Eastern cultural
 imagery, to a subtle extent. The intention is to provide a sense of protection
 and support to a user, via personalising the app with an impressive and yet
 benign Sheikh figure. So, while there will still be money green and bank black,
-the author is looking to include dark reds to increase the sense of gravity and
+I am looking to include dark reds to increase the sense of gravity and
 royalty. Red also adds some relief to the eye, as the contrast between green 
-and black gets tiring after some time. As for the light theme, the author is 
+and black gets tiring after some time. As for the light theme, I am
 not a light theme fan, so there is some difficulty of being sure whats best.
 For the time being, the dark theme will be used as the reference, and once 
 the imagery is all in place, the light theme will be worked on. 
@@ -623,7 +624,7 @@ Over to Figma now.
 
 ### The Design 
 
-The author began with an image and a layout, to get a sense of where to go:
+I began with an image and a layout, to get a sense of where to go:
 
  ![First mockup of style](wireframes/landing-page-mockup.jpg "Starting point")
 
@@ -641,15 +642,15 @@ character of the Sheikh still comes through.
 
 For the buttons and input elements, there was some work put into picking the
 right hues. A balance was found between richness and a muted quality which
-somehow the app asks for. To some degree the author feels that his styling
+somehow the app asks for. To some degree I feel that my styling
 may leave something to be desired at the end of the process, but due to this
-being so much outside his comfort zone, getting it good enough is the most
+being so much outside my comfort zone, getting it good enough is the most
 realistic option. 
 
 A theme of btn-in btn-out and btn-manage colours was written into the html
 and css from the start (with a vague idea of it coming in handy later). It
-came in handy to create a realistic and limited palette for the author to
-work on. Previously every design the author made was haphazard in that 
+came in handy to create a realistic and limited palette for myself to
+work on. Previously every design I made was haphazard in that 
 regards, so something was learned there. 
 
 A basic mockup of how the screen would look along with some elements:
@@ -660,7 +661,7 @@ And a sheet with some numbers:
 
  ![Abridged view mockup](wireframes/abridged-view.jpg "Less clutter, more Qatar.")
 
-For the rest, the author decided to try some interesting CSS mini-frameworks
+For the rest, I decided to try some interesting CSS mini-frameworks
 to speed things along. These frameworks, including Water, Sakura and Marx are
 named Classless frameworks as they style things according to the basic HTML.
 They are to be placed early in the stylesheet sequence and then modified after
@@ -669,7 +670,7 @@ by the light/dark and general CSS sheets.
 ### Water CSS
 
 After trying a few options, the Water framework had the best effect on the 
-site in the authors opinion, so the CDN was added. There is a nice centering
+site in my opinion, so the CDN was added. There is a nice centering
 of content, plenty of whitespace and generally a feeling of comfort to using
 it. A few things will need to be overridden, but generally its okay.
 
@@ -679,24 +680,24 @@ Some hours were spent styling the buttons to the appropriate colour and size.
 It seems a one-size fits all approach is not going to work, and sizing buttons
 per page would be a very long task. On some pages the alignment of the buttons
 is in conflict with the alignment of the forms. For the most part it is 
-acceptable, and the author is anxious to style the tables for the History 
-page. The author expects that to be a challenge of navigating Jinja templates 
+acceptable, and I am anxious to style the tables for the History 
+page. I expect that to be a challenge of navigating Jinja templates 
 and HTML/CSS structures.
 
 ### Ending The Styling Process
 
 At a certain point, things reached a stable state and the visuals were less
-obtrusive, and more in tune with the authors own sensibilities. The app does
+obtrusive, and more in tune with my own sensibilities. The app does
 not look like something the bank made to "increase user engagement", but, in 
-the authors opinion, it looks rather like something coming from "us" as normal
-everyday people. At least this is the closest that the author can simulate of 
-his conceptual intent. 
+my opinion, it looks rather like something coming from "us" as normal
+everyday people. At least this is the closest that I can simulate of 
+my conceptual intent. 
 
 ### Writing A User Manual
 
-During the app creation process, the author started a .md file that would keep
+During the app creation process, I started a .md file that would keep
 track of the features and explain them for a new user. It was first written in
-a quasi-humourous style, but then the author felt it best to just write it as
+a quasi-humourous style, but then I felt it best to just write it as
 straightforwardly as possible. The intended user is a person who would feel 
 overwhelmed at first by a lot of these ideas and features, and it is hoped 
 that the overall tone of the user documents be welcoming, soothing and
@@ -705,20 +706,20 @@ that the overall tone of the user documents be welcoming, soothing and
 ### Commenting CSS And HTML
 
 The commenting process of the CSS and HTML was done for the sake of future
-maintainability. The idea that the author has, in general when it comes to
+maintainability. The idea that I had, in general when it comes to
 documentation, is that someone who cannot understand code can still follow
 along with every step of the way. Of course they would have to be patient and
-willing to follow along, but this also makes it easier for even the author in
+willing to follow along, but this also makes it easier for even myself in
 the future to find sections and change them if necessary.
 
 ### Thoughts About Documentation Approach
 
 The unconventional documentation approach taken this time had its moments. 
-Namely, the best thing about it was realising that sometimes the authors 
+Namely, the best thing about it was realising that sometimes my 
 technical intent was not really clear. It was helpful to write down first
 what the intention to achieve was, as clearly as possible. This actually led
 to many moments of insight into how to progress. It abstracted away any limits
-on the part of the authors technical ability, which is a huge impediment, and
+on the part of my technical ability, which is a huge impediment, and
 let the emphasis lie on what the desired outcome was, functionally.
 
 You hear it said in the software world often: "Our job is not to write fancy
@@ -732,12 +733,12 @@ confidence in the end result.
 The drawbacks were that sometimes it was difficult to keep the process so 
 linear. You could say that there was quite a lot of "asynchronous" coding
 going on. While updating the app.py functionality, a style issue had to be 
-resolved. While going through an endless series of tests, in particular, the
-author simply had to create an admin page just to be able to delete all the
+resolved. While going through an endless series of tests, in particular, I 
+simply had to create an admin page just to be able to delete all the
 accounts cluttering up the database with outdated schematics.
 
 This led to sneaky commits that didn't include all the functionality done. The
-character limit on the commit messages aside, the author often felt that the
+character limit on the commit messages aside, I often felt that the
 small things here and there didn't really always merit a mention. Spelling
 mistakes, or changing a render_template to a redirect, for example.
 
@@ -752,22 +753,22 @@ a small "utils.py". The if name equals main part is on the same page, all the
 imports and secondary functions (more or less) as well. This was really a 
 pain to navigate through when wanting to crossreference functions. 
 
-Also, writing forms directly in the HTML is fussy and insecure. The author
-was a bit too far into the project when he discovered WTForms, which would
+Also, writing forms directly in the HTML is fussy and insecure. I
+was a bit too far into the project when I discovered WTForms, which would
 have made it all a lot more fun and easier to test, also to prepare for 
 Django - which has a similar function built-in.
 
 Coming to some familiarity with basic Flask concepts made the core concepts
-regarding "the backend" clearer for the author. Sometimes there is some 
+regarding "the backend" clearer for myself. Sometimes there is some 
 confusion, it is suspected that many are confused and there is often a misuse
-of the term even by professionals. There is much less of that, and the author
-is less stressed by the thought of "which backend framework should I learn",
-considering that the basic concepts are the same and its simply a matter of
+of the term even by professionals. There is much less of that, and I
+am less stressed by the thought of "which backend framework should I learn",
+considering that the basic concepts are the same and its mostly a matter of
 syntax and conventions.
 
 Overall a pivotal and interesting learning experience with an end result that
-is hoped will help a rather blank CV, considering the author has been a cook,
-baker and musician his whole adult life. 
+is hoped will help a rather blank CV, considering I have been a cook,
+baker and musician my whole adult life. 
 
 
 
