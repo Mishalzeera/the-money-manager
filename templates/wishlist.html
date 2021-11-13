@@ -13,7 +13,7 @@
         <div class="wish">
 
             <p class="text-medium underline">{{ wish.wish_name | title}}</p>
-            <p class="text-small">{{ wish.wish_cost / 100}} EU</p class="text-medium">
+            <p class="text-small">{{ wish.wish_cost / 100}} EU</p>
             <p class="text-small">"{{wish.wish_description}}"</p>
 
 <!-- checks if the wish is affordable or not -->
@@ -50,7 +50,7 @@
         <label for="wish_cost">Cost of Wished For Item</label>
         <input type="number" name="wish_cost" id="wish_cost" pattern="[0-9]+" step="0.01" title="Please input numbers only." required>
         <label for="wish_description">Description Of Wish</label>
-        <textarea name="wish_description"id="wish_description" ></textarea>    
+        <textarea name="wish_description" id="wish_description" ></textarea>    
         <button type="submit" class="btn btn-in">Add New Wish</button>
 
     </div>

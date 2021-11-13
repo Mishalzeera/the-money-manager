@@ -19,8 +19,8 @@
 
 {% if tax %}
 
-    <h3>Tax you can claim on this amount: {{ tax | round }}</h3>
-    <h3>Cost without tax: {{ income | round }}</h3>
+    <p class="text-medium">Tax you can claim on this amount: {{ tax | round }}</p>
+    <p class="text-medium">Cost without tax: {{ income | round }}</p>
 {% endif %}
 
 <!-- form to end the tax period -->

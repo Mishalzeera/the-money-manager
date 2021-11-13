@@ -10,7 +10,7 @@
 
 {% for user in users %}
     {% if user.name != "admin" %}
-        <h3>{{ user.name | title }}</h3>
+        <p class="text-medium">{{ user.name | title }}</p>
     {% endif %}
 {% endfor %}
     

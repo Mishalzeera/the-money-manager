@@ -16,7 +16,7 @@
     <label for="invoice_recipient">Invoice Recipient</label>
     <input type="text" name="invoice_recipient" id="invoice_recipient" value="{{ invoice.invoice_recipient }}" >
     <label for="amount_invoiced">Amount (including tax)</label>
-    <input type="number" name="amount_invoiced" id="amount_invoiced" pattern="[0-9]+"  step="0.01" title="Please input numbers only."value="{{ invoice.amount / 100}}" required>
+    <input type="number" name="amount_invoiced" id="amount_invoiced" pattern="[0-9]+"  step="0.01" title="Please input numbers only." value="{{ invoice.amount / 100}}" required>
     
     <div class="check-flex" style="display: flex; justify-content: space-between;align-items: center;">
       <label for="tax">Check to set tax aside--> </label>

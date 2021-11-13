@@ -5,7 +5,7 @@
 
 <!-- displays an image for the user to be inspired by -->
 {% if user_reward.img %}
-<img src="{{ url_for('image', filename=[user_reward.img])}}" class="reward-image">
+<img src="{{ url_for('image', filename=[user_reward.img])}}" class="reward-image" alt="Reward image for current user">
 {% endif %}
 
 <!-- if the user added a caption, it would display here -->

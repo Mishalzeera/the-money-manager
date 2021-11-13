@@ -4,9 +4,9 @@
 
 A whole slew of issues connecting to the Mongo DB at first. The issue has yet
 to be resolved and seems to have affected a lot of people. By switching from 
-VS Code to Gitpod, the author was able to continue working.
+VS Code to Gitpod, I was able to continue working.
 
-Deployment to Heroku was successful, however the author had accidentally 
+Deployment to Heroku was successful, however I had accidentally 
 installed something using Node Package Manager, which caused the app not to
 run, and only after combing the directory was it noticed that there were all
 these Node-related files. Deleting them solved the issue.
@@ -28,7 +28,7 @@ for instance.
 There was simply no other way of testing the correct values and data-types 
 other than sending them to a template and trying to get them to render right.
 Sometimes the issues were with the intial form settings, and sometimes with 
-the author trying to convert the data in the backend. It was found to be much
+myself trying to convert the data in the backend. It was found to be much
 easier to fix in the templates themselves using Jinja calculation methods.
 
 Introducing media files caused the database to create its own collections to
@@ -52,8 +52,8 @@ tries to fix something.
 
 HTML forms are easy to brute force override, and there was nothing in place to
 prevent that. Pressing F12 and erasing HTML attributes made it possible to 
-send bad datatypes to the database as well and bypass required fields. The
-author then wrote defensive backend code that checked if any characteristics
+send bad datatypes to the database as well and bypass required fields. I then 
+wrote defensive backend code that checked if any characteristics
 of an entry violated tthe desired schematic, and if so would not allow the 
 relevant functions to work. 
 
@@ -68,7 +68,7 @@ diagnose, as it is easy to overlook something so simple when you are new to it.
 
 ## Friends 
 
-At the point that the app was a bit more presentable, the author shared it 
+At the point that the app was a bit more presentable, I shared it 
 with trusted friends. Some have design backgrounds, others in finance as well
 as other entrepreneurs. Right away there were some errors that came up due to
 their specific way of entering numbers, for instance. Also in their way of 
@@ -78,9 +78,9 @@ Other than backend and technical hiccups, they also brought some UX issues to
 the table. Some wanted to be able to navigate easily to another page, while
 others thought that some of the colours weren't present enough. 
 
-Of all the testing methodologies, that was among the most useful. The author 
-is not familiar with real testing methods, and the short glimpse from the 
-Django introduction was enough to make him realise there is a lot more to be
+Of all the testing methodologies, that was among the most useful. I 
+am not familiar with real testing methods, and the short glimpse from the 
+Django introduction was enough to make me realise there is a lot more to be
 done with testing than previously thought.
 
 ## Lighthouse
@@ -90,6 +90,68 @@ and general "best practises" of the app. Both light and dark themes got "100"
 for Best Practises, "91" for SEO. Dark theme got "84" for Accessibility, where
 light theme got "91". For Performance, dark theme got "91" and light theme got
 "84". 
+
+## Validators
+
+W3 Validator for dark_style.css passed with 12 exceptions due to using custom
+variables - Validator doesn't include them in its processes. "Due to their
+dynamic nature, CSS custom variables are not statically checked". The same
+result was had for light_style.css and style.css. tw-colours.css, being only
+a sheet of custom variables, needs no validation. 
+
+For the HTML validation, there were a few 'errors' regarding spacing between
+attributes, which I quickly fixed and ran again. Also there is a persistent
+message that the "pattern attribute does not apply" to the type of input I had
+chosen to use. However, it does indeed have the outcome I wanted, so I will
+assume that is one of the HTML Validator's quirks. 
+
+--add_expense.html: Validated successfully other than Jinja code
+
+--add_invoice.html: Validated successfully other than Jinja code
+
+--add_reward.html: Validated successfully other than Jinja code
+
+--admin.html: Validated successfully other than Jinja code
+
+--base.html: Validated successfully other than Jinja code
+
+--delete_account.html: Validated successfully other than Jinja code
+
+--delete_expense.html: Validated successfully other than Jinja code
+
+--delete_invoice.html: Validated successfully other than Jinja code
+
+--edit_expense.html: Validated successfully other than Jinja code
+
+--edit_invoice.html: Validated successfully other than Jinja code
+
+--edit_note.html: Validated successfully other than Jinja code
+
+--edit_wish.html: Validated successfully other than Jinja code
+
+--end_tax.thml: Validated successfully other than Jinja code
+
+--expenses.html: Validated successfully other than Jinja code
+
+--index.html: Validated successfully other than Jinja code
+
+--invoice.html: Validated successfully other than Jinja code
+
+--login.html: Validated successfully other than Jinja code
+
+--manual.html: Validated successfully other than Jinja code
+
+--profile.html: Validated successfully other than Jinja code
+
+--register.html: Validated successfully other than Jinja code
+
+--reward.html: Validated successfully other than Jinja code
+
+--settings.html: Validated successfully other than Jinja code
+
+--user_history.html: Validated successfully other than Jinja code
+
+--wishlist.html: Validated successfully other than Jinja code
 
 # Suggested Tests For Possible Future Maintainability
 
