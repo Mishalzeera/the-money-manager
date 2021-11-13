@@ -32,7 +32,7 @@
 
   </head>
 
-  <body>
+  <body id="body">
 
 <!-- watermark logo that is mainly for large screens -->
 
@@ -113,9 +113,10 @@
     {% endwith %}
 
     <!-- the content block, wrapped in a main tag -->
-<main>
+<main id="main">
     {% block content %} {% endblock %}
   </main>
-    
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js" integrity="sha512-eP6ippJojIKXKO8EPLtsUMS+/sAGHGo1UN/38swqZa1ypfcD4I0V/ac5G3VzaHfDaklFmQLEs51lhkkVaqg60Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="static/scripts/script.js"></script>
   </body>
 </html>
