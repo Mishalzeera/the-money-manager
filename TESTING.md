@@ -153,8 +153,16 @@ assume that is one of the HTML Validator's quirks.
 
 --wishlist.html: Validated successfully other than Jinja code
 
-# Suggested Tests For Possible Future Maintainability
+## Javascript testing
 
+Since the Javascript is very minimal in this app - simply fading pages in as
+the user navigates - testing it was as simple as adding an 'alert' to the 
+Javascript file and making sure it showed when refreshing the page.
+
+GSAP was used, and placed in the correct order with a very simple custom
+script. 
+
+# Suggested Tests For Possible Future Maintainability
 
 | Test Label |Test Action  |Expected Outcome|Test Outcome|
 |--|--|--|--|
