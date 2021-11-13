@@ -1,5 +1,3 @@
-document.ready(bodyFade())
+// Fades in all pages upon user interaction via GSAP library
 
-function bodyFade() {
-    gsap.fromTo("#body", {opacity: 0},{opacity:1, duration: .4});
-}
+gsap.fromTo("#body", {opacity: 0},{opacity:1, duration: .6});
