@@ -1443,11 +1443,13 @@ def admin_delete():
 
             # gives admin feedback
             flash("User deleted!")
-            return render_template("admin.html")
+            users = mongo.db.users.find()
+            return render_template("admin.html", users=users)
         flash("Check The Box If You Want To Delete A User")        
-        return redirect(url_for('admin'))
+        users = mongo.db.users.find()
+        return render_template("admin.html", users=users)
             
-    return render_template("admin.html")
+    return redirect(url_for('admin'))
 
 
 @app.route("/delete_account", methods=["GET", "POST"])

@@ -10,10 +10,12 @@
 
 {% for user in users %}
     {% if user.name != "admin" %}
-        <p class="text-medium">{{ user.name | title }}</p>
+        <p class="text-medium">{{ loop.index }}. {{ user.name | title }}</p>
     {% endif %}
 {% endfor %}
     
+<br>
+
 <!-- form to delete any user by name -->
 
 <form action="{{ url_for('admin_delete') }}" method="POST">

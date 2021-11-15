@@ -712,6 +712,50 @@ along with every step of the way. Of course they would have to be patient and
 willing to follow along, but this also makes it easier for even myself in
 the future to find sections and change them if necessary.
 
+### User Stories?
+
+When the app was begun, the main overarching goal was to create something
+that had a simple function without compromising on important auxilliary
+aspects. The user should spend about two to three minutes getting the basic
+idea of the app, and then from there spend a little time getting things set 
+up. These steps, generally speaking, were the big hurdle in getting people
+to try the app. The intial investment, however short, is a bit of a bitter 
+pill. However, in the case of every person who tried the app, after the intial
+setup, the ease of use was remarked on. 
+
+There is no real way to pass over the important details when it comes to money
+management - in the interest of keeping things simple, you have to work almost
+harder on the reliability and scalability of the apps function. So in some ways
+the app is a 'success', provided the user is willing to invest a few minutes of 
+their time into the setup process. However, the app cannot guarantee a helpful
+purpose otherwise. It may turn out to be a nuisance rather than a help, for the
+wrong user. 
+
+The successful part, lots of whitespace and clarity:
+
+![The Quick View](wireframes/user_stories_quick_view.png "The successful part")
+
+ The hinge that determines whether the app is ultimately useful to you or
+ not (the manual):
+
+![The Manual](wireframes/user_stories_manual.png "Nobody wants to read these things")
+
+ The app at its most complex, the Dashboard:
+
+![The Dashboard](wireframes/user_stories_dashboard.png "Lots of buttons, but less than before")
+
+  Important functionality in users control:
+
+![The Settings panel](wireframes/user_stories_settings.png "You can always delete your account")
+
+These images give me some assurance that while Munificent has a little 
+complexity underneath the hood, the choice to have a simpler interface allows
+the user to have a quick and useful experience. There are no click barriers 
+to the Quick View from the moment of logging in - its the first port of call
+for the app. If the user needs to do something more nitpicky, they can sit down
+and with one click navigate to a comprehensive dashboard. After that, all the
+functions are easily available. 
+
 ### Thoughts About Documentation Approach
 
 The unconventional documentation approach taken this time had its moments. 
