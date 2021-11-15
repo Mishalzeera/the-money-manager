@@ -26,7 +26,9 @@ mongo = PyMongo(app)
 
 
 def ensure_user(route):
-    '''decorator for routes that ensure access only to a logged in user'''
+    '''
+    decorator for routes that ensure access only to a logged in user
+    '''
     # uses "wraps" function from "functools"
     @wraps(route)
     def wrapper_function(*args, **kwargs):
