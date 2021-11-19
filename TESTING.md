@@ -50,7 +50,7 @@ tries to fix something.
 
 ## Testing And Validating Forms
 
-HTML forms are easy to brute force override, and there was nothing in place to
+HTML forms are easy to override, and there was nothing in place to
 prevent that. Pressing F12 and erasing HTML attributes made it possible to 
 send bad datatypes to the database as well and bypass required fields. I then 
 wrote defensive backend code that checked if any characteristics
