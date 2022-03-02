@@ -26,9 +26,9 @@ mongo = PyMongo(app)
 
 
 def ensure_user(route):
-    '''
+    """
     decorator for routes that ensure access only to a logged in user
-    '''
+    """
     # uses "wraps" function from "functools"
     @wraps(route)
     def wrapper_function(*args, **kwargs):
@@ -41,12 +41,12 @@ def ensure_user(route):
 
 
 def calculate_disposable_income():
-    '''
+    """
     to be inserted after any income/expense calculation
     takes overheads, tax and suggested savings, adds them and subtracts the 
     sum from credit
-    '''
-    # create a user key 
+    """
+    # create a user key
     user_key = {"name": session['user']}
     # get the current month object
     current_month = mongo.db.current_month.find_one(user_key)
@@ -58,17 +58,19 @@ def calculate_disposable_income():
     tax_to_set_aside = current_month['tax_to_set_aside']
     # get the suggested savings amount
     suggested_savings_amount = current_month['suggested_savings_amount']
-    # calculate the disposable income   
-    disposable_income = credit - (overheads_to_be_paid + tax_to_set_aside + suggested_savings_amount)
+    # calculate the disposable income
+    disposable_income = credit - \
+        (overheads_to_be_paid + tax_to_set_aside + suggested_savings_amount)
     # ...and update the database with the amount
-    mongo.db.current_month.update_one(user_key, {"$set": {"disposable_income": disposable_income}})
+    mongo.db.current_month.update_one(
+        user_key, {"$set": {"disposable_income": disposable_income}})
 
 
 def check_end_month():
-    '''
+    """
     to be inserted into the login view - checks to see if the month has changed
     and if so, starts a new month and creates a record 
-    '''
+    """
     # session user key
     user_key = {"name": session['user']}
     #  gets the users current month for reference
@@ -94,20 +96,20 @@ def check_end_month():
         }
         # insert the object into the previous month database
         mongo.db.previous_months.insert_one(previous_month)
-        # reset the current_month data 
-        mongo.db.current_month.update(user_key, 
-        {"$set": 
-        {
-            "spent_this_month": 0, 
-            "income_this_month": 0, 
-            "spent_on_overheads": 0, 
-            "spent_on_extras": 0, 
-            "suggested_savings_amount": 0, 
-            "overheads_to_be_paid": current_month['user_overheads'],
-            "datestamp": month
-        }
-        })
-        
+        # reset the current_month data
+        mongo.db.current_month.update(user_key,
+                                      {"$set":
+                                       {
+                                           "spent_this_month": 0,
+                                           "income_this_month": 0,
+                                           "spent_on_overheads": 0,
+                                           "spent_on_extras": 0,
+                                           "suggested_savings_amount": 0,
+                                           "overheads_to_be_paid": current_month['user_overheads'],
+                                           "datestamp": month
+                                       }
+                                       })
+
         # calculate the disposable income
         calculate_disposable_income()
         # provide user feedback
@@ -118,9 +120,9 @@ def check_end_month():
 
 
 def create_income_record(db_object):
-    '''
+    """
     creates a record of every income, for the user_history.html page
-    '''
+    """
     # create user key
     user_key = {"name": session['user']}
     # get a real time date stamp for the object
@@ -134,7 +136,7 @@ def create_income_record(db_object):
     # get the current credit from the users current month object
     credit = mongo.db.current_month.find_one(user_key)['credit']
     # create a record object
-    
+
     record = {
         "name": session['user'],
         "date": datestamp,
@@ -149,9 +151,9 @@ def create_income_record(db_object):
 
 
 def create_modified_income_record(db_object):
-    '''
+    """
     creates a record of every modified income
-    '''
+    """
     # create user key
     user_key = {"name": session['user']}
     # get a real time date stamp for the object
@@ -165,7 +167,7 @@ def create_modified_income_record(db_object):
     # get the current credit from the users current month object
     credit = mongo.db.current_month.find_one(user_key)['credit']
     # create a record object
-    
+
     record = {
         "name": session['user'],
         "date": datestamp,
@@ -181,16 +183,16 @@ def create_modified_income_record(db_object):
 
 
 def create_deleted_income_record_part_one(db_object):
-    '''
+    """
     creates a record of every deleted income
     since the credit can only be calculated after the deletion
     the function is in two parts, one before the database manipulation
     and one after, to insert the "credit after" amount
-    '''
+    """
     # get datestamp
     datestamp = datetime.today().strftime('%d-%m-%Y')
     # get a hours minutes seconds stamp to match records correctly
-    now  = datetime.now() 
+    now = datetime.now()
     # create a timestamp
     timestamp = now.strftime("%H:%M:%S")
     # get the argument-object amount
@@ -200,7 +202,7 @@ def create_deleted_income_record_part_one(db_object):
     # get tax if applicable
     tax = db_object['tax']
     # create a record
-    
+
     record = {
         "name": session['user'],
         "timestamp": timestamp,
@@ -215,32 +217,33 @@ def create_deleted_income_record_part_one(db_object):
 
 
 def create_deleted_income_record_part_two():
-    '''
+    """
     updates the object created in part_one with the recalculated credit_after
-    '''
+    """
     # create user key
     user_key = {"name": session['user']}
     # get current credit
     credit = mongo.db.current_month.find_one(user_key)['credit']
     # find the current timestamp
-    now  = datetime.now() 
+    now = datetime.now()
     # create a formatted timestamp to match the database
     timestamp = now.strftime("%H:%M:%S")
     # using the timestamp, get and update the correct record
-    mongo.db.in_out_history.update_one({"timestamp": timestamp}, {"$set": {"credit_after": credit}})
+    mongo.db.in_out_history.update_one({"timestamp": timestamp}, {
+                                       "$set": {"credit_after": credit}})
 
 
 def create_expense_record(db_object):
-    '''
+    """
     creates a record of every expense
-    '''
+    """
     # create a user key
     user_key = {"name": session['user']}
     # get a datestamp for the new object
     datestamp = datetime.today().strftime('%d-%m-%Y')
     # get the amount from the argument-object
     amount = db_object['amount']
-    # get the "overheads" or "extras" type - not to be confused with the new 
+    # get the "overheads" or "extras" type - not to be confused with the new
     # "type" key which is a hard coded string for an "if else" in the template
     for_type = db_object["type"]
     # get the recipient from the argument-object
@@ -248,7 +251,7 @@ def create_expense_record(db_object):
     # get the current credit from the current month object
     credit = mongo.db.current_month.find_one(user_key)['credit']
     # create a new record
-    
+
     record = {
         "name": session['user'],
         "date": datestamp,
@@ -264,9 +267,9 @@ def create_expense_record(db_object):
 
 
 def create_modified_expense_record(db_object):
-    '''
+    """
     creates a record of every modified expense
-    '''
+    """
     # create a user key
     user_key = {"name": session['user']}
     # create a datestamp for the record
@@ -298,15 +301,15 @@ def create_modified_expense_record(db_object):
 
 
 def create_deleted_expense_record_part_one(db_object):
-    '''
+    """
     creates a record of every deleted expense
-    in two parts, so that the updated credit can be inserted 
+    in two parts, so that the updated credit can be inserted
     after the database is manipulated
-    '''
+    """
     # get a datestamp for the new record
     datestamp = datetime.today().strftime('%d-%m-%Y')
     # get now for the timestamp
-    now  = datetime.now() 
+    now = datetime.now()
     # create a timestamp for part two to target the correct object
     timestamp = now.strftime("%H:%M:%S")
     # get the "overheads" vs "extras" type from the argument-object
@@ -318,7 +321,7 @@ def create_deleted_expense_record_part_one(db_object):
     # get the recipient
     recipient = db_object['recipient']
     # create a record
-    
+
     record = {
         "name": session['user'],
         "date": datestamp,
@@ -334,36 +337,37 @@ def create_deleted_expense_record_part_one(db_object):
 
 
 def create_deleted_expense_record_part_two():
-    '''
+    """
     allows for updating the object created in part_one with the recalculated credit_after
-    '''
+    """
     # create a user key
     user_key = {"name": session['user']}
     # get the current credit from the current month object
     credit = mongo.db.current_month.find_one(user_key)['credit']
     # get a timestamp for hours minutes seconds
-    now  = datetime.now() 
+    now = datetime.now()
     # create a variable from it to match with the correct record
     timestamp = now.strftime("%H:%M:%S")
     # update the record created in the first part with the credit_after
-    mongo.db.in_out_history.update_one({"timestamp": timestamp}, {"$set": {"credit_after": credit}})
+    mongo.db.in_out_history.update_one({"timestamp": timestamp}, {
+                                       "$set": {"credit_after": credit}})
 
 
 @app.route("/manual")
 @ensure_user
 def manual():
-    '''
+    """
     sends the user to the manual
-    '''
+    """
     return render_template("manual.html")
 
 
 @app.route("/")
 @ensure_user
 def index():
-    '''
+    """
     handles when the user navigates to the site initially
-    '''
+    """
     # creates a quick view of credit, overheads to be paid and disposable income
     money = mongo.db.current_month.find_one({"name": session['user']})
     return render_template("index.html", money=money)
@@ -371,13 +375,13 @@ def index():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    '''
+    """
     allows the user to register a new account
-    '''
+    """
     if request.method == "POST":
         # validate form
         # get request form object
-        form = request.form 
+        form = request.form
         errors = validate_registration_form(form)
         if errors == []:
             # check if username exists
@@ -389,13 +393,15 @@ def register():
             # create dictionary for new user
             # uses the very handy generate password hash from Werkzeug
             register_user = {
-            "name": request.form.get("name").lower(),
-            "password": generate_password_hash(request.form.get("password"))
+                "name": request.form.get("name").lower(),
+                "password": generate_password_hash(request.form.get("password"))
             }
             #  create dictionary for new starting month
             # sets the starting credit and the users overheads, defined by the user
-            start_credit_to_int = euros_to_cents(request.form.get("starting-credit"))
-            user_overheads_to_int = euros_to_cents(request.form.get("user-overheads"))
+            start_credit_to_int = euros_to_cents(
+                request.form.get("starting-credit"))
+            user_overheads_to_int = euros_to_cents(
+                request.form.get("user-overheads"))
 
             # handling the tax rate, a key part of the app
             # if no tax rate is entered, amount is set to the
@@ -403,12 +409,12 @@ def register():
             if request.form.get("tax_rate") == '':
                 tax_rate_to_int = 121
             else:
-            # makes a concatenated string out of the number entered by the user
-            # allowing a "1" to be inserted before, which puts the tax rate into
-            # the most useable format by the database
+                # makes a concatenated string out of the number entered by the user
+                # allowing a "1" to be inserted before, which puts the tax rate into
+                # the most useable format by the database
                 tax_rate_to_string = "1" + str(request.form.get("tax_rate"))
                 tax_rate_to_int = int(tax_rate_to_string)
-            
+
             # create a starting disposable income
             starting_disposable_income = start_credit_to_int - user_overheads_to_int
 
@@ -433,7 +439,7 @@ def register():
                 "user_notes": '',
                 "preferred_theme": "dark"
             }
-            
+
             # send dictionaries to Mongo
 
             mongo.db.users.insert_one(register_user)
@@ -457,13 +463,11 @@ def register():
     return render_template("register.html")
 
 
-
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    '''
+    """
     as the name implies, this is the login view
-    '''
+    """
     if request.method == "POST":
         form = request.form
         errors = validate_login_form(form)
@@ -471,23 +475,24 @@ def login():
         if errors == []:
             existing_user = mongo.db.users.find_one(
                 {"name": request.form.get("name").lower()})
-        
+
             if existing_user:
                 # check password
                 if check_password_hash(
-                    existing_user["password"], request.form.get("password")):
-                        # set session cookies
-                        # get current month object with cookie settings
-                        session["user"] = request.form.get("name").lower()
-                        current_month = mongo.db.current_month.find_one({"name": session['user']})
-                        session["theme"] = current_month["preferred_theme"]
-                        session["tax_rate"] = current_month["tax_rate"]
-                        # check if its a new month since the last login
-                        check_end_month()
-                        # provide some user feedback
-                        flash("Welcome, {}".format(request.form.get("name")))
-                        money = current_month
-                        return redirect(url_for('index'))
+                        existing_user["password"], request.form.get("password")):
+                    # set session cookies
+                    # get current month object with cookie settings
+                    session["user"] = request.form.get("name").lower()
+                    current_month = mongo.db.current_month.find_one(
+                        {"name": session['user']})
+                    session["theme"] = current_month["preferred_theme"]
+                    session["tax_rate"] = current_month["tax_rate"]
+                    # check if its a new month since the last login
+                    check_end_month()
+                    # provide some user feedback
+                    flash("Welcome, {}".format(request.form.get("name")))
+                    money = current_month
+                    return redirect(url_for('index'))
                 else:
                     flash("Incorrect Username or Password")
                     return redirect(url_for('login'))
@@ -504,13 +509,13 @@ def login():
     return render_template("login.html")
 
 
-@app.route("/profile/") 
+@app.route("/profile/")
 @ensure_user
 def profile():
-    '''
+    """
     view for the page that gives the user a more granular control over their
     financial overview
-    '''
+    """
     # get the dictionary from the database in cents
     money = mongo.db.current_month.find_one({"name": session["user"]})
     return render_template("profile.html", money=money)
@@ -519,25 +524,27 @@ def profile():
 @app.route("/create_note", methods=["POST"])
 @ensure_user
 def create_note():
-    '''
+    """
     gives the user the ability to make notes regarding their finances which
     can be easily updated directly within the profile view
-    '''    
+    """
     new_note = request.form.get("create_note")
-    mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"user_notes": new_note}})
+    mongo.db.current_month.update_one({"name": session['user']}, {
+                                      "$set": {"user_notes": new_note}})
     flash("Note Added!")
     return redirect(url_for('profile'))
-        
+
 
 @app.route("/edit_note", methods=["GET", "POST"])
 @ensure_user
 def edit_note():
-    '''
+    """
     allows user to edit their profile note
-    '''
+    """
     if request.method == "POST":
         new_note = request.form.get("edited_note")
-        mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"user_notes": new_note}})
+        mongo.db.current_month.update_one({"name": session['user']}, {
+                                          "$set": {"user_notes": new_note}})
         flash("Note Successfully Updated!")
         money = mongo.db.current_month.find_one({"name": session["user"]})
         return redirect(url_for('profile'))
@@ -548,34 +555,37 @@ def edit_note():
 @app.route("/invoice")
 @ensure_user
 def invoice():
-    '''
+    """
     creates the page that allows the user to see their income, add income,
     modify the income, delete entries etc
-    '''
+    """
     # gets a datestamp
     now = datetime.now()
     this_month = now.strftime("%B %Y")
     user_key = {"name": session['user']}
-    invoices = mongo.db.invoices.find(user_key) 
+    invoices = mongo.db.invoices.find(user_key)
     return render_template("invoice.html", invoices=invoices, this_month=this_month)
 
 
 @app.route("/add_invoice", methods=["GET", "POST"])
 @ensure_user
 def add_invoice():
-    '''
+    """
     allows the user to add an invoice, with the option of whether or not to
     calculate taxes 
-    '''
+    """
     if request.method == "POST":
         # set the tax rate variable
         tax_rate = session["tax_rate"]
         # convert the currency from euros to cents
-        invoice_amount_cents = euros_to_cents(request.form.get("amount_invoiced"))
+        invoice_amount_cents = euros_to_cents(
+            request.form.get("amount_invoiced"))
         # calculate the amount to set aside for taxes
-        invoice_tax_amount = round(new_invoice_tax(invoice_amount_cents, tax_rate))
+        invoice_tax_amount = round(
+            new_invoice_tax(invoice_amount_cents, tax_rate))
         # calculate the profit amount
-        post_tax_income = round(new_invoice_income(invoice_amount_cents, tax_rate))
+        post_tax_income = round(new_invoice_income(
+            invoice_amount_cents, tax_rate))
         # gets a datestamp
         now = datetime.now()
         month = now.strftime("%B %Y")
@@ -602,36 +612,48 @@ def add_invoice():
             credit = mongo.db.current_month.find_one(user_key)["credit"]
             new_credit = invoice_amount_cents + credit
             # get tax_to_set_aside and add new tax amount
-            tax_to_set =  mongo.db.current_month.find_one(user_key)["tax_to_set_aside"]
+            tax_to_set = mongo.db.current_month.find_one(user_key)[
+                "tax_to_set_aside"]
             new_tax = tax_to_set + invoice_tax_amount
             # update credit and tax_to_set_aside fields
-            mongo.db.current_month.update_one(user_key, {"$set": {"credit": new_credit}})
-            mongo.db.current_month.update_one(user_key, {"$set": {"tax_to_set_aside": new_tax}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"credit": new_credit}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"tax_to_set_aside": new_tax}})
             # get income_this_month
-            old_income = mongo.db.current_month.find_one(user_key)["income_this_month"]
+            old_income = mongo.db.current_month.find_one(user_key)[
+                "income_this_month"]
             new_income = old_income + post_tax_income
             # add to income_this_month
-            mongo.db.current_month.update_one(user_key, {"$set": {"income_this_month": new_income}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"income_this_month": new_income}})
             # get suggested_savings_amount
-            savings = mongo.db.current_month.find_one(user_key)["suggested_savings_amount"]
+            savings = mongo.db.current_month.find_one(
+                user_key)["suggested_savings_amount"]
             suggested_savings = round(savings + (post_tax_income * .2))
             # add to suggested savings this month
-            mongo.db.current_month.update_one(user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
         else:
             # in the case of non-taxeable income
-            # get credit, add new income 
+            # get credit, add new income
             credit = mongo.db.current_month.find_one(user_key)["credit"]
             new_credit = credit + invoice_amount_cents
-            mongo.db.current_month.update_one(user_key, {"$set": {"credit": new_credit}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"credit": new_credit}})
             # get income_this_month
-            old_income = mongo.db.current_month.find_one(user_key)["income_this_month"]
+            old_income = mongo.db.current_month.find_one(user_key)[
+                "income_this_month"]
             new_income = old_income + invoice_amount_cents
             # add to income_this_month
-            mongo.db.current_month.update_one(user_key, {"$set": {"income_this_month": new_income}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"income_this_month": new_income}})
             # get suggested savings, add suggested savings
-            savings = mongo.db.current_month.find_one(user_key)["suggested_savings_amount"]
+            savings = mongo.db.current_month.find_one(
+                user_key)["suggested_savings_amount"]
             suggested_savings = round(savings + (invoice_amount_cents * .2))
-            mongo.db.current_month.update_one(user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
         # calculate disposable income
         calculate_disposable_income()
         # create record using the new object as an argument
@@ -646,10 +668,10 @@ def add_invoice():
 @app.route("/edit_invoice/<invoice_id>", methods=["GET", "POST"])
 @ensure_user
 def edit_invoice(invoice_id):
-    '''
+    """
     allows the user to edit a previous income log, and includes the logic to
     dynamically update the affected fields both before and after editing
-    '''
+    """
     if request.method == "POST":
         # recalculate credit and relevant fields before updating
         # set tax rate
@@ -675,50 +697,65 @@ def edit_invoice(invoice_id):
             credit = mongo.db.current_month.find_one(user_key)["credit"]
             new_credit = credit - old_amount
             # get tax_to_set_aside and add new tax amount
-            tax_to_set =  mongo.db.current_month.find_one(user_key)["tax_to_set_aside"]
+            tax_to_set = mongo.db.current_month.find_one(user_key)[
+                "tax_to_set_aside"]
             new_tax = tax_to_set - invoice_tax_amount
             # update credit and tax_to_set_aside fields
-            mongo.db.current_month.update_one(user_key, {"$set": {"credit": new_credit}})
-            mongo.db.current_month.update_one(user_key, {"$set": {"tax_to_set_aside": new_tax}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"credit": new_credit}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"tax_to_set_aside": new_tax}})
             # get income_this_month
-            old_income = mongo.db.current_month.find_one(user_key)["income_this_month"]
+            old_income = mongo.db.current_month.find_one(user_key)[
+                "income_this_month"]
             new_income = old_income - post_tax_income
             # update income_this_month
-            mongo.db.current_month.update_one(user_key, {"$set": {"income_this_month": new_income}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"income_this_month": new_income}})
             # get suggested_savings_amount
-            savings = mongo.db.current_month.find_one(user_key)["suggested_savings_amount"]
+            savings = mongo.db.current_month.find_one(
+                user_key)["suggested_savings_amount"]
             suggested_savings = round(savings - (post_tax_income * .2))
             # add to suggested savings this month
-            mongo.db.current_month.update_one(user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
         else:
             # in the case of non-taxeable income
-            # get credit, subtract old income 
+            # get credit, subtract old income
             credit = mongo.db.current_month.find_one(user_key)["credit"]
             new_credit = credit - old_amount
-            mongo.db.current_month.update_one(user_key, {"$set": {"credit": new_credit}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"credit": new_credit}})
             # get income_this_month
-            old_income = mongo.db.current_month.find_one(user_key)["income_this_month"]
+            old_income = mongo.db.current_month.find_one(user_key)[
+                "income_this_month"]
             new_income = old_income - old_amount
             # add to income_this_month
-            mongo.db.current_month.update_one(user_key, {"$set": {"income_this_month": new_income}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"income_this_month": new_income}})
             # get suggested savings, add suggested savings
-            savings = mongo.db.current_month.find_one(user_key)["suggested_savings_amount"]
+            savings = mongo.db.current_month.find_one(
+                user_key)["suggested_savings_amount"]
             suggested_savings = round(savings - (old_amount * .2))
-            mongo.db.current_month.update_one(user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
 
         # calculate and send the new amount to the db
         # updated invoice amount in cents
-        invoice_amount_cents = euros_to_cents(request.form.get("amount_invoiced"))
-         # calculate the amount to set aside for taxes
-        invoice_tax_amount = round(new_invoice_tax(invoice_amount_cents, tax_rate))
+        invoice_amount_cents = euros_to_cents(
+            request.form.get("amount_invoiced"))
+        # calculate the amount to set aside for taxes
+        invoice_tax_amount = round(
+            new_invoice_tax(invoice_amount_cents, tax_rate))
         # calculate the profit amount
-        post_tax_income = round(new_invoice_income(invoice_amount_cents, tax_rate))
+        post_tax_income = round(new_invoice_income(
+            invoice_amount_cents, tax_rate))
         # create a new invoice object
         # gets a datestamp
         now = datetime.now()
         month = now.strftime("%B %Y")
         to_update = {
-             "name": session['user'],
+            "name": session['user'],
             "date": request.form.get("invoice_date"),
             "datestamp": month,
             "invoice_number": request.form.get("invoice_number").lower(),
@@ -734,38 +771,50 @@ def edit_invoice(invoice_id):
         if request.form.get("tax") == "on":
             # in the case of taxeable income
             credit = mongo.db.current_month.find_one(user_key)["credit"]
-            new_credit = invoice_amount_cents  + credit
+            new_credit = invoice_amount_cents + credit
             # get tax_to_set_aside and add new tax amount
-            tax_to_set =  mongo.db.current_month.find_one(user_key)["tax_to_set_aside"]
+            tax_to_set = mongo.db.current_month.find_one(user_key)[
+                "tax_to_set_aside"]
             new_tax = tax_to_set + invoice_tax_amount
             # update credit and tax_to_set_aside fields
-            mongo.db.current_month.update_one(user_key, {"$set": {"credit": new_credit}})
-            mongo.db.current_month.update_one(user_key, {"$set": {"tax_to_set_aside": new_tax}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"credit": new_credit}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"tax_to_set_aside": new_tax}})
             # get income_this_month
-            old_income = mongo.db.current_month.find_one(user_key)["income_this_month"]
+            old_income = mongo.db.current_month.find_one(user_key)[
+                "income_this_month"]
             new_income = old_income + post_tax_income
             # add to income_this_month
-            mongo.db.current_month.update_one(user_key, {"$set": {"income_this_month": new_income}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"income_this_month": new_income}})
             # get suggested_savings_amount
-            savings = mongo.db.current_month.find_one(user_key)["suggested_savings_amount"]
+            savings = mongo.db.current_month.find_one(
+                user_key)["suggested_savings_amount"]
             suggested_savings = round(savings + (post_tax_income * .2))
             # add to suggested savings this month
-            mongo.db.current_month.update_one(user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
         else:
             # in the case of non-taxeable income
-            # get credit, add new income 
+            # get credit, add new income
             credit = mongo.db.current_month.find_one(user_key)["credit"]
             new_credit = credit + invoice_amount_cents
-            mongo.db.current_month.update_one(user_key, {"$set": {"credit": new_credit}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"credit": new_credit}})
             # get income_this_month
-            old_income = mongo.db.current_month.find_one(user_key)["income_this_month"]
+            old_income = mongo.db.current_month.find_one(user_key)[
+                "income_this_month"]
             new_income = old_income + invoice_amount_cents
             # add to income_this_month
-            mongo.db.current_month.update_one(user_key, {"$set": {"income_this_month": new_income}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"income_this_month": new_income}})
             # get suggested savings, add suggested savings
-            savings = mongo.db.current_month.find_one(user_key)["suggested_savings_amount"]
+            savings = mongo.db.current_month.find_one(
+                user_key)["suggested_savings_amount"]
             suggested_savings = round(savings + (invoice_amount_cents * .2))
-            mongo.db.current_month.update_one(user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
 
         # calculate the users disposable income..
         calculate_disposable_income()
@@ -774,19 +823,19 @@ def edit_invoice(invoice_id):
         # provide some feedback
         flash("Invoice successfully updated!")
         return redirect(url_for('invoice'))
-    invoice_to_edit = mongo.db.invoices.find_one({"_id": ObjectId(invoice_id)})   
+    invoice_to_edit = mongo.db.invoices.find_one({"_id": ObjectId(invoice_id)})
     return render_template("edit_invoice.html", invoice=invoice_to_edit)
 
 
 @app.route("/delete_invoice/<invoice_id>", methods=["GET", "POST"])
 @ensure_user
 def delete_invoice(invoice_id):
-    '''
+    """
     allows the user to delete an income log, and recalculates the affected
     fields 
-    '''
+    """
     if request.method == "POST":
-        # set tax rate 
+        # set tax rate
         tax_rate = session["tax_rate"]
         # recalculate credit and relevant fields before updating
         # get credit, income_this_month, suggested_savings_amount, tax_to_set_aside
@@ -810,39 +859,52 @@ def delete_invoice(invoice_id):
             credit = mongo.db.current_month.find_one(user_key)["credit"]
             new_credit = credit - old_amount
             # get tax_to_set_aside and add new tax amount
-            tax_to_set =  mongo.db.current_month.find_one(user_key)["tax_to_set_aside"]
+            tax_to_set = mongo.db.current_month.find_one(user_key)[
+                "tax_to_set_aside"]
             new_tax = tax_to_set - invoice_tax_amount
             # update credit and tax_to_set_aside fields
-            mongo.db.current_month.update_one(user_key, {"$set": {"credit": new_credit}})
-            mongo.db.current_month.update_one(user_key, {"$set": {"tax_to_set_aside": new_tax}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"credit": new_credit}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"tax_to_set_aside": new_tax}})
             # get income_this_month
-            old_income = mongo.db.current_month.find_one(user_key)["income_this_month"]
+            old_income = mongo.db.current_month.find_one(user_key)[
+                "income_this_month"]
             new_income = old_income - post_tax_income
             # update income_this_month
-            mongo.db.current_month.update_one(user_key, {"$set": {"income_this_month": new_income}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"income_this_month": new_income}})
             # get suggested_savings_amount
-            savings = mongo.db.current_month.find_one(user_key)["suggested_savings_amount"]
+            savings = mongo.db.current_month.find_one(
+                user_key)["suggested_savings_amount"]
             suggested_savings = round(savings - (post_tax_income * .2))
             # add to suggested savings this month
-            mongo.db.current_month.update_one(user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
         else:
             # in the case of non-taxeable income
-            # get credit, subtract old income 
+            # get credit, subtract old income
             credit = mongo.db.current_month.find_one(user_key)["credit"]
             new_credit = credit - old_amount
-            mongo.db.current_month.update_one(user_key, {"$set": {"credit": new_credit}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"credit": new_credit}})
             # get income_this_month
-            old_income = mongo.db.current_month.find_one(user_key)["income_this_month"]
+            old_income = mongo.db.current_month.find_one(user_key)[
+                "income_this_month"]
             new_income = old_income - old_amount
             # add to income_this_month
-            mongo.db.current_month.update_one(user_key, {"$set": {"income_this_month": new_income}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"income_this_month": new_income}})
             # get suggested savings, add suggested savings
-            savings = mongo.db.current_month.find_one(user_key)["suggested_savings_amount"]
+            savings = mongo.db.current_month.find_one(
+                user_key)["suggested_savings_amount"]
             suggested_savings = round(savings - (old_amount * .2))
-            mongo.db.current_month.update_one(user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"suggested_savings_amount": suggested_savings}})
 
         # get invoice to delete
-        invoice_to_delete = mongo.db.invoices.find_one({"_id": ObjectId(invoice_id)})
+        invoice_to_delete = mongo.db.invoices.find_one(
+            {"_id": ObjectId(invoice_id)})
         # create a record while its still there, sans credit
         create_deleted_income_record_part_one(invoice_to_delete)
         # delete it
@@ -853,17 +915,17 @@ def delete_invoice(invoice_id):
         calculate_disposable_income()
         flash("Invoice Deleted!")
         return redirect(url_for('invoice'))
-    invoice=mongo.db.invoices.find_one({"_id": ObjectId(invoice_id)})
+    invoice = mongo.db.invoices.find_one({"_id": ObjectId(invoice_id)})
     return render_template("delete_invoice.html", invoice=invoice)
 
 
 @app.route("/expenses")
 @ensure_user
 def expenses():
-    '''
+    """
     generates the page that shows the outgoing expenses and gives the
     user the controls to add/edit/delete them
-    '''    
+    """
     # gets a datestamp
     now = datetime.now()
     this_month = now.strftime("%B %Y")
@@ -874,16 +936,16 @@ def expenses():
 @app.route("/add_expense", methods=["GET", "POST"])
 @ensure_user
 def add_expense():
-    '''
+    """
     allows the user to add an outgoing expense, with the option of 
     determining whether or not an expense affects their monthly
     overheads
-    '''
+    """
     # create reusable user_key
     user_key = {"name": session['user']}
     if request.method == "POST":
         # transform the amount into cents
-        amount_to_cents = euros_to_cents(request.form.get("amount_spent"))   
+        amount_to_cents = euros_to_cents(request.form.get("amount_spent"))
         # create an expense object to send to the db
         # gets a datestamp
         now = datetime.now()
@@ -904,35 +966,44 @@ def add_expense():
         credit = mongo.db.current_month.find_one(user_key)["credit"]
         new_credit = credit - amount_to_cents
         # update db accordingly
-        mongo.db.current_month.update_one(user_key, {"$set": {"credit": new_credit}})
-        # get spent_this_month and add new expense 
-        total_spent = mongo.db.current_month.find_one(user_key)["spent_this_month"]
+        mongo.db.current_month.update_one(
+            user_key, {"$set": {"credit": new_credit}})
+        # get spent_this_month and add new expense
+        total_spent = mongo.db.current_month.find_one(user_key)[
+            "spent_this_month"]
         new_total = total_spent + amount_to_cents
         # update db accordingly
-        mongo.db.current_month.update_one(user_key, {"$set": {"spent_this_month": new_total}})
+        mongo.db.current_month.update_one(
+            user_key, {"$set": {"spent_this_month": new_total}})
 
         if request.form.get("type") == "Overheads":
-            # get overheads_to_be_paid 
-            overheads_to_be_paid = mongo.db.current_month.find_one(user_key)["overheads_to_be_paid"]
+            # get overheads_to_be_paid
+            overheads_to_be_paid = mongo.db.current_month.find_one(user_key)[
+                "overheads_to_be_paid"]
             # and subtract the amount spent
             new_overheads = overheads_to_be_paid - amount_to_cents
             # get spent_on_overheads
-            old_spent_on_overheads = mongo.db.current_month.find_one(user_key)["spent_on_overheads"]
+            old_spent_on_overheads = mongo.db.current_month.find_one(user_key)[
+                "spent_on_overheads"]
             # add the amount spent
             new_spent_on_overheads = old_spent_on_overheads + amount_to_cents
             # and update the database accordingly
-            mongo.db.current_month.update_one(user_key, {"$set": {"overheads_to_be_paid": new_overheads}})
-            mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_overheads": new_spent_on_overheads}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"overheads_to_be_paid": new_overheads}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"spent_on_overheads": new_spent_on_overheads}})
         else:
             # get spent_on_extras
-            old_spent_on_extras = mongo.db.current_month.find_one(user_key)["spent_on_extras"]
+            old_spent_on_extras = mongo.db.current_month.find_one(user_key)[
+                "spent_on_extras"]
             # add the amount spent
             new_spent_on_extras = old_spent_on_extras + amount_to_cents
             # and update the database accordingly
-            mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_extras": new_spent_on_extras}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"spent_on_extras": new_spent_on_extras}})
 
         # calculate the users disposable income...
-        calculate_disposable_income()   
+        calculate_disposable_income()
         # and create a record
         create_expense_record(new_expense)
         flash("Expense Added!")
@@ -943,48 +1014,57 @@ def add_expense():
 @app.route("/edit_expense/<expense_id>", methods=["GET", "POST"])
 @ensure_user
 def edit_expense(expense_id):
-    '''
+    """
     allows the user to edit an expense while updating the affected fields
-    '''
+    """
     if request.method == "POST":
         # to recalculate finances so that updated amounts modify rather than add to
         # get original expense amount, credit and add back in
 
         user_key = {"name": session['user']}
         old_expense = mongo.db.expenses.find_one({"_id": ObjectId(expense_id)})
-        old_expense_amount = mongo.db.expenses.find_one({"_id": ObjectId(expense_id)})["amount"]
+        old_expense_amount = mongo.db.expenses.find_one(
+            {"_id": ObjectId(expense_id)})["amount"]
         credit_before = mongo.db.current_month.find_one(user_key)["credit"]
         credit_to_refactor = old_expense_amount + credit_before
         # update the database temporarily
-        mongo.db.current_month.update_one(user_key, {"$set": {"credit": credit_to_refactor}})
+        mongo.db.current_month.update_one(
+            user_key, {"$set": {"credit": credit_to_refactor}})
 
         # get spent_this_month and subtract old expense
 
-        total_spent = mongo.db.current_month.find_one(user_key)["spent_this_month"]
+        total_spent = mongo.db.current_month.find_one(user_key)[
+            "spent_this_month"]
         new_total = total_spent - old_expense_amount
         # update db accordingly
-        mongo.db.current_month.update_one(user_key, {"$set": {"spent_this_month": new_total}})
+        mongo.db.current_month.update_one(
+            user_key, {"$set": {"spent_this_month": new_total}})
 
         if old_expense["type"] == "Overheads":
-            # get overheads_to_be_paid 
-            overheads_to_be_paid = mongo.db.current_month.find_one(user_key)["overheads_to_be_paid"]
+            # get overheads_to_be_paid
+            overheads_to_be_paid = mongo.db.current_month.find_one(user_key)[
+                "overheads_to_be_paid"]
             # and add the amount back in
             new_overheads = overheads_to_be_paid + old_expense_amount
             # get spent_on_overheads
-            old_spent_on_overheads = mongo.db.current_month.find_one(user_key)["spent_on_overheads"]
+            old_spent_on_overheads = mongo.db.current_month.find_one(user_key)[
+                "spent_on_overheads"]
             # subtract the amount spent
             new_spent_on_overheads = old_spent_on_overheads - old_expense_amount
             # and update the database accordingly
-            mongo.db.current_month.update_one(user_key, {"$set": {"overheads_to_be_paid": new_overheads}})
-            mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_overheads": new_spent_on_overheads}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"overheads_to_be_paid": new_overheads}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"spent_on_overheads": new_spent_on_overheads}})
         else:
             # get spent_on_extras
-            old_spent_on_extras = mongo.db.current_month.find_one(user_key)["spent_on_extras"]
+            old_spent_on_extras = mongo.db.current_month.find_one(user_key)[
+                "spent_on_extras"]
             # subtract the amount spent
             new_spent_on_extras = old_spent_on_extras - old_expense_amount
             # and update the database accordingly
-            mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_extras": new_spent_on_extras}})
-
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"spent_on_extras": new_spent_on_extras}})
 
         # process the edited document
         amount_to_cents = euros_to_cents(request.form.get("amount_spent"))
@@ -1006,32 +1086,41 @@ def edit_expense(expense_id):
         credit = mongo.db.current_month.find_one(user_key)["credit"]
         new_credit = credit - amount_to_cents
         # update db accordingly
-        mongo.db.current_month.update_one(user_key, {"$set": {"credit": new_credit}})
-        # get spent_this_month and add new expense 
-        total_spent = mongo.db.current_month.find_one(user_key)["spent_this_month"]
+        mongo.db.current_month.update_one(
+            user_key, {"$set": {"credit": new_credit}})
+        # get spent_this_month and add new expense
+        total_spent = mongo.db.current_month.find_one(user_key)[
+            "spent_this_month"]
         new_total = total_spent + amount_to_cents
         # update db accordingly
-        mongo.db.current_month.update_one(user_key, {"$set": {"spent_this_month": new_total}})
+        mongo.db.current_month.update_one(
+            user_key, {"$set": {"spent_this_month": new_total}})
 
         if request.form.get("type") == "Overheads":
-            # get overheads_to_be_paid 
-            overheads_to_be_paid = mongo.db.current_month.find_one(user_key)["overheads_to_be_paid"]
+            # get overheads_to_be_paid
+            overheads_to_be_paid = mongo.db.current_month.find_one(user_key)[
+                "overheads_to_be_paid"]
             # and subtract the amount spent
             new_overheads = overheads_to_be_paid - amount_to_cents
             # get spent_on_overheads
-            old_spent_on_overheads = mongo.db.current_month.find_one(user_key)["spent_on_overheads"]
+            old_spent_on_overheads = mongo.db.current_month.find_one(user_key)[
+                "spent_on_overheads"]
             # add the amount spent
             new_spent_on_overheads = old_spent_on_overheads + amount_to_cents
             # and update the database accordingly
-            mongo.db.current_month.update_one(user_key, {"$set": {"overheads_to_be_paid": new_overheads}})
-            mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_overheads": new_spent_on_overheads}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"overheads_to_be_paid": new_overheads}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"spent_on_overheads": new_spent_on_overheads}})
         else:
             # get spent_on_extras
-            old_spent_on_extras = mongo.db.current_month.find_one(user_key)["spent_on_extras"]
+            old_spent_on_extras = mongo.db.current_month.find_one(user_key)[
+                "spent_on_extras"]
             # add the amount spent
             new_spent_on_extras = old_spent_on_extras + amount_to_cents
             # and update the database accordingly
-            mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_extras": new_spent_on_extras}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"spent_on_extras": new_spent_on_extras}})
 
         # calculate users disposable income
         calculate_disposable_income()
@@ -1049,84 +1138,96 @@ def edit_expense(expense_id):
 @app.route("/delete_expense/<expense_id>", methods=["GET", "POST"])
 @ensure_user
 def delete_expense(expense_id):
-        '''
-        allows the user to delete an expense and updates the affected fields
-        '''
-        if request.method == "POST":
-            # refactor amount back into credit and update the relevant fields
-            # to recalculate finances so that updated amounts modify rather than add to
-            # get original expense amount, credit and add back in
+    """
+    allows the user to delete an expense and updates the affected fields
+    """
+    if request.method == "POST":
+        # refactor amount back into credit and update the relevant fields
+        # to recalculate finances so that updated amounts modify rather than add to
+        # get original expense amount, credit and add back in
 
-            user_key = {"name": session['user']}
-            old_expense = mongo.db.expenses.find_one({"_id": ObjectId(expense_id)})
-            old_expense_amount = mongo.db.expenses.find_one({"_id": ObjectId(expense_id)})["amount"]
-            credit_before = mongo.db.current_month.find_one(user_key)["credit"]
-            credit_to_refactor = old_expense_amount + credit_before
-            # update the database temporarily
-            mongo.db.current_month.update_one(user_key, {"$set": {"credit": credit_to_refactor}})
+        user_key = {"name": session['user']}
+        old_expense = mongo.db.expenses.find_one({"_id": ObjectId(expense_id)})
+        old_expense_amount = mongo.db.expenses.find_one(
+            {"_id": ObjectId(expense_id)})["amount"]
+        credit_before = mongo.db.current_month.find_one(user_key)["credit"]
+        credit_to_refactor = old_expense_amount + credit_before
+        # update the database temporarily
+        mongo.db.current_month.update_one(
+            user_key, {"$set": {"credit": credit_to_refactor}})
 
-            # get spent_this_month and subtract old expense
+        # get spent_this_month and subtract old expense
 
-            total_spent = mongo.db.current_month.find_one(user_key)["spent_this_month"]
-            new_total = total_spent - old_expense_amount
-            # update db accordingly
-            mongo.db.current_month.update_one(user_key, {"$set": {"spent_this_month": new_total}})
+        total_spent = mongo.db.current_month.find_one(user_key)[
+            "spent_this_month"]
+        new_total = total_spent - old_expense_amount
+        # update db accordingly
+        mongo.db.current_month.update_one(
+            user_key, {"$set": {"spent_this_month": new_total}})
 
-            if old_expense["type"] == "Overheads":
-                # get overheads_to_be_paid 
-                overheads_to_be_paid = mongo.db.current_month.find_one(user_key)["overheads_to_be_paid"]
-                # and add the amount back in
-                new_overheads = overheads_to_be_paid + old_expense_amount
-                # get spent_on_overheads
-                old_spent_on_overheads = mongo.db.current_month.find_one(user_key)["spent_on_overheads"]
-                # subtract the amount spent
-                new_spent_on_overheads = old_spent_on_overheads - old_expense_amount
-                # and update the database accordingly
-                mongo.db.current_month.update_one(user_key, {"$set": {"overheads_to_be_paid": new_overheads}})
-                mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_overheads": new_spent_on_overheads}})
-            else:
-                # get spent_on_extras
-                old_spent_on_extras = mongo.db.current_month.find_one(user_key)["spent_on_extras"]
-                # subtract the amount spent
-                new_spent_on_extras = old_spent_on_extras - old_expense_amount
-                # and update the database accordingly
-                mongo.db.current_month.update_one(user_key, {"$set": {"spent_on_extras": new_spent_on_extras}})
+        if old_expense["type"] == "Overheads":
+            # get overheads_to_be_paid
+            overheads_to_be_paid = mongo.db.current_month.find_one(user_key)[
+                "overheads_to_be_paid"]
+            # and add the amount back in
+            new_overheads = overheads_to_be_paid + old_expense_amount
+            # get spent_on_overheads
+            old_spent_on_overheads = mongo.db.current_month.find_one(user_key)[
+                "spent_on_overheads"]
+            # subtract the amount spent
+            new_spent_on_overheads = old_spent_on_overheads - old_expense_amount
+            # and update the database accordingly
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"overheads_to_be_paid": new_overheads}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"spent_on_overheads": new_spent_on_overheads}})
+        else:
+            # get spent_on_extras
+            old_spent_on_extras = mongo.db.current_month.find_one(user_key)[
+                "spent_on_extras"]
+            # subtract the amount spent
+            new_spent_on_extras = old_spent_on_extras - old_expense_amount
+            # and update the database accordingly
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"spent_on_extras": new_spent_on_extras}})
 
-            # get expense to delete
-            expense_to_delete = mongo.db.expenses.find_one({"_id": ObjectId(expense_id)})
-            # create a record sans credit after
-            create_deleted_expense_record_part_one(expense_to_delete)
-            # delete the expense
-            mongo.db.expenses.remove(expense_to_delete)
-            # update the record object with the updated credit
-            create_deleted_expense_record_part_two()
-            # calculate disposable income
-            calculate_disposable_income()
-            flash("Expense Successfully Deleted!")
-            return redirect(url_for('expenses'))
-    
-        expense = mongo.db.expenses.find_one({"_id": ObjectId(expense_id)})
-        return render_template("delete_expense.html", expense=expense)
+        # get expense to delete
+        expense_to_delete = mongo.db.expenses.find_one(
+            {"_id": ObjectId(expense_id)})
+        # create a record sans credit after
+        create_deleted_expense_record_part_one(expense_to_delete)
+        # delete the expense
+        mongo.db.expenses.remove(expense_to_delete)
+        # update the record object with the updated credit
+        create_deleted_expense_record_part_two()
+        # calculate disposable income
+        calculate_disposable_income()
+        flash("Expense Successfully Deleted!")
+        return redirect(url_for('expenses'))
+
+    expense = mongo.db.expenses.find_one({"_id": ObjectId(expense_id)})
+    return render_template("delete_expense.html", expense=expense)
+
 
 @app.route("/user_history")
 @ensure_user
 def user_history():
-    '''
+    """
     generates a page in which the user can see a history of their activity
-    '''
+    """
     previous_months = mongo.db.previous_months.find({"name": session['user']})
     tax_seasons = mongo.db.tax_seasons.find({"name": session['user']})
-    history = mongo.db.in_out_history.find({"name":session['user']})
-    return render_template("user_history.html", history=history, name = session['user'], tax_seasons=tax_seasons, previous_months=previous_months)
+    history = mongo.db.in_out_history.find({"name": session['user']})
+    return render_template("user_history.html", history=history, name=session['user'], tax_seasons=tax_seasons, previous_months=previous_months)
 
 
 @app.route("/end_tax", methods=["GET", "POST"])
 @ensure_user
 def end_tax():
-    '''
+    """
     generates a page which allows the user to end a tax season, with a
     calculator tool 
-    '''
+    """
     if request.method == "POST":
         if request.form.get("confirm_tax_end") == "on":
             # create user key
@@ -1144,7 +1245,8 @@ def end_tax():
             # insert the new object into the database
             mongo.db.tax_seasons.insert_one(tax_record)
             # reset the tax_to_set_aside field
-            mongo.db.current_month.update_one(user_key, {"$set": {"tax_to_set_aside": 0}})
+            mongo.db.current_month.update_one(
+                user_key, {"$set": {"tax_to_set_aside": 0}})
             flash("Tax Record Created, New Period Begun!")
             return render_template("end_tax.html")
 
@@ -1156,40 +1258,41 @@ def end_tax():
 @app.route("/calculator", methods=["POST"])
 @ensure_user
 def calculator():
-    '''
+    """
     gives the user a handy calculator to work out receipts with totals
     that don't include tax information
-    '''  
+    """
     # get session tax rate cookie
     tax_rate = session['tax_rate']
     total_with_tax = float(request.form.get("calculator"))
     tax_to_deduct = new_invoice_tax(total_with_tax, tax_rate)
     income_to_separate = new_invoice_income(total_with_tax, tax_rate)
     return render_template("end_tax.html", tax=tax_to_deduct, income=income_to_separate)
-    
 
-@app.route("/wishlist", methods=["GET","POST"])
+
+@app.route("/wishlist", methods=["GET", "POST"])
 @ensure_user
 def wishlist():
-    '''
+    """
     generates a page that gives the user the ability to keep track of desired
     items and know when they can afford to buy them
-    '''
+    """
     # get user wishlist from db
     wishlist = mongo.db.wishlist.find({"name": session["user"]})
     return render_template("wishlist.html", wishlist=wishlist)
 
 
 @app.route("/add_wish", methods=["POST"])
-@ensure_user  
+@ensure_user
 def add_wish():
-    '''
+    """
     allows the user to add a wish
-    '''
+    """
     # user_key
     user_key = {"name": session['user']}
     # get disposable income
-    disposable_income = mongo.db.current_month.find_one(user_key)['disposable_income']
+    disposable_income = mongo.db.current_month.find_one(user_key)[
+        'disposable_income']
     # convert currency to cents
     cost_of_item = euros_to_cents(request.form.get("wish_cost"))
     # check if item on wishlist is affordable
@@ -1215,14 +1318,15 @@ def add_wish():
 @app.route("/edit_wish/<wish>", methods=["GET", "POST"])
 @ensure_user
 def edit_wish(wish):
-    '''
+    """
     allows a user to edit a wish
-    '''
+    """
     if request.method == "POST":
         # user_key
         user_key = {"name": session['user']}
         # get disposable income
-        disposable_income = mongo.db.current_month.find_one(user_key)['disposable_income']
+        disposable_income = mongo.db.current_month.find_one(user_key)[
+            'disposable_income']
         # convert currency to cents
         cost_of_item = euros_to_cents(request.form.get("wish_cost"))
         # check if item on wishlist is affordable
@@ -1241,31 +1345,31 @@ def edit_wish(wish):
         # send dictionary to the database
         mongo.db.wishlist.update({"_id": ObjectId(wish)}, wishlist_item)
         flash("Item successfully edited!")
-        return redirect(url_for('wishlist'))  
+        return redirect(url_for('wishlist'))
 
-    wish_to_edit = mongo.db.wishlist.find_one({"_id": ObjectId(wish)})  
+    wish_to_edit = mongo.db.wishlist.find_one({"_id": ObjectId(wish)})
     return render_template('edit_wish.html', wish=wish_to_edit)
 
 
 @app.route("/delete_wish/<wish>", methods=["POST"])
 @ensure_user
 def delete_wish(wish):
-    '''
+    """
     allows a user to delete a wish
-    '''
+    """
     wish_to_delete = mongo.db.wishlist.find_one({"_id": ObjectId(wish)})
     mongo.db.wishlist.remove(wish_to_delete)
     flash("Wish deleted!")
-    return redirect(url_for('wishlist'))    
+    return redirect(url_for('wishlist'))
 
 
 @app.route("/reward")
 @ensure_user
-def reward(): 
-    '''
+def reward():
+    """
     generates a page where the user can inspire themselves with an image
     and caption to remind them of long term goals
-    '''  
+    """
     user_reward = mongo.db.rewards.find_one({"name": session['user']})
     return render_template("reward.html", user_reward=user_reward)
 
@@ -1273,33 +1377,36 @@ def reward():
 @app.route("/image/<filename>")
 @ensure_user
 def image(filename):
-    '''
+    """
     utility function that allows the app to get an image from the Mongo database
-    '''
+    """
     return mongo.send_file(filename)
 
 
 @app.route("/add_reward", methods=["GET", "POST"])
 @ensure_user
 def add_reward():
-    '''
+    """
     allows the user to add a reward image and caption
-    '''
+    """
     if request.method == "POST" and "image" in request.files:
         img = request.files['image']
         to_post = {
-        "name": session['user'],
-        "img": img.filename,       
-        "caption": request.form.get("caption")
+            "name": session['user'],
+            "img": img.filename,
+            "caption": request.form.get("caption")
         }
         mongo.db.rewards.remove({"name": session['user']})
         mongo.db.fs.files.remove({"name": session['user']})
         mongo.db.fs.chunks.remove({"name": session['user']})
         mongo.save_file(img.filename, img)
         mongo.db.rewards.insert_one(to_post)
-        mongo.db.fs.files.update_one({"filename": img.filename}, {"$set": {"name": session['user']}})
-        image_key = mongo.db.fs.files.find_one({"filename": img.filename})['_id']
-        mongo.db.fs.chunks.update_one({"files_id": image_key}, {"$set": {"name": session['user']} })
+        mongo.db.fs.files.update_one({"filename": img.filename}, {
+                                     "$set": {"name": session['user']}})
+        image_key = mongo.db.fs.files.find_one(
+            {"filename": img.filename})['_id']
+        mongo.db.fs.chunks.update_one({"files_id": image_key}, {
+                                      "$set": {"name": session['user']}})
         flash("Reward successfully added!")
         return redirect(url_for('reward'))
     return render_template("add_reward.html")
@@ -1308,10 +1415,10 @@ def add_reward():
 @app.route("/logout")
 @ensure_user
 def logout():
-    '''
+    """
     logs a user out and clears all session cookies, redirecting to the login
     page
-    '''
+    """
     session.clear()
     flash("You have been logged out.")
     return redirect(url_for('login'))
@@ -1320,10 +1427,10 @@ def logout():
 @app.route("/settings")
 @ensure_user
 def settings():
-    '''
+    """
     generates a page for the user to change key settings for the app, including
     overheads, tax rate and display theme
-    '''
+    """
     # get the current overheads to display on the template for user reference
     current_month = mongo.db.current_month.find_one({"name": session['user']})
     return render_template("settings.html", user=session["user"], current_month=current_month)
@@ -1332,28 +1439,32 @@ def settings():
 @app.route("/change_overheads", methods=["POST"])
 @ensure_user
 def change_overheads():
-    '''
+    """
     allows the user to change their monthly overheads
-    '''
+    """
     # set the user_key to session user
     user_key = {"name": session['user']}
-    
+
     # access the form data
     if request.form.get("new_overheads") != '':
         new_overheads = request.form.get("new_overheads")
         # convert to cents
         new_overheads_to_send = euros_to_cents(new_overheads)
         # access the old overheads for the "to be paid" calculation
-        old_overheads = mongo.db.current_month.find_one(user_key)['user_overheads']
+        old_overheads = mongo.db.current_month.find_one(user_key)[
+            'user_overheads']
         # get spent_on_overheads
-        spent_on_overheads = mongo.db.current_month.find_one({"name": session['user']})['spent_on_overheads']
+        spent_on_overheads = mongo.db.current_month.find_one(
+            {"name": session['user']})['spent_on_overheads']
         # create new_overheads_to_be_paid using the new_overheads
         new_overheads_to_be_paid = new_overheads_to_send - spent_on_overheads
         # send it to the db
-        mongo.db.current_month.update_one(user_key, {"$set": {"user_overheads": new_overheads_to_send}})
-    
+        mongo.db.current_month.update_one(
+            user_key, {"$set": {"user_overheads": new_overheads_to_send}})
+
         # update overheads_to_be_paid
-        mongo.db.current_month.update_one(user_key, {"$set": {"overheads_to_be_paid": new_overheads_to_be_paid}})
+        mongo.db.current_month.update_one(
+            user_key, {"$set": {"overheads_to_be_paid": new_overheads_to_be_paid}})
         # recalculate the users disposable income
         calculate_disposable_income()
         # give some feedback
@@ -1364,24 +1475,25 @@ def change_overheads():
     else:
         flash("Overheads remain the same - please enter a new figure if you want to update them.")
         return redirect(url_for('settings'))
-    
+
 
 @app.route("/change_tax_rate", methods=["POST"])
 @ensure_user
 def change_tax_rate():
-    '''
+    """
     allows the user to change their tax rate
-    '''
+    """
     # check to see if a tax rate is selected
     if request.form.get("new_tax_rate") == '':
         # if not, stay as it is
-        tax_rate_to_int = session['tax_rate']          
+        tax_rate_to_int = session['tax_rate']
     else:
         # if so, change the amount to match the user requested, making sure its in the useable format for our functions
         tax_rate_to_string = "1" + str(request.form.get("new_tax_rate"))
         tax_rate_to_int = int(tax_rate_to_string)
     # update the db with the new amount...
-    mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"tax_rate": tax_rate_to_int}})
+    mongo.db.current_month.update_one({"name": session['user']}, {
+                                      "$set": {"tax_rate": tax_rate_to_int}})
     # and adapt the session cookie to match
     session['tax_rate'] = tax_rate_to_int
     # provide some user feedback
@@ -1393,26 +1505,28 @@ def change_tax_rate():
 @app.route("/change_theme", methods=["POST"])
 @ensure_user
 def change_theme():
-    '''
+    """
     crucial for some of us - allows a user to change from dark to light themes
     :)
-    '''    
+    """
     if session['theme'] == "dark":
-        mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"preferred_theme": "light"}})
+        mongo.db.current_month.update_one({"name": session['user']}, {
+                                          "$set": {"preferred_theme": "light"}})
         session['theme'] = "light"
     else:
-        mongo.db.current_month.update_one({"name": session['user']}, {"$set": {"preferred_theme": "dark"}})
+        mongo.db.current_month.update_one({"name": session['user']}, {
+                                          "$set": {"preferred_theme": "dark"}})
         session['theme'] = "dark"
     flash("Theme settings updated!")
     return redirect(url_for('settings'))
-    
+
 
 @app.route("/admin")
 @ensure_user
 def admin():
-    '''
+    """
     generates an admin page to get rid of unwanted user data etc
-    '''
+    """
     users = mongo.db.users.find()
     return render_template("admin.html", users=users)
 
@@ -1420,9 +1534,9 @@ def admin():
 @app.route("/admin_delete", methods=["GET", "POST"])
 @ensure_user
 def admin_delete():
-    '''
+    """
     allows the admin to delete a user
-    '''
+    """
     if request.method == "POST":
         # checks that the admin is sure
         if request.form.get("check_delete") == "on":
@@ -1447,21 +1561,21 @@ def admin_delete():
             flash("User deleted!")
             users = mongo.db.users.find()
             return render_template("admin.html", users=users)
-        flash("Check The Box If You Want To Delete A User")        
+        flash("Check The Box If You Want To Delete A User")
         users = mongo.db.users.find()
         return render_template("admin.html", users=users)
-            
+
     return redirect(url_for('admin'))
 
 
 @app.route("/delete_account", methods=["GET", "POST"])
 @ensure_user
 def delete_account():
-    '''
+    """
     not to be confused with the function above, this function
     is from the user settings panel, which allows them to 
     delete their own account
-    '''
+    """
     if request.method == "POST":
         user_key = {"name": session['user']}
         mongo.db.users.remove(user_key)
@@ -1481,9 +1595,10 @@ def delete_account():
 
     return render_template("delete_account.html")
 
-'''
+
+"""
 the "run" code which sets up the development environment
-'''
+"""
 
 if __name__ == "__main__":
     app.run(
